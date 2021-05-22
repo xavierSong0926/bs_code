@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<HTML>
+<HEAD>
+    <TITLE>Essay</TITLE>
+    <META http-equiv="Content-Type" content="text/html; charset=gb2312">
+	<META name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scale=0"> 
+
+
+    <script language="javascript" src="./jquery.js"></script>
+	
+	<script language="javascript" src="./MyCookies.js"></script>
+	
+    
+<script language="javascript">
+    if (navigator.cookieEnabled){
+	   console.log("document.cookie:"+document.cookie);
+    }else{
+	   alert("cookieEnabled OFF");
+	}
+	
+	
+	var fname=getWindowLocationHrefParmsValue("fname");
+	MyCookies.Init({test1:fname,test2:"b",test3:"c"});
+
+	if(""===fname){
+		MyCookies.ExpireDays(1);
+	}
+	else{
+		MyCookies.ExpireDays(0);
+	}
+	
+
+function getWindowLocationHrefParmsValue(skey){
+	var curUrl=""+window.location.href;
+	//alert(curUrl);
+	var pattern="[?&]"+skey+"=([^&]*)"; 
+	var reg = new RegExp(pattern, "g")
+	var matchesArr=curUrl.match( reg );
+	if(matchesArr && matchesArr.length>0){
+		var strArr=matchesArr[0].split("=");
+		return strArr[1];
+	}
+	return "";
+}
+	
+	
+$(document).ready(function(){
+
+	
+    $("#testset").click(function(){
+		var v=$("#v").val();
+		console.log("test="+v);
+		MyCookies.Set("test",v);
+		MyCookies.Set("test2",v);
+		//test();
+	});
+    $("#testget").click(function(){
+		var v=MyCookies.Get("test");
+		var v3=MyCookies.Get("test3");
+		console.log("test="+v3);
+		MyCookies.Show();
+		//test();
+	});	
+    $("#Close").click(function(){
+		MyCookies.Show();
+		MyCookies.Close();
+		//test();
+	});	
+});
+</script>
+
+<input id="v" ></input>
+<button id="testset">Set</button>	
+
+<button id="testget">Get</button>	
+<button id="Close">Close</button>	
+
+    </BODY>
+
+
+</HTML>

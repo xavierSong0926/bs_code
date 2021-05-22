@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<HTML manifest___xxx="BiblePad-2015.appcache">
+<HEAD>
+    <TITLE>cc</TITLE>
+    <META http-equiv="Content-Type" content="text/html;" charset="UTF-8">
+	<META name="viewport" content="width=device-witdh, initial-scale=1, maximum-scale=1, user-scale=0">
+
+    <script language="javascript" src="../../../_js/jquery.min.js""></script>
+    
+
+
+    <script  language="javascript" src="../Pinyin_7kSimplified.js">
+    </script>
+    
+        
+    <script language="javascript" src="../Simplified_Traditionals.js">
+    </script>
+
+    <script language="javascript" src="../CharactersSet.js">
+    </script>
+
+
+
+<style type="text/css">
+
+    #txtar{
+        position:fixed;
+        top:0px;
+        left:300px;
+        height:200px;
+        width:300px;
+        background-color: #eeaaee;
+        font-size: 24px;
+
+    }
+</style>
+
+    <script language="javascript">
+
+$(document).ready(function(){
+    latex_test(CharacterSet_Traditiona_13709);
+    $(".zi").click(function(){
+        var zi=$(this).text();
+        var va=$("#txtar").val();
+        $("#txtar").val(va+zi);
+        g_inpstr="";
+        //console.log($(this).text());
+    });
+});
+
+
+//CharacterSet_Traditiona_13709
+//CharacterSet_Simplified_16166
+function latex_test(CharSets){
+
+    function getExistingSimplified(){
+        var arr=[];
+        $.each(Pinyin7kzi,function(py,zs){
+            for(var i=0;i<zs.length; i++){
+                if(arr.indexOf(zs[i])<0){
+                    arr.push(zs[i]);
+                }
+            }
+        });
+        return arr;
+    }
+    var ExistingArr=getExistingSimplified();
+
+    var bug="CharSets.<br><br>";
+
+    bug+="<br><br>=========<br><br>";
+    bug+="Total Uniq Characters size:"+CharSets.length+":<br><br>";
+    var lidx=0;
+    for(var i=0; i<CharSets.length; i++){
+        if(ExistingArr.indexOf(CharSets[i])>=0){
+            continue;
+        }      
+        bug+= "<a class='zi'>"+CharSets[i]+"</a> - ";
+        lidx++;
+        if((lidx)%10==0){
+            
+            var si=""+lidx;
+            while (si.length<5)si=" "+si;  
+
+            bug+=si+" <br><br>";
+        };
+    };
+
+
+    $("#out").html(bug);    
+}
+
+
+
+
+    </script>
+</HEAD>
+<BODY>
+
+<textarea id="txtar"></textarea>
+<button id="Simplifyer" onclick="Simplifyer()">get traditionals unconvertable to the simplied.</button>
+
+<div id="out">-</div>
+</BODY>
+</HTML>

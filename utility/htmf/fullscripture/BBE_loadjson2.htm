@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<HTML manifest___xxx="BiblePad-2015.appcache">
+<HEAD>
+    <TITLE>cuvs</TITLE>
+    <META http-equiv="Content-Type" content="text/html;" charset="UTF-8">
+	<META name="viewport" content="width=device-witdh, initial-scale=1, maximum-scale=1, user-scale=0">
+
+    <basexx href="https://wdingbox.github.io/ham12/">
+
+
+    <script>    
+    var gStartDate = new Date();
+    console.log(  gStartDate.toString() +" ------ start load");//
+    </script>   
+
+
+
+    <script language="javascript" src="../../htmjs/jq/jquery.js">
+    </script>
+
+
+    <script language="javascript" src="https://wdingbox.github.io/ham12/jsdb/jsBibleObj/BBE.json.js"></script>
+    
+
+    
+
+  
+     
+    </script>
+    
+    
+
+
+
+
+
+    
+    <script>    
+    console.log(  (new Date()).toString() );//
+    </script>
+<style>
+body {
+    background-color: black;
+    color: white;
+    width:100%;
+	font-size: 100%;
+	
+    padding:0px 0px 0px 0px;
+    margin: 0px 0px 0px 0px;	
+
+    font-family: 'Times New Roman';
+}
+</style>
+
+
+
+    
+<script language="javascript">
+
+$(document).ready(function(){
+
+var a={};
+a._1Jn={_1qw:"1a",2:"2b"}
+console.log(a);
+
+
+var idx=0;
+
+var trs="";
+$.each(BBE,function(volname,ChpObj){
+	$.each(ChpObj,function(chpKey,VerseObj){
+		$.each(VerseObj,function(versKey,Txt){
+			var vcv=volname+""+chpKey+":"+versKey;
+			trs+="<tr><td>"+(++idx)+"</td>";
+			trs+="<td>"+vcv+"</td><td>"+Txt+"</td>";
+			trs+="</tr>";
+		});
+	});
+
+
+});
+$("#vbibtxt").html(trs);
+
+
+});/////////////
+
+</script>
+
+</HEAD>
+<BODY xxxonload="body_onload();">
+
+<textarea id="out"></textarea>
+
+<table  border="1">
+	<tbody id='vbibtxt'></tbody>
+        
+ </table>
+
+
+
+</BODY>
+</HTML>
+

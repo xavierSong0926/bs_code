@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<HTML manifest___xxx="BiblePad-2015.appcache">
+<HEAD>
+    <TITLE>ci</TITLE>
+    <META http-equiv="Content-Type" content="text/html;" charset="UTF-8">
+	<META name="viewport" content="width=device-witdh, initial-scale=1, maximum-scale=1, user-scale=0">
+
+    <script language="javascript" src="https://wdingbox.github.io/ham12/jq/jquery-2_1_3.min.js"></script>
+    
+    <script  language="javascript" src="../Pinyin_7kSimplified.js">
+    </script>
+    
+        
+    <script language="javascript" src="../Simplified_Traditionals.js">
+    </script>
+
+
+<style type="text/css">
+
+    #txtar{
+        position:fixed;
+        top:0px;
+        left:250px;
+        height:200px;
+        width:300px;
+        background-color: #eeaaee;
+        font-size: 24px;
+
+    }
+    #inp{
+        position:fixed;
+        top:210px;
+        left:250Px;
+        background-color: #eeee00;
+        font-size: 24px;
+        border: none;
+    }
+    #mainmenu{
+        position:fixed;
+        width:300px;
+        top:250px;
+        left:250px;
+    }
+
+    .pinyin{
+        background-color: #dddd99;
+
+    }
+    .hilite{
+        background-color: #ff0000;
+    }
+</style>
+
+    <script language="javascript">
+var g_inpstr="", g_scrollIntoViewDir=true;//up, false:bottom.
+$(document).ready(function(){
+
+    var pyarr=makeTable();
+    function GetFirstAvailablePinyin(py, pinyinArr){
+        for(var i=1; i<=5; i++){
+            var pyid=py+i;
+            if(pinyinArr.indexOf(pyid)>=0){
+                return pyid;
+            }
+        }
+        return "";//alert("fatal error! no such pinyin:"+py);
+    }
+    $("#listallp").click(function(){
+        var s="\n", syllables={};
+        $.each(pyarr,function(i,k){
+            s+=""+i+":"+k+"\n";
+
+            syl=k.substr(0, k.length-1);
+            syllables[syl]=0;
+        });
+        s+="\n====\n"+JSON.stringify(syllables,null,4);
+        s+="tot="+Object.keys(syllables).length;
+        $("#txtar").val($("#txtar").val()+s);
+    });
+
+
+    $("body").keyup(function(e){
+        var c = (e.which);
+        console.log(c);
+
+        if( (c>=65 && c<=90) || 8===c ){//letter or back
+            if(8===c){//backspace
+                g_inpstr=g_inpstr.substr(0,g_inpstr.length-1);
+            }
+            else{
+                g_inpstr+=String.fromCharCode(c);
+            }
+            g_inpstr=g_inpstr.toLowerCase();
+            $("#inp").val(g_inpstr);
+            var sid=GetFirstAvailablePinyin(g_inpstr,pyarr);
+            $("#"+sid).each(function(){
+                $(this)[0].scrollIntoView();
+                $(".hilite").removeClass("hilite");
+                $(this).parentsUntil("tbody").next().find(".zi:eq(0)").addClass("hilite");
+            });           
+        }
+        else{
+            switch(c){
+            case 186://prev[;]
+            var hi=$(".hilite");
+            var prev=$(hi).prev(".zi");
+            if($(prev).length>0) {
+                $(prev).addClass("hilite");
+                $(hi).removeClass("hilite");
+            }
+            return false;
+
+            case 222://next[,]
+            var hi=$(".hilite");
+            var next=$(hi).next(".zi");
+            if(next.length>0){
+                $(next).addClass("hilite");
+                $(hi).removeClass("hilite");
+            }
+            return false;
+
+            case 190://donw [.]
+            {
+                var hi=$(".hilite");
+                if(!hi.length) return;
+                var nx=$(hi).parentsUntil("tbody").nextUntil(".rz");//exclusively.
+                if(nx.length>0){
+                    nx=$(nx).last().next();
+                }else{
+                    nx=$(hi).parentsUntil("tbody").next();
+                }
+                $(".zi").removeClass("hilite");
+                $(nx).find(".zi:eq(0)").addClass("hilite");  
+                g_scrollIntoViewDir=true;
+            }
+            return false;
+
+            case 191://up [/]
+            {
+                var hi=$(".hilite");
+                if(!hi.length) return;
+                var nx=$(hi).parentsUntil("tbody").prevUntil(".rz");//exclusively.
+                if(nx.length>0){
+                    nx=$(nx).last().prev();//must take the last one.
+                }else{
+                    nx=$(hi).parentsUntil("tbody").prev();
+                }
+                $(".zi").removeClass("hilite");
+                $(nx).find(".zi:eq(0)").addClass("hilite");//[0].scrollIntoView(false);  
+                g_scrollIntoViewDir=false;
+            }
+            return false;
+
+            case 16://shift to show
+                $(".hilite").each(function(){
+                    $(this)[0].scrollIntoView(g_scrollIntoViewDir);
+                })
+            return;
+
+            case 32://space to clear
+                g_inpstr="";
+                $("#inp").val("");
+            return;
+
+            case 13://enter to add.
+                $(".hilite").each(function(){
+                    var t=$(this).text();
+                    $("#txtar").val($("#txtar").val()+t);
+                    g_inpstr="";
+                    $("#inp").val("");
+                })
+            return;
+            };////switch
+        }//if(c)
+    });
+
+    $(".zi").click(function(){
+        var zi=$(this).text();
+        var va=$("#txtar").val();
+        $("#txtar").val(va+zi);
+        g_inpstr="";
+        //console.log($(this).text());
+    });
+
+});
+
+function makeTable(){
+    var tab="<table border='1'>";
+    var idx=0;
+    var pinyinArr=[];
+    $.each(Pinyin7kzi,function(k,chary){
+        pinyinArr.push(k);
+      tab+="<tr><td colspan='10' class='pinyin' id='"+k+"'>"+k+"</td></tr><tr class='rz'>";
+      for(var i=0;i<chary.length;i++){
+        if(chary[i]==="鵀") continue;//does not support latex gkai.
+    
+        idx++;
+        tab+="<td class='zi'>"+chary[i]+"</td>";
+        if((1+i)%10===0){
+            tab+="</tr><tr class='rz'>";
+            continue;
+        } 
+      };//for
+      tab+="</tr>";
+
+    });
+    $("#out").html(tab);
+    return pinyinArr;
+}
+
+
+    </script>
+</HEAD>
+<BODY>
+
+<textarea id="txtar"></textarea>
+<input id="inp" readonly='1'></input>
+
+<div id="mainmenu">
+<a href="ChineseSimplifyer.html" target="_blank">ChineseSimplifyer</a><br>
+[;] move to left; <br>['] move to right; <br>[.] move to down; <br>[/] move to up; <br>[shift] scrollintoview<br>
+
+<button id='listallp'>allpinyin</button>
+</div>
+<div id="out">-</div>
+</BODY>
+</HTML>

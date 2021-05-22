@@ -1,0 +1,85 @@
+<HTML>
+
+<HEAD>
+    <TITLE>log</TITLE>
+    <base target="_blank" />
+    <META http-equiv="Content-Type" content="text/html;" charset="UTF-8">
+    </META>
+    <META name="viewport" content="width=device-witdh, initial-scale=1, maximum-scale=1, user-scale=0">
+    </META>
+
+
+    <link rel="stylesheet" href="">
+    </link>
+
+
+
+    <script src="https://wdingbox.github.io/ham12/jq/jquery-2_1_3.min.js"></script>
+    <script language="javascript" src="../../../htmjs/jq/table_Indexer.js"></script>
+    <script language="javascript" src="../../../htmjs/jq/jquery.tablesorter.js"></script>
+
+    <script language="javascript" src="./access_log.json.js"></script>
+
+    <style>
+        #contrpanel{
+            position: fixed;
+            top:0px;
+        }
+        #holder{
+            margin-top: 100px;
+        }
+        .hili3{
+            background-color: aqua;
+        }
+    </style>
+
+    <script>
+        $(function () {
+            gen_table();
+            //
+        });
+        function gen_table(){
+            var s="<table id='tb' border=1>";
+            s+="<thead><th>#</th><th>ip</th><th>datetime</th><th>desc</th><th>d1</th><th>d2</th></thead>"
+            s+="<tbody>";
+            $.each(access_log,function(i,obj){
+                s+=`<tr><td>${i}</td><td>${obj.ip}</td><td>${obj.dtm}</td><td>${obj.req}</td><td>${obj.d1}</td><td>${obj.d2}</td></tr>`;
+            });
+            s+="</tbody><table>";
+
+            $("#holder").html(s);
+
+            table_sort("#tb");
+        }
+
+        function SameSizeDiffNames() {
+            var buf = { sizPre: 0, numOfGroup: 0 };
+            $("table tbody tr").each(function () {
+                var sizCur = parseInt($(this).find("td:eq(1)").text());
+                var sizNex = parseInt($(this).next().find("td:eq(1)").text());
+                if (sizCur != buf.sizPre) {
+                    buf.sizPre = sizCur;
+                    
+                    if (sizCur != sizNex) {
+                        $(this).remove();
+                    }else{
+                        $(this).addClass("hili3");
+                        buf.numOfGroup++;
+                    }
+                }
+            });
+            $("#txa").next().text(`numOfGrp=${buf.numOfGroup}`)
+        }
+    </script>
+</HEAD>
+
+<body>
+    <div id="contrpanel">
+        <button id="indxer">idxer</button><button onclick="SameSizeDiffNames();">same</button>
+    </div>
+    <div id="holder">
+
+    </div>
+</body>
+
+</HTML>

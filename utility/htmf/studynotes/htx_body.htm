@@ -1,0 +1,192 @@
+<style>
+
+
+
+</style>
+
+<div id="menuContainer">
+    <div id="BibInputMenuHolder">
+        <div id="ID_BibleInputMenuContainer">
+            <table border="1" id="Tab_BibleSingleInputKey">
+                <caption id="BibleInputCap">Bible Input Keys</caption>
+                <thead id=""></thead>
+                <tbody id=""></tbody>
+            </table>
+            <table id="Tab_bkn" border="1" style="float:left;">
+                <caption class='bbbCap' id='bkn_cap' title='Biblical Book Name'>BKN</caption>
+                <thead id=""></thead>
+                <tbody id=''>
+                    <tr>
+                        <td></td>
+                    </tr>
+                </tbody>
+            </table>
+            <table border="1" style="float:left;" id="Tab_cat">
+                <caption class='' id='' title='Volumns Catagory'>Cat</caption>
+                <thead id=""></thead>
+                <tbody id=''>
+                    <tr>
+                        <td></td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <table id="Tab_vol" border="1" style="float:left;">
+                <caption class='vcvCap' id='vol_capx' title='volunm name'>V<sub id="vol_cap_sub">0</sub></caption>
+                <thead id=""></thead>
+                <tbody id=''>
+
+                </tbody>
+            </table>
+
+            <table id='Tab_chp' border="1" style="float:;">
+                <caption>
+                    <a onclick='onclick_NextChp(-1)'>chp-</a>
+                    <button class='digiCap' id='chp_cap' onclick='onclick_NextChp(0)' title='chapter'>*</button>
+                    <a onclick='onclick_NextChp(+1)'> + &nbsp; </a>
+                </caption>
+                <thead id=""></thead>
+                <tbody id=''>
+                    <tr>
+                        <td></td>
+                    </tr>
+                </tbody>
+            </table>
+            <a style="float:;"></a>
+
+            <table id="Tab_vrs" border="1" style="float;">
+                <caption>vrs <button class='digiCap' id='vrs_cap' title='verse'>*</button>
+                    <button id="loadVolChpVrs" onclick='onclick_load_BknVolChpVrs();' title='Load Bible'>.</button>
+                </caption>
+                <thead id=""></thead>
+                <tbody id="">
+                    <tr>
+                        <td></td>
+                    </tr>
+                </tbody>
+            </table>
+
+
+
+
+        </div>
+        <div id="ID_Explore">
+
+            <input id="sinput" cols='50' onclick="onclick_load_search_string_history();"></input><br>
+
+            <button onclick="onclick_BibleObj_search_str();" title="search on svr">search</button>
+            <button onclick="onclick_regex_match_next(-1);" title="find on page">Prev</button>
+            <button onclick="onclick_regex_match_next(1);" title="find on page">Next</button>
+
+            <button id="loadhistory" onclick='onclick_load_vcv_history(1);' title='load history sort by time'>h</button>
+            <button id="sort_history_by_vcvID" onclick='onclick_load_vcv_history(0);'
+                title='load history sort by str'>^</button>
+            <button onclick="$('#searchResult').val('');" title='clearout txt'></button>
+            <br>
+            <textarea id="searchResult" cols="50" value='search results...' title='load search history.'>
+                    </textarea><br>
+
+
+
+            <table id="Tab_regex_history_lst" border='1' style="float:left;">
+                <tbody>
+                    <tr>
+                        <td>
+                            click search results<br>
+                            to show history serch<br>
+
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <table id="Tab_load_vcv_history" border="1" style="float:left;">
+                <caption><span id='loads_buttons'>
+                        <span>
+                </caption>
+                <thead></thead>
+                <tbody>
+                    <tr>
+                        <td>
+                            Pleas click H button <br>for History.<br>
+                            <br>
+                            Pleas click ^ button <br>sort by str.<br>
+
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+
+        </div>
+    </div>
+    <div id="others">
+        <table id='tmpsel2ref' border="1" align="left">
+            <thead></thead>
+            <tbody>
+            </tbody>
+        </table>
+
+        <table id='refslist' border="1" align="left">
+            <!--thead><th>#</th><th>vcv</th><th>refs</th></thead--->
+            <tbody>
+                <tr>
+                    <td>
+                        <a id="blb" ref="https://www.blueletterbible.org/kjv/">blueletter</a>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <a id="h_g" ref="../../../../../../../___bigdata/unzipped/rel/ham12/hgsbible/hgb/"
+                            title='Hebrew_Greek'>h_g</a>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <a id="gtw" ref="https://www.biblegateway.com/passage/?search="
+                            title='biblegateway.com'>gateway</a></caption>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <a id="studylight" ref="https://www.studylight.org/commentary/"
+                            title='studylight.org'>studylight</a></caption>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <a id="ccel_org" ref="http://www.ccel.org/study/" title='ChristianClassicEtherealLib'>ccel</a>
+                        </caption>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+        <div id="othersx">
+            <button id="oBible_indxer">indxer</button>
+            <button id="Compare_vcv">Compare_vcv</button>
+            <a href='../index.htm'>ref</a>
+
+            <table border="1">
+                <thead>
+                    <tr>
+                        <td>#</td>
+                        <td>Vol</td>
+                        <td>Chp</td>
+                        <td>Ver</td>
+                    </tr>
+                </thead>
+                <tbody id="StructAna"></tbody>
+            </table>
+            <input id="CopyTextToClipboard" title="CopyTextToClipboard" /><br>
+            <button onclick="txFontsizeIncrs(10);" title='font-size plus'>f+</button><button
+                onclick="txFontsizeIncrs(-10);">f-</button>
+        </div>
+
+    </div>
+
+
+
+</div>
+<hr />
+<button id="menuToggler" onclick="$('#menuContainer').slideToggle();">-</button>
+<div id='oBible'>----</div>

@@ -1,0 +1,184 @@
+<html>
+
+<head>
+    <title>~</title>
+    <META http-equiv="Content-Type" content="text/html;" charset="UTF-8">
+    <base target="_blank" />
+    <META name="viewport" content="width=device-witdh, initial-scale=1, maximum-scale=1, user-scale=0">
+
+    <!-------------------------------------------->
+    <!---- Insert this before scripts import; then restor back later -->
+    <script>//if (typeof module === 'object') { window.module = module; module = undefined; }</script>
+
+    <!-------------- jq --------------------->
+    <script ____src="./doc_files/jquery-2_1_3.min.js"></script>
+    <script src="https://wdingbox.github.io/ham12/jq/jquery-2_1_3.min.js"></script>
+    <script xxxxxxxsrc="http://localhost:7878/assets/ckeditor/adapters/jq/jquery-2_1_3.min.js"
+        note="selfseversite"></script>
+    <!-------------- ckeditor only--------------------->
+    <script src="../../../assets/ckeditor/ckeditor.js"></script>
+    <script src="../../../assets/ckeditor/samples/old/sample.js"></script>
+    <link href="../../../assets/ckeditor/samples/old/sample.css" rel="stylesheet">
+
+
+    <script ___src="http://localhost:7878/assets/ckeditor/ckeditor.js" note="selfseversite"></script>
+    <script ___src="http://localhost:7878/assets/ckeditor/samples/old/sample.js"></script>
+    <!-------------------------------------------->
+    <script language="javascript" src="./BibleStudyNotePad.js?v=20.12.4"></script>
+    <!----- Insert this line after script imports -->
+    <script>//if (window.module) module = window.module;</script>
+    <!-------------------------------------------->
+    <style>
+        .editor_state_max {
+            z-index: 999999;
+            position: absolute;
+            right: 20px;
+            background-color: antiquewhite;
+        }
+
+        #input,
+        #output {
+            background-color: black;
+            color: white;
+            overflow: auto
+        }
+
+
+        #idbtn_exec_cmd {
+            background-color: grey;
+        }
+
+        .white_space_nowrap {
+            white-space: nowrap;
+        }
+
+        .editorinfo {
+            background-color: lightblue;
+            display: inline-block;
+            white-space: nowrap;
+            width: 100%;
+        }
+
+        .minitxt {
+            float: left;
+            white-space: nowrap;
+        }
+
+        .minicon {
+            float: right;
+
+            white-space: nowrap;
+        }
+
+        .scorenum {
+            float: right;
+            white-space: nowrap;
+        }
+    </style>
+</head>
+
+<body onbeforeunload="return 'leave?';">
+
+
+
+
+
+
+    <h>shareID: </h><input id="Search_repodesc" placeholder="Fellowship Group ID"></input> <button id="runCmd">Search</button>
+    <div id="account_history"></div>
+
+    <table border="1">
+        <caption id="scap"></caption>
+        <tbody id="allusrs">
+
+        </tbody>
+    </table>
+
+
+
+
+
+    <script>
+
+
+        function show_loaded_allusrs_bcv(ret) {
+
+            var good = `<div class='minicon'><svg viewBox="0 0 24 24" preserveAspectRatio="xMidYMid meet" focusable="false" class="style-scope yt-icon" style="pointer-events: none; display: block; width: 12px; height: 12px;"><g class="style-scope yt-icon"><path d="M1 21h4V9H1v12zm22-11c0-1.1-.9-2-2-2h-6.31l.95-4.57.03-.32c0-.41-.17-.79-.44-1.06L14.17 1 7.59 7.59C7.22 7.95 7 8.45 7 9v10c0 1.1.9 2 2 2h9c.83 0 1.54-.5 1.84-1.22l3.02-7.05c.09-.23.14-.47.14-.73v-1.91l-.01-.01L23 10z" class="style-scope yt-icon"></path></g></svg></div>`
+            var bad = `<div class='minicon'><svg viewBox="0 0 24 24" preserveAspectRatio="xMidYMid meet" focusable="false" class="style-scope yt-icon" style="pointer-events: none; display: block; width: 12px; height: 12px;"><g class="style-scope yt-icon"><path d="M15 3H6c-.83 0-1.54.5-1.84 1.22l-3.02 7.05c-.09.23-.14.47-.14.73v1.91l.01.01L1 14c0 1.1.9 2 2 2h6.31l-.95 4.57-.03.32c0 .41.17.79.44 1.06L9.83 23l6.59-6.59c.36-.36.58-.86.58-1.41V5c0-1.1-.9-2-2-2zm4 0v12h4V3h-4z" class="style-scope yt-icon"></path></g></svg></div>`
+
+            var good = "+"
+            var bad = "-"
+            var goodnum = `<div class='scorenum'>0</div>`
+            var badnum = `<div class='scorenum'>0</div>`
+            var myNotes = localStorage.getItem("myNote")
+            var pster = JSON.parse(myNotes)
+            var inpOj = pster.inp.par.inpObj
+            var scap = Uti.parse_bcv(inpOj)
+            $("#scap").text(scap)
+            $("title").text("*" + scap)
+
+            console.log("load_allusrs_bcv", pster)
+            // Jsonpster.inp = JSON.parse(document.m_myNotes).inp
+            // Jsonpster.inp.SSID = MyStorage.SSID() //first time for new page to load AjxPOST
+            // Jsonpster.api = RestApi.ApiBibleObj_read_crossnetwork_BkcChpVrs_txt.str
+            // console.log("inp:", pster.inp)
+            // Jsonpster.RunAjaxPost(function (ret) {
+            console.log("ret", ret)
+            var res = ret.out.data
+            $("#repodesc").text(ret.out.repodesc)
+            var trs = ""
+            if (res) {
+                Object.keys(res).forEach(function (key) {
+                    var txt = res[key]
+                    console.log("key", key)
+                    console.log("txt", txt)
+                    var usrname = `<div class='minitxt'>${key}</div>`
+                    trs += `<tr><td><div class='editorinfo'>${usrname}${badnum}${bad}${goodnum}${good}</div><div>${txt}</div></td></tr>`
+                })
+
+            } else {
+                alert("sharing has issues.")
+            }
+            $("#allusrs").html(trs)
+            //})
+        }
+    </script>
+</body>
+
+</html>
+<script>
+    if ("undefined" === typeof localStorage) {
+        alert("localStorage not supported")
+    }
+</script>
+<script>
+    $(function () {
+        //init_CKEditor()
+        //init_ui_cmd()
+        var search_reposdesc = MyStorage.MostRecentAryInStore("Search_repodesc")
+        $("#Search_repodesc").on("focus", function () {
+            search_reposdesc.gen_history_table("#account_history", function(s){
+                $("#Search_repodesc").val(s)
+            })
+        })
+
+        $("#runCmd").on("click", function () {
+            search_reposdesc.addonTop($("#Search_repodesc").val())
+            Uti.Jsonpster_crossloader(3, function () {
+                Uti.after_page_transit_load_allusrs_bcv(function (ret) {
+                    show_loaded_allusrs_bcv(ret)
+                })
+            })
+        })
+
+
+        Uti.Jsonpster_crossloader(2, function () {
+            Uti.after_page_transit_load_allusrs_bcv(function (ret) {
+                show_loaded_allusrs_bcv(ret)
+            })
+        })
+
+
+
+    })
+</script>

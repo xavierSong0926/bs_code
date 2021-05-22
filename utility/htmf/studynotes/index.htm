@@ -1,0 +1,122 @@
+<HTML manifest___xxx="BiblePad-2015.appcache">
+
+<HEAD>
+    <TITLE>Bindx</TITLE>
+    <base target="_blank" />
+    <META http-equiv="Content-Type" content="text/html;" charset="UTF-8">
+    <META name="viewport" content="width=device-witdh, initial-scale=1, maximum-scale=1, user-scale=0">
+
+
+    <link rel="stylesheet" xxhref="./BibleInputMethod.css?v=2020dec2a">
+    </link>
+
+
+
+
+
+    <script xxxxxxxxsrc="https://wdingbox.github.io/ham12/jq/jquery-2_1_3.min.js"></script>
+    <script language="javascript" src="../../htmjs/jq/jquery.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <!---------->
+    <script language="javascript" src="../../htmjs/jq/table_Indexer.js"></script>
+    <script language="javascript" src="../../htmjs/jq/jquery.tablesorter.js"></script>
+    <!--------->
+    <script language="javascript" xxxxsrc="../../../jsdb/jsBibleStruct/BBE.json.js"></script>
+    <script language="javascript" xxxxsrc="../../../jsdb/jsBibleStruct/CUVS.json.js"></script>
+    <script language="javascript" xxxxsrc="../../../jsdb/jsBibleStruct/CUVsen.json.js"></script>
+    <script language="javascript" xxxxsrc="../../../jsdb/jsBibleStruct/H_G.json.js"></script>
+    <script language="javascript" xxxxsrc="../../../jsdb/jsBibleStruct/KJV.json.js"></script>
+    <script language="javascript" xxxxsrc="../../../jsdb/jsBibleStruct/NIV.json.js"></script>
+    <script language="javascript" xxxxsrc="../../../jsdb/jsBibleStruct/CUVpy.json.js"></script>
+    <script language="javascript" xxxxsrc="../../../jsdb/jsBibleStruct/STUS.json.js"></script>
+    <script language="javascript" xxxxsrc="../../../jsdb/jsBibleStruct/WLVS.json.js"></script>
+
+    <script language="javascript" src="../../../../bible_obj_lib/jsdb/jsBibleStruct/All_Max_struct_json.js"></script>
+    <script language="javascript"
+        xxxxxsrc="https://wdingbox.github.io/bible_obj_lib/jsdb/jsBibleStruct/All_Max_struct_json.js"></script>
+
+    <!---------->
+    <script language="javascript" src="./BibleStudyNotePad.js"></script>
+    <!------ api ---->
+
+
+
+
+
+
+    <style>
+    </style>
+
+
+
+    <script language="javascript">
+        function gen_cross_svr_link(svrIP) {
+            var ss = `<a>${window.location.href}</a><br><br>`;
+            ss+="<table border='1'><tbody><thead><tr><th>Host</th></tr></thead>";
+            var ip_home = {
+                "104.188.182.128": "http://104.188.182.128",
+                "wdingbox.github.io": `https://wdingbox.github.io/ham12`
+            }
+
+            ip_home[svrIP] = `http://${svrIP}`
+
+
+            Object.keys(ip_home).forEach(function (ip) {
+                var home = `<a class="openew">${ip_home[ip]}</a>`
+                var serv = `<a target='_blank' href='./BibleStudyNotePad.htm?ip=${ip}'>${ip}</a>`
+                var acct = `<a target='_blank' href='./myAccount.htm?ip=${ip}'>${ip}</a>`
+                ss += `<tr><td>${home}</td></tr>`
+            })
+            ss + "</tbody></table>"
+            $("body").append(ss).find(".openew").bind("click", function () {
+                var url = $(this).text()
+                window.open(url, "_blank")
+            })
+        }
+
+
+        $(document).ready(function () {
+            gen_cross_svr_link("52.87.154.78")
+
+        });/////////////
+
+    </script>
+
+</HEAD>
+
+<BODY xonbeforeunload="return 'leave?';">
+    Application Features:
+    <ol>
+        <li>Quick positioning of any verse (QPV).</li>
+        <li>Take a note of verse.</li>
+        <li>Search any word in verse.</li>
+        <li>Link external resouces for verse.</li>
+    </ol>
+    Design Features:
+    <ol>
+        <li>The Bible oriented app tool -- the walking stick ( (Hebrew: מַטֶּה‎ matteh, translated "rod" in the King James Bible) of Moses.</li>
+        <li>No login is requred</li>
+        <li>No installation is required.</li>
+        <li>Users own their data (UOD).</li>
+        <li>Platform for sharing data.</li>
+    </ol>
+  
+   
+
+    <p>http://localhost:7778/</p>
+    <p>https://localhost:7775/</p>
+    <p>http://localhost/weidroot/weidroot_2017-01-06/app/github/wdingbox/ham12/utility/htmf/studynotes/index.htm</p>
+    <p> file:///Users/weiding/Sites/weidroot/weidroot_2017-01-06/app/github/wdingbox/ham12/utility/htmf/studynotes/index.htm
+    </p>
+
+
+
+    <a href="./BibleStudyNotePad.htm">BibleStudyNotePad</a><br>
+    <a href="./myAccount.htm">myAccount</a><br>
+    <a href="./tester_regexp.htm">tester_regexp</a><br>
+    <a href="#bcv=gen1:1">test!</a><br>
+
+  
+</BODY>
+
+</HTML>

@@ -1,0 +1,25 @@
+var demut_likeness_notes=
+{
+    "Gen 1:26 ": "0",
+    "Gen 5:1 ": "0",
+    "Gen 5:3 ": "begat a son.",
+    "2Ki 16:10 ": "simulated.",
+    "2Ch 4:3 ": "similitude oxen idol.",
+    "Psa 58:4 ": "like",
+    "Isa 13:4 ": "like as",
+    "Isa 40:18 ": "like as",
+    "Eze 1:5 ": "like as",
+    "Eze 1:10 ": "like as",
+    "Eze 1:13 ": "like as",
+    "Eze 1:16 ": "like as",
+    "Eze 1:22 ": "like as",
+    "Eze 1:26 ": "like as",
+    "Eze 1:28 ": "like as",
+    "Eze 8:2 ": "like as",
+    "Eze 10:1 ": "like as",
+    "Eze 10:10 ": "like as",
+    "Eze 10:21 ": "like as",
+    "Eze 10:22 ": "like as",
+    "Eze 23:15 ": "manner",
+    "Dan 10:16 ": "like as"
+}

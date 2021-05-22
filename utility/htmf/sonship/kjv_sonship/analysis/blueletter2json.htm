@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<HTML manifest___xxx="BiblePad-2015.appcache">
+
+<HEAD>
+    <TITLE>Bii</TITLE>
+    <base target="_blank" />
+    <META http-equiv="Content-Type" content="text/html;" charset="UTF-8">
+    <META name="viewport" content="width=device-witdh, initial-scale=1, maximum-scale=1, user-scale=0">
+
+
+    <link rel="stylesheet" href="./sonship.css">
+    </link>
+
+
+
+    <script src="https://wdingbox.github.io/ham12/jq/jquery-2_1_3.min.js"></script>
+    <script language="javascript" src="../../../../htmjs/jq/table_Indexer.js"></script>
+    <script language="javascript" src="../../../../htmjs/jq/jquery.tablesorter.js"></script>
+    <!--------->
+    <script language="javascript" src="../json/HebrewSonship.json.js"></script>
+    <script language="javascript" src="../json/GreekSonship.json.js"></script>
+    <script language="javascript" src="./sonship.jq.js"></script>
+
+    <style>
+        .hili {
+            background-color: cornflowerblue;
+        }
+    </style>
+
+
+
+    <script language="javascript">
+        $(function () {
+            var sa = "";
+            $("a").each(function () {
+                var tx = $(this).attr("href");
+                $(this).text(tx);
+                sa += `<a class='filename' title="filename">${tx}</a><br/>`;
+
+            });
+            $("#items").append(sa).find("a").bind("click", function () {
+                $(".hili").removeClass("hili");
+                $(this).toggleClass("hili");
+            });
+
+            $(".filename").bind("click", function () {
+                var filename = $(this).text();
+                gen_json_from_htmfile(filename);
+            });
+
+        });/////////////
+        var g_bverObj = {};
+        var g_noteObj = {};
+
+
+        function get_vname(filename) {
+            var li = filename.lastIndexOf("/");
+            var str = filename.substr(1 + li);
+            var arr = str.split(".");
+            return arr[0];
+        }
+
+        function gen_json_from_htmfile(filename) {
+            ///var url = "../blueletter/demut_likeness.htm";
+            g_bverObj = {};
+
+            jQuery.ajax({
+                url: filename,
+                success: function (result) {
+                    console.log(result);
+                    $(result).find(".bVerse").each(function () {
+                        var vs = $(this).find(".bVerse__col-two").text().trim();
+                        var tx = $(this).find(".bVerse__col-three").text().trim();
+
+                        var idx = tx.indexOf("-");
+                        vs = tx.substr(0, idx);
+                        tx = tx.substr(1 + idx);
+                        tx = tx.trim();
+
+                        tx = tx.replace(/[\\][n]/g, " ");
+                        tx = tx.replace(/[\n|\r|\t]+/g, " ");
+                        //tx = tx.replace(/[\s]{2,}/g,"  ");
+
+                        console.log(vs, tx);
+                        g_bverObj[vs] = tx;
+                    });
+                },
+                async: false
+            });
+
+            var ss = "var " + get_vname(filename) + "=\n" + JSON.stringify(g_bverObj, null, 4);
+            ss += "\n"
+            $("#out").val(ss);
+
+
+
+            
+
+        };
+
+        function get_json_notes() {
+            var fnam = $(".hili").text();
+
+            var obj = {};
+            $(".notes").each(function () {
+                var itm = $(this).attr("title");
+                obj[itm] = $(this).text().trim();
+            });
+            $("#out").val("var " + get_vname(fnam) + "_notes=\n" + JSON.stringify(obj, null, 4));
+        }
+
+        function gen_table_fr_obj(bverObj) {
+            var filename=$(".hili").text();
+            var filename2 = filename.replace(".htm", "_notes.json.js");
+            g_noteObj={};
+            jQuery.ajax({
+                url: filename2,
+                success: function (result) {
+                    console.log(result);
+                    var ide = result.indexOf("=");
+                    var str = result.substr(1 + ide);
+                    g_noteObj = JSON.parse(str);
+                },
+                dataType: "text",
+                async: false
+            });
+
+
+            var frqObj = [{}, {}, {}];
+            var arr = Object.keys(bverObj);
+            var st = "<table border='1'>";
+            st += "<thead><tr><th>#</th><th>vrs</th><th>txt</th><th>usg</th><th>-</th><th>-</th><th>-</th></tr></thead><tbody>"
+            for (var i = 0; i < arr.length; i++) {
+                var key = arr[i];
+                var vrs = bverObj[key];
+                var num = g_noteObj[key];
+                var pat1 = "";
+                var pat2 = "";
+                var pat3 = "";
+                st += `<tr><td>${i}</td><td>${key}</td><td>${vrs}</td><td class='notes' title='${key}' contenteditable>${num}</td><td contenteditable>${pat1}</td><td contenteditable>${pat2}</td><td contenteditable>${pat3}</td></tr>`;
+            }
+            st += "</tbody></table>";
+            $("#holder").html(st);
+
+
+            for (var i = 0; i < frqObj.length; i++) {
+                var sortedObj = sortObjVal(frqObj[i]);
+                frqObj[i] = sortedObj;
+            }
+            $("#out").val(JSON.stringify(frqObj, null, 4));
+
+            table_sort();
+        }
+
+    </script>
+
+</HEAD>
+
+<BODY xonbeforeunload="return 'leave?';">
+    <div id="ctrl">
+        <button id="indxer">indxer</button>
+        <textarea id='out'></textarea>
+        <button onclick="gen_table_fr_obj(g_bverObj,g_noteObj);">gen_tab</button>
+        <button onclick="get_json_notes();">gen_notes</button>
+
+    </div>
+    <p>...
+    </p>
+    <p>...
+    </p>
+    <p>...
+    </p>
+    <p>...
+    </p>
+
+    <br /><a href="../blueletter/demut_likeness.htm">demut</a>
+    <br /><a href="../blueletter/tselem_image.htm">demut</a>
+    <br /><a href="../blueletter/demut_likeness.htm">demut</a>
+    <br /><a href="../blueletter/demut_likeness.htm">demut</a>
+    <br /><a href="../blueletter/demut_likeness.htm">demut</a>
+    <hr />
+
+    <div id="items">click to generate json from file:<br></div>
+
+    <div id="holder">-</div>
+</BODY>
+
+</HTML>
+<script type="text/javascript">
+
+</script>

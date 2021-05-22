@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<!--
+Copyright (c) 2003-2020, CKSource - Frederico Knabben. All rights reserved.
+For licensing, see LICENSE.md or https://ckeditor.com/legal/ckeditor-oss-license
+-->
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <title>Full Page Onsite HTML Visual Editing</title>
+
+    <meta name="ckeditor-sample-required-plugins" content="sourcearea">
+    </meta>
+    <meta name="ckeditor-sample-name" content="Full page support">
+    </meta>
+    <meta name="ckeditor-sample-group" content="Plugins">
+    </meta>
+    <meta name="ckeditor-sample-description"
+        content="CKEditor inserted with a JavaScript call and used to edit the whole page from &lt;html&gt; to &lt;/html&gt;.">
+    </meta>
+    <meta name="description"
+        content="Try the latest sample of CKEditor 4 and learn more about customizing your WYSIWYG editor with endless possibilities.">
+    </meta>
+    <!-------------------------------------------->
+    <!---- Insert this before scripts import; then restor back later -->
+    <script>if (typeof module === 'object') { window.module = module; module = undefined; }</script>
+
+    <!-------------- jq --------------------->
+    <script ____src="./doc_files/jquery-2_1_3.min.js"></script>
+    <script ____src="https://wdingbox.github.io/ham12/jq/jquery-2_1_3.min.js"></script>
+    <script src="http://localhost:7878/assets/ckeditor/adapters/jq/jquery-2_1_3.min.js" note="selfseversite"></script>
+    <!-------------- ckeditor only--------------------->
+    <script ___src="https://cdn.ckeditor.com/4.15.0/standard/ckeditor.js"></script>
+    <script ___src="https://wdingbox.github.io/ham12/assets/ckeditor/ckeditor.js"></script>
+
+    <script src="http://localhost:7878/assets/ckeditor/ckeditor.js" note="selfseversite"></script>
+    <script src="http://localhost:7878/assets/ckeditor/samples/old/sample.js"></script>
+    <link href="http://localhost:7878/assets/ckeditor/samples/old/sample.css" rel="stylesheet">
+    <!-------------------------------------------->
+    <!----- Insert this line after script imports -->
+    <script>if (window.module) module = window.module;</script>
+    <!-------------------------------------------->
+    <style>
+        .editor_state_max {
+            z-index: 999999;
+            position: absolute;
+            right: 20px;
+            background-color: antiquewhite;
+        }
+    </style>
+</head>
+
+<body>
+
+    <form action="http://localhost:7878/save" method="post">
+        <label for="editor1">
+            CKEditor output the entire page including content outside of
+            <code>&lt;body&gt;</code> element, so content like meta and title can be changed:
+        </label>
+        <textarea cols="80" id="editor1" name="editor1" rows="10">
+			&lt;h1&gt;&lt;img align=&quot;right&quot; alt=&quot;Saturn V carrying Apollo 11&quot; src=&quot;../../_ckeditor/_app/old/assets/sample.jpg&quot;/&gt; Apollo 11&lt;/h1&gt; &lt;p&gt;&lt;b&gt;Apollo 11&lt;/b&gt; was the spaceflight that landed the first humans, Americans &lt;a href=&quot;http://en.wikipedia.org/wiki/Neil_Armstrong&quot; title=&quot;Neil Armstrong&quot;&gt;Neil Armstrong&lt;/a&gt; and &lt;a href=&quot;http://en.wikipedia.org/wiki/Buzz_Aldrin&quot; title=&quot;Buzz Aldrin&quot;&gt;Buzz Aldrin&lt;/a&gt;, on the Moon on July 20, 1969, at 20:18 UTC. Armstrong became the first to step onto the lunar surface 6 hours later on July 21 at 02:56 UTC.&lt;/p&gt; &lt;p&gt;
+		</textarea>
+    </form>
+    <div style="float: left; margin-right: 20px">
+        When <em>Enter</em> is pressed:<br>
+        <select id="xEnter" onchange="changeEnter();">
+            <option value="1">Create a new &lt;P&gt; (recommended)</option>
+            <option selected="selected" value="3">Create a new &lt;DIV&gt;</option>
+            <option value="2">Break the line with a &lt;BR&gt;</option>
+        </select>
+    </div>
+    <div style="float: left">
+        When <em>Shift+Enter</em> is pressed:<br>
+        <select id="xShiftEnter" onchange="changeEnter();">
+            <option value="1">Create a new &lt;P&gt;</option>
+            <option value="3">Create a new &lt;DIV&gt;</option>
+            <option selected="selected" value="2">Break the line with a &lt;BR&gt; (recommended)</option>
+        </select>
+    </div>
+    <br><br>
+    <p>
+        <select id="histlog" size="10"></select>
+
+    </p>
+
+    <div id="footer">
+        <hr>
+        <p>
+            CKEditor - The text editor for the Internet - <a class="samples"
+                href="https://ckeditor.com/">https://ckeditor.com</a>
+        </p>
+        <p id="copy">
+            Copyright &copy; 2003-2020, <a class="samples" href="https://cksource.com/">CKSource</a> - Frederico
+            Knabben. All rights reserved.
+        </p>
+
+    </div>
+
+
+
+
+
+    <script>
+        var ckEditor;
+        function init_CKEditor() {
+            ckEditor = CKEDITOR.replace('editor1', {
+                fullPage: true,
+                allowedContent: true,
+                extraPlugins: 'wysiwygarea',
+                width: '100%',
+
+                enterMode: CKEDITOR.ENTER_DIV, //default mode. 
+
+                wordcount: {
+                    'showWordCount': true,
+                    'showParagraphs': true,
+                    'showCharCount': true,
+                    'maxCharCount': 10000000
+                },
+
+                extraPlugins: 'enterkey',
+                enterMode: Number(document.getElementById('xEnter').value),
+                shiftEnterMode: Number(document.getElementById('xShiftEnter').value),
+
+                on: {
+                    focus: function () { },
+                    blur: function () { },
+
+                    // Check for availability of corresponding plugins.
+                    pluginsLoaded: function (evt) {
+                        var doc = CKEDITOR.document, ed = evt.editor;
+                        if (!ed.getCommand('bold'))
+                            doc.getById('exec-bold').hide();
+                        if (!ed.getCommand('link'))
+                            doc.getById('exec-link').hide();
+                    }
+                }
+
+            });
+
+
+
+            // wait until the editor has done initializing
+            ckEditor.on("instanceReady", function (evt) {
+
+                // overwrite the default save function
+                evt.editor.addCommand("save", {
+                    modes: { wysiwyg: 1, source: 1 },
+                    exec: function () {
+                        // get the editor content
+                        var theData = ckEditor.getData();
+                        if (false === ckEditor.checkDirty()) {
+                            console.log("checkDirty : false")
+                            g_msg.dlt(theData.length).pop("no change; no saving");
+                            return
+                        }
+                        g_msg.put(`to save len:${theData.length}`).dlt(theData.length);
+                        //alert(theData);
+                        $.post("http://localhost:7878/save",
+                            {
+                                "pathname": get_custom_pathname().pathname,
+                                "htm": theData
+                            },
+                            function (result) {
+                                ckEditor.resetDirty()
+                                if (theData.length !== result.len) {
+                                    var ms = `fatal err save. data loss:${theData.length}-${result.len}=${theData.length - result.len}`
+                                    return g_msg.pop(ms, 'warning');
+                                }
+                                console.log("ret:", result.len);
+                                g_msg.pop(`OK Saved ${result.len}`);
+                            }).fail(function (er) {
+                                g_msg.pop(`*** saved failed:${er}`, "warning")
+                            }).done(function (ret) {
+                                console.log("done:", ret)
+                            });
+                    }
+                });
+
+                evt.editor.on("maximize", function (e) {
+                    console.log("maximize", e)
+                    switch (e.data) {
+                        case 1: //convert to max
+                            ckEditor.showNotification('maximize');
+                            break;
+                        case 2: //turn to norm
+                            ckEditor.showNotification('mainimize');
+                            break;
+                        default: alert("maximize data?")
+                    }
+                });
+
+                var notification1 = new CKEDITOR.plugins.notification(ckEditor, { message: 'notification Ready', type: 'info' });
+                notification1.update("opoopop");
+            });
+        }
+        function changeEnter() {
+            // If we already have an editor, let's destroy it first.
+            var imod = Number(document.getElementById('xEnter').value);
+            ckEditor.setActiveEnterMode(imod);
+            console.log("xEnter Mode:", imod)
+            return;
+        }
+        //window.onload = changeEnter;
+
+        function MSG() {
+            this.m_dlt = 0
+            this.m_pre_len = 0
+            this.m_log = `[${(new Date()).toISOString()}] `
+        }
+        MSG.prototype.dlt = function (size) {
+            this.m_dlt = size - this.m_pre_len
+            this.m_pre_len = size
+            return this
+        }
+        MSG.prototype.put = function (s) {
+            this.m_log += s + "; ";
+            return this
+        }
+        MSG.prototype.pop = function (s, styp) {
+            if (!styp) styp = "info"
+            this.m_log += s + "; dlt=" + this.m_dlt
+            $("#histlog").prepend(`<option>${this.m_log}</option>`)
+            if (ckEditor) ckEditor.showNotification(this.m_log, styp);//
+            this.m_log = `[${(new Date()).toISOString()}] `
+        }
+        var g_msg = new MSG()
+
+        function get_custom_pathname() {
+            var pathname = window.location.pathname.replace(/___fullpage_ckeditor\.htm$/, "")
+            var ary = pathname.split("/")
+            var name = ary[ary.length - 1]
+            return { name: name, pathname: pathname }
+        }
+        function load_page_by_parse_filename() {
+            console.log(window.location)
+            var fname = get_custom_pathname().name
+            $("title").text(get_custom_pathname().pathname)
+            console.log(fname)
+            $.get(fname, function (data) {
+                //alert(data);
+                setTimeout(()=>{
+                    CKEDITOR.instances.editor1.setData(data)
+                    g_msg.put(`initial load file size ${data.length}`).pop("loaded")
+                },1000)
+            });
+        }
+    </script>
+</body>
+
+</html>
+
+<script>
+    $(function () {
+        init_CKEditor()
+        load_page_by_parse_filename()
+    })
+</script>

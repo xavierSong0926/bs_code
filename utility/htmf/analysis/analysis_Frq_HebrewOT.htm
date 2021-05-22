@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<HTML manifest___xxx="BiblePad-2015.appcache">
+<HEAD>
+    <TITLE>cuvs</TITLE>
+    <META http-equiv="Content-Type" content="text/html;" charset="UTF-8">
+	<META name="viewport" content="width=device-witdh, initial-scale=1, maximum-scale=1, user-scale=0">
+
+   
+
+
+    <script>    
+    var gStartDate = new Date();
+    console.log(  gStartDate.toString() +" ------ start load");//
+    </script>   
+
+
+
+    <script language="javascript" src="../../htmjs/jq/jquery.js">
+    </script>
+    <script language="javascript" src="../../htmjs/jq/table_Indexer.js">
+    </script>
+    <script language="javascript" src="../../htmjs/jq/jquery.tablesorter.js"></script>
+
+
+    <script language="javascript" src="../../../jsdb/jsBibleSurvey/Hebrew_1st_frq_usage.js"></script>
+    <script language="javascript" src="../../../jsdb/jsBibleSurvey/Hebrew_1st_frq_json.js"></script>
+   
+
+    
+    
+
+
+
+
+
+    
+    <script>    
+    console.log(  (new Date()).toString() );//
+    </script>
+<style>
+body {
+    background-color: black;
+    color: white;
+    width:100%;
+	font-size: 100%;
+	
+    padding:0px 0px 0px 0px;
+    margin: 0px 0px 0px 0px;	
+
+    font-family: 'Times New Roman';
+}
+td:nth-child(2){
+    text-align: right;
+}
+</style>
+
+
+
+    
+<script language="javascript">
+ 
+$(document).ready(function(){
+
+
+
+gen_ths("missingVolChpObj");
+gen_trs("g_missingVolChpObj",Hebrew_1st_frq_usage);
+
+gen_ths("missingVolChpVerses");
+gen_trs("g_missingVolChpVerses",Hebrew_1st_frq_json);
+
+
+table_sort();
+//table_col_index();
+});/////////////
+function gen_ths(id){
+    var ths="<tr><th>#</th><th>Hebrew</th><th>frq</th></tr>";
+    $("#"+id).html(ths);
+}
+function gen_trs(id,frqObj){
+    var trs=""
+    $.each(frqObj,function(hebrw,frq){
+        trs+="<tr><td></td><td>"+hebrw+"</td><td>"+frq+"</td></tr>";
+    });
+    $("#"+id).html(trs);
+}
+</script>
+
+</HEAD>
+<BODY xxxonload="body_onload();">
+
+<textarea id="out"></textarea>
+
+
+    <button id="indxer">indxer</button>
+    <hr/>
+
+<table  border="1" align="left"><caption title="from usage_tool english">Hebrew_1st_frq_usage</caption>
+    <thead id="missingVolChpObj"></thead>
+	<tbody id='g_missingVolChpObj'></tbody>
+ </table>
+
+<table  border="1"><caption title='from nodejs'>Hebrew_1st_frq_json</caption>
+    <thead id="missingVolChpVerses"></thead>
+    <tbody id='g_missingVolChpVerses'></tbody>
+ </table>
+
+
+</BODY>
+</HTML>
+<script type="text/javascript">
+
+</script>

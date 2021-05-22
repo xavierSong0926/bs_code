@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>frq</title>
+    <meta content="text/html; charset=UTF-8" http-equiv="Content-Type" />
+    <meta content="width=device-width, initial-scale=1" name="viewport" />
+    <meta content="en-us" http-equiv="Content-Language" />
+    <script src="https://wdingbox.github.io/ham12/jq/jquery-2_1_3.min.js"></script>
+
+    <script language="javascript" src="../../htmjs/jq/table_Indexer.js">
+    </script>
+    <script language="javascript" src="../../htmjs/jq/jquery.tablesorter.js"></script>
+    
+    
+    
+    
+    
+    
+    
+    
+    <script language="javascript" src="./frq_analyzer.cn.js"></script>
+    <script language="javascript" src="./frq_analyzer_english.js"></script>
+
+
+    <!-- for niv loader -->
+
+
+
+
+
+
+
+
+
+
+
+    <style type="text/css">
+        .mysel {
+            background-color: yellow
+        }
+
+        body {
+
+            width: 100%;
+            font-size: 100%;
+
+            padding: 0px 0px 0px 0px;
+            margin: 0px 0px 0px 0px;
+
+            font-family: 'Times New Roman';
+        }
+
+        #inptxt {
+            background-color: #ffcccc;
+            width: 100%;
+            rows: 50;
+        }
+
+        .ioput {
+            background-color: #bbbbbb;
+            float: left;
+        }
+
+        #Tbframe {
+            float: top;
+        }
+
+        .hili {
+            background-color: #ee0000;
+        }
+
+        table thead {
+            display: block;
+        }
+
+        table tbody {
+            height: 310px;
+            overflow-y: scroll;
+            display: block;
+        }
+
+        #out1,
+        #out2 {
+            background-color: lightblue;
+
+            height: 910px;
+            overflow: scroll;
+        }
+    </style>
+
+
+    <script>
+
+        function table_sorter() {
+            $("table").tablesorter({
+                //  theme: 'blue',
+                usNumberFormat: false,
+                sortReset: true,
+                sortRestart: true,
+
+                widgets: ['columns', 'output',],//'zebra', 'editable'
+
+            });
+        }
+        $(document).ready(function () {
+
+        });//////////////////////////
+        function cn_frq(_this) {
+            var txt = $("#inptxt").val();
+            var CharGrpLen = $("#CharGrpLen").val();
+            if (txt.length === 0) return alert("please paste your test in textarea");
+            var charFilter = $("#charFilter").val().trim();
+            var cps = new ChinesePhraseStats(txt, CharGrpLen, charFilter);
+            var ret=cps.gen_table();
+           
+            var etb = $(ret.stb).on("click", "td", function () {
+                $(this).toggleClass("hili");
+            }).on("click", "caption", function () {
+                var sortedJsn = {};
+                $(this).parent().toggleClass("hili");
+                $(this).parent().find("tbody").find("tr").each(function () {
+                    var key = $(this).find("td:eq(1)").text();
+                    var frq = $(this).find("td:eq(3)").text();
+                    sortedJsn[key] = frq;
+                });
+
+                var oj={}
+                oj.status={generator:"frq_analyzer_chn.htm"}
+                oj.distributeFeature = ret.stat;
+                oj.sortedZiFrqObj=sortedJsn;
+                
+                $(this).find("textarea").val("var tmpObj=\n"+JSON.stringify(oj, null, 4));
+            })
+            $("#outview").append(etb);
+            table_sorter();
+        }
+
+        function EngTxt2WordFreq(){
+            var txt = $("#inptxt").val();
+            var tab = engwdfrq.genTable(txt)
+            $("#outview").append(tab);
+            table_sorter();
+        }
+    </script>
+
+    <style>
+        button:disabled {
+            color: #cccccc;
+        }
+
+        #menu {
+            position: fixed;
+            top: 10px;
+            right: 10px;
+        }
+    </style>
+
+</head>
+
+<body>
+    <!------Menu-->
+    <div id='menu'>
+        <select size='7'>
+            <option value=''></option>
+            <option onclick='EngTxt2WordFreq()'>English_WordFreq</option>
+            <option onclick='cn_frq(this);'>cnfrq</option>
+            <option value='English_Words_NIV_dictionary_generating'>English_Words_NIV_dictionary_generating</option>
+            <option value='Chinese_Chars'>Chinese Text 2 Htm</option>
+            <option value='Chinese_Phrase1'>Chinese_CharGrpLen( n )</option>
+            <option value='Chinese_Phrase2'>Chinese_Phrase2</option>
+            <option value='Chinese_Phrase3'>Chinese_Phrase3</option>
+            <option value='Chinese_Phrase4'>Chinese_Phrase4</option>
+            <option value='Chinese_Phrase5'>Chinese_Phrase5</option>
+            <option value='Chinese_Phrase6'>Chinese_Phrase6</option>
+            <option value='Chinese_Phrase7'>Chinese_Phrase7</option>
+
+
+            <option value='Hebrew_Chars'>Hebrew_Letters</option>
+            <option value='Hebrew_Individual_Words'>Hebrew_Vocabulary</option>
+            <option value='Hebrew_Individual_Words_withMarks'>Hebrew_Individual_Words_withMarks</option>
+            <option value="Hebrew_Individual_Words_withMarks_js">Hebrew_Individual_Words_withMarks_js</option>
+
+            <option value='Greek_Letters'>Greek_Letters</option>
+            <option value='Greek_Vocabulary'>Greek_Vocabulary</option>
+            <option value='Hebrew_Chars'>Hebrew</option>
+            <option value='Hebrew_Chars'>Hebrew</option>
+        </select><br />
+        <input type="text" name="n" id="CharGrpLen" value='1' title="CharGrpLen"></input>
+        <input type="text" name="n" id="charFilter" value='' title="charFilter"></input>
+    </div>
+    <!-------->
+
+
+    <a>Please paste your text into following area and select method to calculate words Freqs.</a>
+    <textarea id='inptxt' rows="20"></textarea>
+
+    <hr />
+
+
+    <hr />
+    <!----------------->
+
+    <div id="outview"></div>
+    <p>
+        &nbsp;</p>
+
+    <p>
+        &nbsp;</p>
+
+</body>
+
+</html>

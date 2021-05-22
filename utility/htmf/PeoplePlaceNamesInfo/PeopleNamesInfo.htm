@@ -1,0 +1,199 @@
+<HTML>
+
+<HEAD>
+    <TITLE>bPerson</TITLE>
+    <base target="_blank" />
+    <META http-equiv="Content-Type" content="text/html;" charset="UTF-8">
+    <META name="viewport" content="width=device-witdh, initial-scale=1, maximum-scale=1, user-scale=0">
+
+
+    <link rel="stylesheet" xhref="./BibleInputMethod.css">
+    </link>
+
+
+
+
+
+    <scriptxx language="javascript" src="../../htmjs/jq/jquery.js"></scriptxx>
+    <script src="https://wdingbox.github.io/ham12/jq/jquery-2_1_3.min.js"></script>
+    <script language="javascript" src="../../htmjs/jq/table_Indexer.js?v=1"></script>
+    <script language="javascript" src="../../htmjs/jq/jquery.tablesorter.js"></script>
+    <script src="../../../../bible_obj_lib/jsdb/cc/z2g/jianfan/Traditional2SimplifiedObj.json.js"></script>
+
+
+    <!--------->
+
+    <script src="../../../../bible_obj_lib/jsdb/PeoplePlaceName/BiblePeopleFreq.json.js"></script>
+
+    <script src="../../../../bible_obj_lib/jsdb/PeoplePlaceName/BiblePeopleInfo.json.js?v=2"></script>
+
+    <style>
+        table {
+            border-collapse: collapse;
+            margin-top: 500px;
+        }
+
+        th {
+            background-color: gray;
+        }
+
+        .hili {
+            background-color: grey;
+        }
+
+        .slt {
+            border-color: red;
+            border-width: 2px;
+        }
+
+        .divbox {
+            width: 50px;
+            height: 20px;
+            overflow: hidden;
+            color: blue;
+        }
+
+        .show {
+            position: fixed;
+            top: 20px;
+            right: 10px;
+            background-color: darkseagreen;
+            width: 500px;
+            height: 500px;
+            overflow: scroll;
+            white-space: normal;
+        }
+
+        #menu {
+            position: fixed;
+            top: 2px;
+            right: 10px;
+        }
+    </style>
+
+
+
+    <script language="javascript">
+        $(function () {
+            gen_tab(BiblePeopleInfo, BiblePeopleFreq);
+            table_sort();
+            $("#toggler").click(function () {
+                $(".show").toggle();
+            });
+            $(".show").toggle();
+        });
+
+        function Camelize_Name(str) {
+            str = str.replace("-", " ");
+            return str.replace(/(?:^\w|[A-Z]|\b\w)/g, function (word, index) {
+                return index == 0 ? word.toUpperCase() : word.toLowerCase();
+            }).replace(/\s+/g, '-');
+        }
+        function class_divbox(co_j) {
+            const arr = [3, 5, 6, 7, 8, 9];
+            if (arr.indexOf(co_j) >= 0) {
+                return " class='divbox' "
+            }
+            return "";
+        }
+
+        function gen_tab(arr, frqArr) {
+            var trs = "";
+            //var arr = Object.keys(obj);
+            arr.forEach(function (ar, i) {
+                //var ar = obj[key];
+                trs += "<tr>";
+                trs += `<td>${i}</td>`;
+                ar.forEach(function (v, j) {
+                    switch (j) {
+                        case 0:
+                            v = Tradition2Simplified(v);
+                            break;
+                        case 1:
+                            v = Camelize_Name(v);
+                            break;
+                        case 2://frq
+                            v = frqArr[i][2];
+                            break;
+                        case 4:
+                            v = "";
+                            break;
+                        default:
+                            break;
+                    }
+                    var tit = "";
+                    if ([3, 5, 6, 7, 8, 9].indexOf(j) >= 0) {
+                        tit = "idx" + j + ":" + $(v).text().trim();
+                        v = v.length;
+                    }
+                    trs += `<td><div ${class_divbox(j)} title='${tit}'>${v}</div></td>`;
+                });
+                trs += "</tr>";
+            });
+
+            var stb = `<table border='1'>
+    <caption><a href='https://www.taiwanbible.com/web/word/peopleList.jsp?p=1'>Bible People Reference</a></caption> 
+    <thead>
+    <tr>
+        <th>#</th>
+        <th>中文名字</th>       
+        <th>英文名字</th>
+        <th title='查詢經文'>Frq</th>
+        <th title='代表經文'>代表</th>
+        <th title='Nave's Topical Bible'>-</th>
+        <th>ISBE</th>
+        <th>Easton</th>
+        <th>HBND</th>
+        <th>SDB</th>
+    </tr>
+    </thead>
+    <tbody>
+        ${trs}
+    </tbody></table>`;
+
+            $("#out").html(stb).find("td").bind("click", function () {
+                var el = $(this).find(".divbox");
+                if (el.length > 0) {
+                    var ht = $(el).attr("title");
+                    $(".show").html(ht);
+                    //$("#outx").val($(this).text());
+                    $(".show").slideDown();
+
+                    $(".slt").removeClass("slt");
+                    $(this).addClass("slt");
+                }
+                $(this).toggleClass("hili");
+            });
+        };//////
+
+
+        function replaceOrder() {
+            var out = {};
+            $("tbody tr").each(function () {
+                var chn = $(this).find("td:eq(1)").text();
+                var eng = $(this).find("td:eq(2)").text();
+                out[chn] = eng;
+            });
+            var sout = JSON.stringify(out,null,4);
+            $("#out").html(`<textarea>${sout}</textarea>`);
+        }
+    </script>
+</HEAD>
+
+<body>
+
+    <div id="menu">
+        <button onclick="replaceOrder();">replaceOrder</button>
+        <button id="indxer">indxer</button>
+        <button id="toggler">toggleHide</button>
+    </div>
+
+    <div class="show">
+    </div>
+
+
+
+    <div id="out">...</div>
+</body>
+
+</HTML>

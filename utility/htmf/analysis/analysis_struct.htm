@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<HTML manifest___xxx="BiblePad-2015.appcache">
+
+<HEAD>
+    <TITLE>cuvs</TITLE>
+    <META http-equiv="Content-Type" content="text/html;" charset="UTF-8">
+    <META name="viewport" content="width=device-witdh, initial-scale=1, maximum-scale=1, user-scale=0">
+
+
+
+
+    <script>
+        var gStartDate = new Date();
+        console.log(gStartDate.toString() + " ------ start load");//
+    </script>
+
+
+
+    <script language="javascript" src="../../htmjs/jq/jquery.js">
+    </script>
+    <script language="javascript" src="../../htmjs/jq/table_Indexer.js">
+    </script>
+    <script language="javascript" src="../../htmjs/jq/jquery.tablesorter.js"></script>
+
+
+    <script language="javascript" src="../../../../bible_obj_lib/jsdb/jsBibleStruct/BBE.json.js"></script>
+    <script language="javascript" src="../../../../bible_obj_lib/jsdb/jsBibleStruct/CUVS.json.js"></script>
+    <script language="javascript" src="../../../../bible_obj_lib/jsdb/jsBibleStruct/H_G.json.js"></script>
+    <script language="javascript" src="../../../../bible_obj_lib/jsdb/jsBibleStruct/KJV.json.js"></script>
+    <script language="javascript" src="../../../../bible_obj_lib/jsdb/jsBibleStruct/NIV.json.js"></script>
+    <script language="javascript" src="../../../../bible_obj_lib/jsdb/jsBibleStruct/CUVpy.json.js"></script>
+    <script language="javascript" src="../../../../bible_obj_lib/jsdb/jsBibleStruct/STUS.json.js"></script>
+    <script language="javascript" src="../../../../bible_obj_lib/jsdb/jsBibleStruct/WLVS.json.js"></script>
+
+
+
+
+
+
+    </script>
+
+
+
+
+
+
+
+
+    <script>
+        console.log((new Date()).toString());//
+    </script>
+    <style>
+        body {
+    background-color: black;
+    color: white;
+    width:100%;
+	font-size: 100%;
+	
+    padding:0px 0px 0px 0px;
+    margin: 0px 0px 0px 0px;	
+
+    font-family: 'Times New Roman';
+}
+.hili{
+    background-color: red; 
+}
+
+#MaxContrast thead{ display:block; }
+#MaxContrast tbody { height:1500px; overflow-y:scroll; display:block; }
+
+</style>
+
+
+
+
+    <script language="javascript">
+        var NameOfBibleObject = {
+            "BBE_st": BBE_struct,
+            "CUVS_s": CUVS_struct,
+            "H_G_st": H_G_struct,
+            "KJV_st": KJV_struct,
+            "NIV_st": NIV_struct,
+            "PINYIN": CUVpy_struct,
+            "STUS_s": STUS_struct,
+            "WLVS_s": WLVS_struct
+        }
+        var g_DiffObj = {};
+        var g_missingVolChpVerses = {};
+        var g_missingVolChpObj = {};
+        var g_MaxObj_missings = {};
+
+        function GetMaxKeyObj(NameOfObject) {
+            var MaxKeyObj = {};
+            $.each(NameOfObject, function (Name, StructObj) {
+                $.each(StructObj, function (volname, ChpObj) {
+                    $.each(ChpObj, function (chpKey, VerseObj) {
+                        $.each(VerseObj, function (versKey, Txt) {
+                            if (undefined === MaxKeyObj[volname]) {
+                                MaxKeyObj[volname] = {};
+                            }
+                            if (undefined === MaxKeyObj[volname][chpKey]) {
+                                MaxKeyObj[volname][chpKey] = {};
+                            }
+                            if (undefined === MaxKeyObj[volname][chpKey][versKey]) {
+                                MaxKeyObj[volname][chpKey][versKey] = "-";
+                            }
+
+                        });
+                    });
+                });
+            });////////////// 
+            return MaxKeyObj;
+        }
+        function MaxObjContrastAllObjs(MaxObj, NameOfObj) {
+            var idx = -1;
+            $.each(NameOfObj, function (name, Obj) {
+                idx++;
+                MaxObjContrastOneObj(MaxObj, Obj, name, idx);
+            });
+            return g_DiffObj;
+        }
+        function MaxObjContrastOneObj(MaxObj, OneObj, ObjName, ObjNameIdx) {
+
+            function assign_missingOne(gobj, VolChp, ObjName) {
+                if (undefined == gobj[VolChp]) {
+                    gobj[VolChp] = [];
+                    $.each(NameOfBibleObject, function (name, obj) {
+                        gobj[VolChp].push(name);
+                    });
+                }
+                var idx = Object.keys(NameOfBibleObject).indexOf(ObjName);
+                gobj[VolChp][idx] = "-";
+            }
+            var idx = 0;
+            $.each(MaxObj, function (Vol, ChpObj) {
+                idx++;
+                var sidx = idx.toString(10).padStart(2, "0");
+                $.each(ChpObj, function (chpNum, VersObj) {
+                    $.each(VersObj, function (versKey, str) {
+                        var missing = "";
+                        if (undefined == OneObj[Vol]) {
+                            console.error(ObjName + " NO " + Vol + "*:*");
+                            missing = sidx + "-" + VOL;
+                        } else if (undefined == OneObj[Vol][chpNum]) {
+                            missing = sidx + "-" + Vol + "_" + chpNum;
+                            //console.error(ObjName+" miss "+Vol+" "+chpNum + ":*");
+                            var VolChp = Vol + "" + chpNum;
+                            assign_missingOne(g_missingVolChpObj, VolChp, ObjName);
+                        } else if (undefined == OneObj[Vol][chpNum][versKey]) {
+                            missing = sidx + "-" + Vol + "_" + chpNum + ":" + versKey;
+                            var VolChp = Vol + "" + chpNum + ":" + versKey;
+                            assign_missingOne(g_missingVolChpVerses, VolChp, ObjName);
+                            //console.error(ObjName+" miss "+VolChp);
+                        };
+
+                        var dvcv = sidx + "-" + Vol + "_" + chpNum + ":" + versKey;
+                        if ("string" === typeof MaxObj[Vol][chpNum][versKey]) {
+                            MaxObj[Vol][chpNum][versKey] = {};
+                        }
+                        MaxObj[Vol][chpNum][versKey][ObjName] = missing;
+                    });
+                });
+            });
+        };
+        function max_gen_trs(maxObj) {
+            var trs = "", idx = 0;
+            $.each(maxObj, function (vol, chpObj) {
+                var sidx = (++idx).toString(10).padStart(2, "0");
+                $.each(chpObj, function (chp, vrsObj) {
+                    $.each(vrsObj, function (vrs, obj) {
+                        trs += "<tr><td/><td>" + sidx + "-" + vol + "_" + chp + ":" + vrs + "</td>";
+                        var idifcout=0,stds="";
+                        $.each(NameOfBibleObject, function (name, obj) {
+                            var str=maxObj[vol][chp][vrs][name];
+                            if(str.length>0)idifcout++;
+                            stds += "<td>" + str + "</td>";
+                        });
+                        trs+="<td>"+idifcout+"</td>"+stds;
+                        trs += "</tr>";
+                    });
+                })
+            });
+            return trs;
+        };
+        function max_gen_ths(thdID, NameOfObject) {
+            var ths = "<tr><th>#</th><th title='vol idx'>___vidx___</th><th title='diff'>d</th>";
+            $.each(NameOfObject, function (skey, obj) {
+                ths += "<th>____" + skey + "___</th>";
+            });
+            ths += "</tr>";
+            $(thdID).html(ths);
+        }
+
+        function gen_ths(thdID, NameOfObject) {
+            var ths = "<tr><th>#</th><th title='vol idx'>vidx</th><th title='Vol-Chp-Vrs'>vcv</th>";
+            $.each(NameOfObject, function (skey, obj) {
+                ths += "<th>" + skey + "</th>";
+            });
+            ths += "</tr>";
+            $("#" + thdID).html(ths);
+        }
+        function gen_trs(tbdyID, missObj) {
+            var trs = "";
+            $.each(missObj, function (skey, arr) {
+                var idx = get_vol_idx(skey);
+                trs += "<tr><td></td><td>" + idx + "</td><td>" + idx + "-" + skey + "</td>";
+                $.each(arr, function (i, val) {
+                    trs += "<td>" + val + "</td>";
+                });
+                trs += "</tr>";
+            });
+            $("#" + tbdyID).html(trs);
+        };
+
+        function get_vol_idx(vol) {
+            var keyArr = Object.keys(NIV_struct);
+            var idx = keyArr.indexOf(vol.substring(0, 3));
+            return (1 + idx).toString(10).padStart(2, "0");
+        };
+
+        function GetObj_max_vol_chp_vrs(maxObj) {
+            var ret = {
+                Vol: { max: 0, names: [] },
+                Chp: { max: 0, names: [] },
+                Vrs: { max: 0, names: [] }
+            };
+
+            Object.keys(maxObj).forEach(function (vol) {
+                var ln = Object.keys(maxObj).length;
+                if (ln > ret.Vol.max) {
+                    ret.Vol.max = ln;
+                    //ret.Vol.names.push("Bible");
+                }
+                var volObj = maxObj[vol];
+                Object.keys(volObj).forEach(function (chp) {
+                    var ln = Object.keys(volObj).length;
+                    if (ln > ret.Chp.max) {
+                        ret.Chp.max = ln;
+                        ret.Chp.names.push(vol);
+                    }
+                    var chpObj = volObj[chp];
+                    Object.keys(chpObj).forEach(function (vrs) {
+                        var vrsObj = chpObj[vrs];
+                        var ln = Object.keys(chpObj).length;
+                        if (ln > ret.Vrs.max) {
+                            ret.Vrs.max = ln;
+                            ret.Vrs.names.push(vol + chp + ":" + vrs)
+
+                        };
+                    });
+                });
+            });
+            return ret;
+        };
+
+        $(document).ready(function () {
+
+            var maxObj = GetMaxKeyObj(NameOfBibleObject);
+
+            ///////////////////////////////////////
+            var maxSize = GetObj_max_vol_chp_vrs(maxObj);
+            console.log("maxDat", maxSize);
+            //////////////////////////////////////
+            var difObj = MaxObjContrastAllObjs(maxObj, NameOfBibleObject);
+
+            var sout = "var maxSize=" + JSON.stringify(maxSize, null, 4);
+            sout += "\nvar maxObj=" + JSON.stringify(maxObj, null, 4);
+            sout += "\nvar g_missingVolChpObj=\n" + JSON.stringify(g_missingVolChpObj, null, 4);
+            sout += "\nvar difObj=\n" + JSON.stringify(difObj, null, 4);
+            sout += "\nvar g_missingVolChpVerses=\n" + JSON.stringify(g_missingVolChpVerses, null, 4);
+            $("#out").val(sout);
+
+            gen_ths("missingVolChpObj", NameOfBibleObject);
+            gen_ths("missingVolChpVerses", NameOfBibleObject);
+            gen_trs("g_missingVolChpObj", g_missingVolChpObj);
+            gen_trs("g_missingVolChpVerses", g_missingVolChpVerses);
+
+
+            var trs=max_gen_trs(maxObj);
+            max_gen_ths("#MaxContrast thead",NameOfBibleObject);
+            $("#MaxContrast tbody").html(trs);
+
+
+            ////////////////////////////
+
+
+            //gen_table_StructAna(H_G_struct);
+
+            table_sort();
+            //table_col_index();
+        });/////////////
+
+
+
+        function gen_table_StructAna(BsObj) {
+            function get_trs(BsObj) {
+                var trs = "";
+                $.each(BsObj, function (vol, ChpObj) {
+                    trs += "<tr><td/><td>" + vol + "</td>";
+                    $.each(ChpObj, function (Chp, VsObj) {
+                        trs += "<td>" + Chp + "</td>";
+                        $.each(VsObj, function (vrs, txt) {
+                            trs += "<td>" + vrs + "</td>";
+                        });
+                    })
+
+                    trs += "</tr>";
+                });
+                return trs;
+            };
+
+
+            function get_v3cObj(BsObj) {
+                var Vol3CharObj = [{}, {}, {}];
+                Object.keys(BsObj).forEach(function (vol) {
+                    var VOL = vol.toUpperCase();
+                    for (var i = 0; i < 3; i++) {
+                        if (!Vol3CharObj[i][VOL[i]]) {
+                            Vol3CharObj[i][VOL[i]] = {};
+                        }
+                        if (i < 2) {
+                            Vol3CharObj[i][VOL[i]][VOL[1 + i]] = i;
+                        }
+                    }
+                });
+                return Vol3CharObj;
+            }
+            function gen_vTbl(v3cObj) {
+                var s = "";
+                for (var i = 0; i < 30; i++) {
+                    s += "<tr><td/>";
+                    for (var col = 0; col < 3; col++) {
+                        var ks = Object.keys(v3cObj[col]).sort();
+                        var ic = ks[i];
+                        if (i >= ks.length) {
+                            s += "<td/>";
+                        } else {
+                            var nextks = Object.keys(v3cObj[col][ic]).sort();
+                            var nextcs = nextks.join("-");
+                            var next_col = col + 1;
+                            var attrs = " next_col='" + next_col + "'";
+
+                            attrs += " next_cs='" + nextcs + "'";
+
+                            attrs += " class='vchar vc_" + col + "_" + ic + "'";
+                            s += "<td" + attrs + ">" + ic + ":" + nextcs + "</td>";
+                        }
+                    }
+                    s += "</tr>";
+                }
+                return s;
+            }
+            var v3cObj = get_v3cObj(BsObj);
+            var ss = "<table id='IntelligentVolsInput' border='1'>";
+            ss += gen_vTbl(v3cObj);
+            ss += "</table>";
+
+
+            var s = get_trs(BsObj);
+            $("#StructAna").html(s).parent().parent().prepend(ss);
+            $("#IntelligentVolsInput").find(".vchar").bind("click", function () {
+                var next_cs = $(this).attr("next_cs");
+                var next_co = $(this).attr("next_col");
+                var srep = ",.vc_" + next_co + "_";
+                var nextstr = srep.substring(1) + next_cs.replace(/-/g, srep);
+                console.log(next_cs);
+                $(this).addClass("hili");
+                $("#IntelligentVolsInput").find(nextstr).addClass("hili")
+            });
+
+        }
+    </script>
+
+</HEAD>
+
+<BODY xxxonload="body_onload();">
+
+    <textarea id="out"></textarea>
+
+
+    <button id="indxer">indxer</button>
+
+    <table border="1">
+        <caption>StructAna</caption>
+        <thead>
+            <tr>
+                <td>#</td>
+                <td>Vol</td>
+                <td>Chp</td>
+                <td>Ver</td>
+            </tr>
+        </thead>
+        <tbody id="StructAna"></tbody>
+    </table>
+
+
+    <table border="1">
+        <caption id="indxer">MaxObj missed chapters</caption>
+        <thead id="missingVolChpObj"></thead>
+        <tbody id='g_missingVolChpObj'></tbody>
+    </table>
+    <table border="1">
+        <caption>MaxObj missed versers</caption>
+        <thead id="missingVolChpVerses"></thead>
+        <tbody id='g_missingVolChpVerses'></tbody>
+    </table>
+
+    <table border="1" id="MaxContrast">
+        <caption>MaxObj missed versers</caption>
+        <thead id="missingVolChpVerses">
+            <th>#</th>
+            <th>nvcv</th>
+            <th title="diffCount">d</th>
+            <th>1</th>
+            <th></th>
+        </thead>
+        <tbody id='g_MaxObj_missings'></tbody>
+    </table>
+
+
+</BODY>
+
+</HTML>
+<script type="text/javascript">
+
+</script>

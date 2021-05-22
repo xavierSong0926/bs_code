@@ -1,0 +1,107 @@
+<HTML>
+
+<HEAD>
+    <TITLE>bPlace</TITLE>
+    <base target="_blank" />
+    <META http-equiv="Content-Type" content="text/html;" charset="UTF-8">
+    <META name="viewport" content="width=device-witdh, initial-scale=1, maximum-scale=1, user-scale=0">
+
+
+    <link rel="stylesheet" xhref="./BibleInputMethod.css">
+    </link>
+
+
+
+
+
+    <scriptxx language="javascript" src="../../htmjs/jq/jquery.js"></scriptxx>
+    <script src="https://wdingbox.github.io/ham12/jq/jquery-2_1_3.min.js"></script>
+    <script language="javascript" src="../../htmjs/jq/table_Indexer.js"></script>
+    <script language="javascript" src="../../htmjs/jq/jquery.tablesorter.js"></script>
+    <script src="../../../../bible_obj_lib/jsdb/cc/z2g/jianfan/Traditional2SimplifiedObj.json.js"></script>
+
+    <!--------->
+
+    <script src="../../../../bible_obj_lib/jsdb/PeoplePlaceName/BiblePlacesInfo.json.js"></script>
+
+
+    <style>
+        table{
+            border-collapse: collapse;
+        }
+        th, .hili{
+            background-color: darkgray;
+        }
+    </style>
+
+
+
+    <script language="javascript">
+
+
+        $(function () {
+            gen_tab(BiblePlacesInfo);
+            table_sort();
+        });
+
+
+        function gen_tab(arr) {
+            var trs = "";
+            arr.forEach(function (ar) {
+                trs += "<tr>";
+                trs += `<td></td>`;
+                ar.forEach(function (v, j) {
+                    if(0===j) v=Tradition2Simplified(v);
+                    if (v.indexOf("http") == 0) {
+                        v = `<a href=${v}>map</a>`;
+                    }
+                    trs += `<td>${v}</td>`;
+                });
+                trs += "</tr>";
+            });
+
+            var stb = `<table border='1'>
+    <caption><a href='https://www.taiwanbible.com/web/word/placeList.jsp?p=1'>Bible Places Reference</a></caption> 
+    <thead>
+    <tr>
+        <th>#</th>
+        <th>和合本名字</th>       
+        <th>英文名字</th>
+        <th>現代名字</th>
+        <th>新標和合本</th>
+        <th>現中譯本</th>
+        <th title="聖經出現次數">Frq</th>
+        <th title="相關資料">-</th>
+        <th>地圖</th>
+        <th title="聖經連結">-</th>
+    </tr>
+    </thead>
+    <tbody>
+        ${trs}
+    </tbody></table>`;
+
+            $("#out").html(stb).find("td").bind("click",function(){
+                $(this).toggleClass("hili");
+            });
+        }
+
+        function replaceOrder() {
+            var out = {};
+            $("tbody tr").each(function () {
+                var chn = $(this).find("td:eq(1)").text();
+                var eng = $(this).find("td:eq(2)").text();
+                out[chn] = eng;
+            });
+            var sout = JSON.stringify(out,null,4);
+            $("#out").html(`<textarea>${sout}</textarea>`);
+        }
+    </script>
+</HEAD>
+
+<body>
+    <button onclick="replaceOrder();">replaceOrder</button>
+    <button id="indxer">indxer</button>
+    <div id="out">...</div>
+</body>
+
+</HTML>

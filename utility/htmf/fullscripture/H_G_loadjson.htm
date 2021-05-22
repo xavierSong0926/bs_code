@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<HTML manifest___xxx="BiblePad-2015.appcache">
+<HEAD>
+    <TITLE>cuvs</TITLE>
+    <META http-equiv="Content-Type" content="text/html;" charset="UTF-8">
+	<META name="viewport" content="width=device-witdh, initial-scale=1, maximum-scale=1, user-scale=0">
+
+
+    <script>    
+    var gStartDate = new Date();
+    console.log(  gStartDate.toString() +" ------ start load");//
+    </script>   
+
+
+
+    <script language="javascript" src="../../htmjs/jq/jquery.js">
+    	var I={};
+    </script>
+
+
+    <script language="javascript" src="../../../../bible_obj_lib/jsdb/jsBibleObj/H_G.json.js"></script>
+    
+
+
+    
+
+  
+     
+    </script>
+    
+    
+
+
+
+
+
+    
+    <script>    
+    console.log(  (new Date()).toString() );//
+    </script>
+<style>
+body {
+    background-color: black;
+    color: white;
+    width:100%;
+	font-size: 100%;
+	
+    padding:0px 0px 0px 0px;
+    margin: 0px 0px 0px 0px;	
+
+    font-family: 'Times New Roman';
+}
+.HebrewAlpha{
+    font-family: 'Times New Roman';
+    font-size: 150%;
+}
+tbody tr td:nth-child(1){
+
+}
+.hidden  {
+ visibility: hidden; 
+}
+</style>
+
+
+
+    
+<script language="javascript">
+
+$(document).ready(function(){
+
+alphabetsButtons();
+$(".HebrewAlpha").click(function(){
+    var ch=$(this).text();
+    var ss=$("#out").val()+ch;
+    $("#out").val(ss);
+});
+
+$("#search").click(function(){
+    var word=$("#out").val().trim();
+    search_hebrew_word(word);
+});
+
+
+$(".toggle").click(function(){
+    var idx=$(this).index();
+    $("tbody tr").find("td:eq('"+idx+"')").toggleClass("hidden");
+})
+
+});/////////////
+function alphabetsButtons(){
+    var Alphabets="אבגדהוזחטיכךלמםנןסעפףצץקרשת";
+    var buts="";
+    for(var i=Alphabets.length-1;i>=0;i--){
+          var cha=Alphabets[i];
+          buts+="<button class='HebrewAlpha'>"+cha+"</button>";
+    }
+    $("#menu").append(buts);
+}
+function search_hebrew_word(sword){
+    var idx=0;
+    var trs="";
+    $.each(H_G,function(volname,ChpObj){
+        $.each(ChpObj,function(chpKey,VerseObj){
+            $.each(VerseObj,function(versKey,Txt){
+                var cleanTxt=Remove_PronounceMarks_Hebrew(Txt);
+                if(cleanTxt.indexOf(sword)>=0){
+                    var vcv=volname+""+chpKey+":"+versKey;
+                    trs+="<tr><td>"+(++idx)+"</td>";
+                    trs+="<td>"+vcv+"</td><td>"+Txt+"</td>";
+                    trs+="</tr>";                    
+                };
+            });
+        });
+    });
+    $("#vbibtxt").html(trs);    
+}
+function Remove_PronounceMarks_Hebrew(sHebrewWord){
+        var sword='', spaceCode="־".charCodeAt(0);//32
+        for(var k=0;k<sHebrewWord.length;k++){
+            var code=sHebrewWord.charCodeAt(k);
+            if(spaceCode===code){
+                sword+="־";
+                continue;
+            }
+            if(32===code){
+                sword+=" ";
+                continue;
+            }
+            if(code>=1488 && code<=1514){
+                var ch=sHebrewWord.charAt(k);
+                sword+=ch;
+            }                
+        }  
+        return sword;
+}
+</script>
+
+</HEAD>
+<BODY xxxonload="body_onload();">
+<div id="menu">
+<textarea id="out"></textarea>
+
+<button id="search">search</button><br>
+</div>
+
+
+<table  border="1">
+    <thead><tr>
+        <th class='toggle' title="idx">#</th>
+        <th class='toggle' title="Vol-Chap-Verse">VCV</th>
+        <th class='toggle' title="text">Scripture</th>
+    </tr></thead>
+	<tbody id='vbibtxt'></tbody>
+ </table>
+
+
+
+</BODY>
+</HTML>
+

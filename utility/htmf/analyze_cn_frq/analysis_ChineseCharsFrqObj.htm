@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<HTML manifest___xxx="BiblePad-2015.appcache">
+
+<HEAD>
+    <TITLE>cc</TITLE>
+    <META http-equiv="Content-Type" content="text/html;" charset="UTF-8">
+    <META name="viewport" content="width=device-witdh, initial-scale=1, maximum-scale=1, user-scale=0">
+
+
+
+
+    <script>
+        var gStartDate = new Date();
+        console.log(gStartDate.toString() + " ------ start load");//
+    </script>
+
+
+
+    <script language="javascript" src="../../htmjs/jq/jquery.js">
+    </script>
+    <script language="javascript" src="../../htmjs/jq/table_Indexer.js">
+    </script>
+    <script language="javascript" src="../../htmjs/jq/jquery.tablesorter.js"></script>
+
+
+    <script language="javascript" xxsrc="../../../../bible_obj_lib/jsdb/jsBibleObj/BBE.json.js"></script>
+    <script language="javascript" src="../../../../bible_obj_lib/jsdb/jsBibleObj/CUVS.json.js"></script>
+    <script language="javascript" xxsrc="../../../../bible_obj_lib/jsdb/jsBibleObj/KJV.json.js"></script>
+    <script language="javascript" xxsrc="../../../../bible_obj_lib/jsdb/jsBibleObj/NIV.json.js"></script>
+    <script language="javascript" xxsrc="../../../../bible_obj_lib/jsdb/jsBibleObj/CUVpy.json.js"></script>
+    <script language="javascript" src="../../../../bible_obj_lib/jsdb/jsBibleObj/STUS.json.js"></script>
+    <script language="javascript" src="../../../../bible_obj_lib/jsdb/jsBibleObj/WLVS.json.js"></script>
+
+    <script language="javascript" src="analysis_ChineseCharsFrqObj_Bible.json.js"></script>
+    <script language="javascript" src="analysis_ChineseCharsFrqObj_PreQin.json.js"></script>
+    <script language="javascript" src="analysis_ChineseCharsFrqObj_PostQin.json.js"></script>
+
+    <script language="javascript" src="analysis_quran.json.js"></script>
+    <script language="javascript" src="analysis_sutra.json.js"></script>
+    <script language="javascript" src="analysis_mormon.json.js"></script>
+    <script language="javascript" src="analysis_maozedong.json.js"></script>
+
+
+
+
+    </script>
+
+
+
+
+
+
+
+
+    <script>
+        console.log((new Date()).toString());//
+    </script>
+    <style>
+        body {
+            background-color: black;
+            color: white;
+            width: 100%;
+            font-size: 100%;
+
+            padding: 0px 0px 0px 0px;
+            margin: 0px 0px 0px 0px;
+
+            font-family: 'Times New Roman';
+        }
+
+        .hili {
+            background-color: red;
+        }
+
+        #MaxContrast thead {
+            display: block;
+        }
+
+        #MaxContrast tbody {
+            height: 1500px;
+            overflow-y: scroll;
+            display: block;
+        }
+
+        #out {
+            height: 200px;
+            width: 200px;
+        }
+
+        table thead {
+            display: block;
+        }
+
+        table tbody {
+            height: 310px;
+            overflow-y: scroll;
+            display: block;
+        }
+    </style>
+
+
+
+
+    <script language="javascript">
+
+
+
+
+    </script>
+
+</HEAD>
+
+<BODY>
+
+    <textarea id="out"></textarea>
+    <button id="indxer">indxer</button>
+    <hr/>
+
+</BODY>
+
+</HTML>
+<script type="text/javascript">
+    function get_FrqObj(bbObj) {
+        var obj = {};
+        $.each(bbObj, function (vol, chpObj) {
+            $.each(chpObj, function (chp, rseObj) {
+                $.each(rseObj, function (rse, txt) {
+                    if (!txt) return;
+                    for (var i = 0; i < txt.length; i++) {
+                        var cz = txt[i];
+                        var code = cz.charCodeAt(0);
+                        if (code <= 12309 || code >= 65288) continue;
+                        if (undefined == obj[cz]) {
+                            obj[cz] = 0;
+                        };
+                        obj[cz]++;
+                    };
+                });
+            });
+        });
+
+        return obj;
+    };
+    function gen_tab(frqObj, scap) {
+        var trs = "", totfrq = 0;
+        var arr = Object.keys(frqObj);
+        //$.each(frqObj, function (k, frq) {
+        for (var i = 0; i < arr.length; i++) {
+            if (i > 2000) break;//jquery.js:4 Uncaught RangeError: Maximum call stack size exceeded
+            var k = arr[i];
+            var frq = frqObj[k];
+            if(frq.length==0)frq=1;
+            trs += "<tr><td/>";
+            trs += "<td>" + k + "</td>";
+            trs += "<td>" + k.charCodeAt(0).toString(10) + "</td>";
+            trs += "<td>" + k.charCodeAt(0).toString(16) + "</td>";
+            trs += "<td>" + frq + "</td>";
+            trs += "</tr>";
+            totfrq += parseInt(frq);
+        };
+        var distot = Object.keys(frqObj).length;
+        var tab =
+            `<table border="1" align="left">
+                <caption>${scap}<br>totdistnt:<a class='distot'>${distot}</a><br> totfrq:<a class='totfrq'>${totfrq}</a></caption>
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>cha</th>
+                        <th>cod</th>
+                        <th>uni</th>
+                        <th>frquency</th>
+                    </tr>
+                </thead>
+                <tbody id="">${trs}</tbody>
+            </table>`;
+        $("body").append(tab);
+    }
+
+
+
+
+
+    $(function () {
+        var frqObj = get_FrqObj(CUVS);
+        gen_tab(frqObj, "CUV");
+
+        var frqObj = get_FrqObj(STUS);
+        gen_tab(frqObj, "STUS ");
+
+        var frqObj = get_FrqObj(WLVS);
+        gen_tab(frqObj, "WLVS ");
+
+        gen_tab(CUV_OT_FrqObj, "CUV_OT_FrqObj");
+        gen_tab(CUV_NT_FrqObj, "CUV_NT_FrqObj");
+        gen_tab(CUV_Gospel_FrqObj, "CUV_Gospel_FrqObj");
+
+
+        gen_tab(PreQinChar_FrqObj, "PreQin_FrqObj");
+        gen_tab(PostQinChar_FrqObj, "PostQin_FrqObj");
+
+        gen_tab(Sutra_FrqObj, "Sutra_FrqObj");
+        gen_tab(Quran_FrqObj, "Quran_FrqObj");
+
+        gen_tab(Mormon_FrqObj.freq, "Mormon_FrqObj");
+        gen_tab(MaoZeDong_FreObj.freq, "MaoZeDong_FreObj");
+
+        table_sort();
+
+
+
+        $("td").bind("click", function () {
+            $(this).toggleClass("hili");
+            var txt = $("#out").val();
+            var val = $(this).text();
+            var idx = $(this).parentsUntil("tbody").index();
+            var distot = 0, totfrq = 0;
+            if ($.isNumeric(val)) {
+                var distot = $(this).parentsUntil("table").parent().find(".distot").text();
+
+                var totfrq = $(this).parentsUntil("table").parent().find(".totfrq").text();
+                distot = 100 * parseInt(idx) / parseInt(distot);
+                totfrq = 100 * parseInt(val) / parseInt(totfrq);
+                distot = distot.toFixed(2) + "%";
+                totfrq = totfrq.toFixed(2) + "%";
+            }
+            $("#out").val(txt + "\n" + val + ",distot=" + distot + ",totfrq=" + totfrq);
+        });
+
+
+    })
+</script>

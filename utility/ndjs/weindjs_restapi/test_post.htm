@@ -1,0 +1,60 @@
+<html>
+
+<head>
+    <script src="https://wdingbox.github.io/ham12/jq/jquery-2_1_3.min.js"></script>
+</head>
+
+<script>
+    var test_data = { test: 100, name: "pap" }
+
+    $(function () {
+        $("#post_test").bind("click", function () {
+
+            var surl = "http://localhost:8080/echo"
+            $.ajax({
+                type: "POST",
+                dataType: 'text',
+                contentType: "application/json; charset=utf-8",
+                url: surl,
+                data: JSON.stringify(test_data),
+                //username: 'user',
+                //password: 'pass',
+                crossDomain: true,
+                xhrFields: {
+                    withCredentials: false
+                }
+            })
+        })
+
+        $("#test2").bind("click", function () {
+            $.post("http://localhost:8080/echo",
+                function (data) {
+                    $(".result").html(data);
+                });
+        })
+
+        $("#test3").bind("click", function () {
+            $.post("http://localhost:8080/echo",
+                test_data
+            ).done(function (ret) {
+                console.log(ret)
+            })
+        })
+    })
+</script>
+
+<body>
+    <form method="post" action="http://localhost:8080/echo">
+        <input id="test" name="test" value="test from form."></input>
+
+        <button type="submit">submit</button>
+    </form>
+    <p id="post_test">$.ajax</p>
+    <p id="test2">$.post</p>
+    <p id="test3">$.post 3</p>
+
+    <p class="result">...</p>
+
+</body>
+
+</html>

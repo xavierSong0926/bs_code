@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<HTML manifest___xxx="BiblePad-2015.appcache">
+
+<HEAD>
+    <TITLE>bib</TITLE>
+    <META http-equiv="Content-Type" content="text/html;" charset="UTF-8">
+    <META name="viewport" content="width=device-witdh, initial-scale=1, maximum-scale=1, user-scale=0" />
+    <base target="_blank" />
+
+
+
+
+
+
+    <script language="javascript" src="../htmjs/jq/jquery.js" />
+    <script src_test="http://localhost:7778/Jsonpster/" src="http://104.188.182.128:7778/Jsonpster/"></script>
+
+
+    </script>
+    <script type="text/javascript">
+
+        $(function () {
+            var statBible = {
+                "BBE": "4,655,556 b",
+                "CUVS": "3,694,124 b",
+                "H_G": "7,561,287 b",
+                "KJV": "4,615,880 b",
+                "NIV": "4,313,234 b",
+                "CUVpy": "4,305,591 b",
+                "STUS": "3,887,835 b",
+                "WLVS": "2,866,838 b"
+            };
+            //https://wdingbox.github.io/ham12/jsdb/jsBibleTxt/BBE.json.js
+
+            var stb = "";
+            var lanArr = Object.keys(statBible);
+            $.each(lanArr, function (i, slan) {
+                var dir = "fullscripture/";
+                var sf1 = dir + slan + "_loadjson.htm";
+                var sf2 = dir + slan + "_loadjson2.htm";
+
+                var as1 = "<a href='" + sf1 + "'>" + sf1 + "</a>";
+                var as2 = "<a href='" + sf2 + "'>" + sf2 + "</a>";
+                stb += "<tr><td></td><td>" + as1 + "</td><td>" + as2 + "</td>";
+                stb += "<td>" + statBible[slan] + "</td>";
+                stb += "</tr>";
+            });
+            $("#tbd").html(stb);
+            var trs = trs_analist(anar);
+            $("#tbd").append(trs);
+
+
+
+            $("a").each(function (i) {
+                var ref = $(this).attr("href");
+                $(this).text("(" + i + ") " + ref);
+            });
+        });///////
+
+
+        var anar = [
+            "analysis/analysis_Frq_HebrewOT.htm",
+            "analysis/analysis_Frq_HebrewOT_NoMarker.htm",
+            "analysis/analysis_Frq_HebrewOT_grp2.htm",
+            "analysis/analysis_struct.htm",
+        ];
+        function trs_analist(ar) {
+            var trs = "";
+            $.each(ar, function (i, file) {
+                trs += "<tr><td></td><td><a href='" + file + "'>" + file + "</a><td></td></tr>"
+            });
+            return trs;
+        }
+    </script>
+</HEAD>
+
+<BODY>
+
+    <table border="1">
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>localpath</th>
+                <th>url</th>
+                <th>size</th>
+            </tr>
+        </thead>
+        <tbody id="tbd"></tbody>
+    </table>
+    <hr/>
+    <a href="analysis/analysis_struct.htm">analysis_struct.htm</a><br>
+    <a href="analyze_cn_frq/analysis_ChineseCharsFrqObj.htm">analysis_ChineseCharsFrqObj</a><br>
+    <a href=""></a><br>
+    <a href="analyze_cn_frq/frq_analyzer.cn.htm">frq_analyzer.cn</a><br>
+
+    <br /><a href="./sonship/index.htm">ot</a>
+
+    <br /><a href="../../../../../../app/bitbucket/wdingsoft/ctext/main/dwnload/nodjsapp/index.htm">ctext.cn.frq</a><br>
+    <br /><a href="../../../../../../app/bitbucket/wdingsoft/utis/index.htm">ctext.cn.frq</a><br>
+
+
+    <hr />
+    <a href="https://wdingbox.github.io/obi/">https://wdingbox.github.io/obi/</a><br>
+
+    <a href="../../../../../github/wdingbox/obi/index.htm">obi/</a><br>
+    <a href="../../../../../github/wdingbox/obi/index.htm">obi/</a><br>
+    http://104.188.182.128:7778/Jsonpster/
+
+</BODY>
+
+</HTML>

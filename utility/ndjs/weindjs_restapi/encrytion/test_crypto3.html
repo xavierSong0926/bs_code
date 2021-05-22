@@ -1,0 +1,44 @@
+<html>
+
+<head>
+	
+    <title></title>
+    <base target="_blank" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jsencrypt/2.3.1/jsencrypt.min.js"></script>
+    <script>
+        var public_key = '-----BEGIN PUBLIC KEY-----';
+        public_key += 'MFwwDQYJKoZIhvcNAQEBBQADSwAwSAJBAKaOP3kuN2UqTTLSqTTdD3d2HaF9CEUQ';
+        public_key += 'mwv+n5iQ+ufRRGItvAJpxN8vUQxvq/+D/6aAPMt3+j7La+Q4AgPeZLMCAwEAAQ==';
+        public_key += '-----END PUBLIC KEY-----';
+
+        var public_key =`
+        -----BEGIN PUBLIC KEY-----
+MIICIjANBgkqhkiG9w0BAQEFAAOCAg8AMIICCgKCAgEAxYXi56foxwDb9WbcUSqy
+pp/sr4j48inNVb/3bfz7WPrsale9k4v7iOh5sD1r8nF+IsYNTSeqqbZGHguTONCt
+SFGBHoHlDLId3ZcKJrxzgnEYxMIEbfYEHXVp9DsECzzH3VBKwJCXYnSUgXjvkMbP
+qhFRQ9D2V9/ZsndYImb/BdQZ9wR4PI7U53eourbsYEa9pHhNDxRm4Nrmxg+LX8Bj
+qOoU95Nw4LIxx+D9xLAE1aYRSGWM+LbCPESeAK1Jo5p1smpoP655ILbK4IF24WGI
+eYnDbVgmVeENIo6NYIj/oBynZ+Q94rHJXlzxKehAQcJfMsDvCeaCwGnJt+ajkPbz
+0+rKXnJywYojUEBE0pJFn+PyUViv3gU6BQhbUz5pX62yL89RkFb6l92lIrriz0iH
+xvpJlAX3VRDGUMZgVg8dYonIWA0l2JwtYLxOkXK5VtMb9NSJrcghTZDM04UO/fPj
+Y6gA2XYUphwVU+eMtoq5K0guAo+dPJePGrMwWveo7UNWs3TZ4YBGQxcXhWFxyKZK
+yVGJcAqUz7Tb/TTqXEMv5a08clsyJbPsVh3qmHnkZ5tJcZNPiOabSbEeTUbZ8gsk
+XT+LkTG6+pld5eHjnHZOl4fneBYXgTuejZf5Mk8/zZI7FM2DFXv0WlzI+iGjlg8n
+YwFizyF9m0qXtXFRck3Fi4MCAwEAAQ==
+-----END PUBLIC KEY-----
+`
+
+
+        var encrypt = new JSEncrypt();
+        encrypt.setPublicKey(public_key);
+
+        var msg = "TestString"
+        var encrypted = encrypt.encrypt(msg);
+        console.log(msg, encrypted);
+        </script>
+</head>
+
+<body>
+</body>
+
+</html>

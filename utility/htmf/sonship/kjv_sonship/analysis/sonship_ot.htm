@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<HTML manifest___xxx="BiblePad-2015.appcache">
+
+<HEAD>
+    <TITLE>Bii</TITLE>
+    <base target="_blank" />
+    <META http-equiv="Content-Type" content="text/html;" charset="UTF-8">
+    <META name="viewport" content="width=device-witdh, initial-scale=1, maximum-scale=1, user-scale=0">
+
+
+    <link rel="stylesheet" href="./sonship.css">
+    </link>
+
+
+
+    <script src="https://wdingbox.github.io/ham12/jq/jquery-2_1_3.min.js"></script>
+    <script language="javascript" src="../../../../htmjs/jq/table_Indexer.js"></script>
+    <script language="javascript" src="../../../../htmjs/jq/jquery.tablesorter.js"></script>
+    <!--------->
+    <script language="javascript" src="../json/HebrewSonship.json.js"></script>
+    <script language="javascript" src="../json/GreekSonship.json.js"></script>
+    <script language="javascript" src="./sonship.jq.js"></script>
+
+    <style>
+    </style>
+
+
+
+    <script language="javascript">
+        var str="abc ABC";
+        var mat=str.match(/([A-Z]+)/g);
+        console.log(mat[0]);
+
+        $(document).ready(function () {
+            gen_table_ot(HebrewSonship);
+        });/////////////
+    </script>
+
+</HEAD>
+
+<BODY xonbeforeunload="return 'leave?';">
+    <div id="ctrl">
+        <button id="indxer">indxer</button><textarea id='out'></textarea>
+
+    </div>
+
+    <p>Strong's Number H1121 matches the Hebrew בֵּן (ben),
+        which occurs 4,906 times in 3,654 verses in the Hebrew concordance of the KJV.
+    </p>
+    <p>Strong's Number G5207 matches the Greek υἱός (huios),
+        which occurs 382 times in 348 verses in the Greek concordance of the KJV.
+        son-of-x=219,
+        so-of-God=50. so-of-living-God=2. son-of-Father=2
+        son-of-man/men=102
+    </p>
+
+
+    <div id="holder">-</div>
+</BODY>
+
+</HTML>
+<script type="text/javascript">
+    var patternFreq = {
+        "NT": {
+            "strongCode": "G5207",
+            "occurs": 382,
+            "verses": 348,
+            "son-of": {
+                "frq": 219,
+                "son-of-God": {
+                    "frq": 50,
+                    "son-of-living-God": {
+                        "frq": 2
+                    },
+                    "son-of-Father": {
+                        "frq": 2
+                    },
+
+                },
+                "son-of-man_men": {
+                    "frq": 102
+                }
+            }
+
+        },
+        "OT": {
+            "strongCode": "H1121",
+            "occurs": 4906,
+            "verses": 3654,
+            "son-of": {
+                "frq": 3250,
+                "son-of-God": {
+                    "frq": 5
+                }
+            }
+        }
+    }
+</script>

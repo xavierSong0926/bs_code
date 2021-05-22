@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<HTML manifest___xxx="BiblePad-2015.appcache">
+
+<HEAD>
+    <TITLE>rester</TITLE>
+    <META http-equiv="Content-Type" content="text/html;" charset="UTF-8">
+    <META name="viewport" content="width=device-witdh, initial-scale=1, maximum-scale=1, user-scale=0">
+
+
+
+
+    <script>
+        var gStartDate = new Date();
+        console.log(gStartDate.toString() + " ------ start load");//
+    </script>
+
+
+
+    <script language="javascript" src="../../htmjs/jq/jquery.js">
+    </script>
+    <script language="javascript" src="../../htmjs/jq/table_Indexer.js">
+    </script>
+    <script language="javascript" src="../../htmjs/jq/jquery.tablesorter.js"></script>
+
+
+
+
+    <script>
+        console.log((new Date()).toString());//
+    </script>
+    <style>
+        body {
+    background-color: black;
+    color: white;
+    width:100%;
+	font-size: 100%;
+
+    padding:0px 0px 0px 0px;
+    margin: 0px 0px 0px 0px;
+
+    font-family: 'Times New Roman';
+}
+td:nth-child(2){
+    text-align: right;
+}
+.ciumatch0{
+    background-color:green ;
+}
+.ciumatch1{
+    background-color: blue;
+}
+.ciumatch2{
+    background-color: gray;
+}
+#outx{
+    position: absolute;
+    right: 20px;
+}
+.hili{
+    background-color: #aaaa00;
+}
+.hili2{
+    background-color: red;
+}
+.empty{
+    background-color:gray;
+}
+</style>
+
+
+
+
+    <script language="javascript">
+        var obj =
+        {
+            "chap01": {
+                "מֶ֫לֶךְ": [
+                    "king",
+                    "king.mp3",
+                    "4427",
+                    "362",
+                    "12",
+                    "n",
+                    "77777 sdfgsd"
+                ],
+                "מַלְכָּה": [
+                    "queen",
+                    "queen.mp3",
+                    "4436",
+                    "35",
+                    "1",
+                    "n",
+                    ""
+                ]
+            }
+        }
+        $(document).ready(function () {
+            var s = "var";
+            s += "VocabChapsBuf=\n" + JSON.stringify(obj, null, 4);
+            $("#out").val(s);
+
+            $("#indxer").click(function () {
+                window.open(getUrl());
+            });
+
+        });/////////////
+        function getUrl() {
+            var s = $("#out").val();
+
+            s = encodeURI(s);//not work.
+            console.log(s);
+            s = encodeURIComponent(s);//ok! See srv api decodeURIComponent.
+            console.log(s);
+
+            var fname = $("#fname").val();// "../out/tmp/xyz.js";
+            var url = $("#retapi").val();//"localhost:7778/save2afile?";
+            url += "?fname=" + fname + "&dat=var xyz=" + s;
+
+            //var spec="location=yes,height=570,width=520,scrollbars=no,top=11,toolbar=yes,menubar=yes,titlebar=yes'";
+            $("#urlstr").val(url);
+            return url;
+            //window.open(url);//,"_blank",spec);
+        }
+////////////////
+
+    </script>
+
+</HEAD>
+
+<BODY xxxonload="body_onload();">
+    <pre>
+  /////////////////////////
+  // Server Site:
+  // nodemon a.node.js
+  //
+  // client site:
+  // open restapi_tester.htm
+  // then click the  button.
+</pre>
+
+    <form action="http://localhost:7778/save2afile/" type="post">
+        <a>Text to be saved in server site</a><br>
+        <textarea id="out" name="dat" rows="20" cols="100" title="text to be saved in server site."></textarea><br>
+
+        <a>Filename to be saved in server stie:</a><br>
+        <input size=100 id="fname" name="fname" value="../out/tmp/xyz.js"></input><br>
+        <a>Rest api to be used:</a><br>
+        <input size=100 id="retapi" value="localhost:7778/save2afile" /><br>
+        <button id="GetURL" onclick="getUrl();">GetURL</button><br>
+        <textarea id="urlstr" cols="100"></textarea><br>
+        <button id="indxer">run</button>
+        <input type="submit" value="Submit">
+    </form>
+
+
+
+
+
+    <hr />
+
+    <button id="jsonptest" onclick="jsonptester();">jsonptest</button>
+
+
+
+
+</BODY>
+
+</HTML>
+<script type="text/javascript">
+    function ajax_save2afile(fname, jsonDat) {
+        var url = "localhost:7778/save2afile";
+        //var url="weindjs_restapi_tester.htm";
+        $.ajax({
+            url: url,
+            type: "post",
+            data: {
+                filename: fname,
+                txt: JSON.stringify(jsonDat)
+            },
+            crossDomain: true,
+            cache: false,
+            async: false,
+            success: function (data, status) {
+                alert(data);
+
+            }
+        });/////ajax
+    };
+</script>
+
+<script type="text/javascript">
+    function clientSiteFuntion(obj) {
+        alert(obj);
+        console.log(obj);
+    }
+
+    function jsonptester() {
+        var url = "http://localhost:7778/";
+        var s = document.createElement("script");
+        s.src = url;
+        alert(url)
+        document.body.appendChild(s);
+    };
+</script>

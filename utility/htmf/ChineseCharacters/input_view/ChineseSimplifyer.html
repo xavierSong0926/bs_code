@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<HTML manifest___xxx="BiblePad-2015.appcache">
+<HEAD>
+    <TITLE>t2s</TITLE>
+    <META http-equiv="Content-Type" content="text/html;" charset="UTF-8">
+	<META name="viewport" content="width=device-witdh, initial-scale=1, maximum-scale=1, user-scale=0">
+
+    <script language="javascript" src="https://wdingbox.github.io/ham12/jq/jquery-2_1_3.min.js"></script>
+    
+
+
+    <script  language="javascript" src="../Pinyin_7kSimplified.js">
+    </script>
+    
+        
+    <script language="javascript" src="../Simplified_Traditionals.js">
+    </script>
+
+    <script language="javascript" src="../CharactersSet.js">
+    </script>
+
+
+
+<style type="text/css">
+
+    #txtar, #txtar2{
+        position:fixed;
+        top:10px;
+        left:10px;
+        height:200px;
+        width:600px;
+        background-color: #eeaaee;
+        font-size: 24px;
+    }
+    #txtar2{
+        top:240px;
+    }
+    #menu{
+        position: fixed;
+        left:10px;
+        top:220px;
+    }
+    #out{
+        margin-top: 500px;
+    }
+</style>
+
+    <script language="javascript">
+
+$(document).ready(function(){
+    latex_test();
+    $(".zi").click(function(){
+        var zi=$(this).text();
+        var va=$("#txtar").val();
+        $("#txtar").val(va+zi);
+        g_inpstr="";
+        //console.log($(this).text());
+    });
+});
+
+function latex_test(){
+
+    var SimplifedUniqArr=Pinyin7kziUti.GetUniqArr();
+    var UniqArr=[], NotInSimplified=[];
+    $.each(Simplified_Traditionals,function(SingleSimplified,chary){
+        if(SimplifedUniqArr.indexOf(SingleSimplified)<0){
+            NotInSimplified.push(SingleSimplified);
+        }
+
+        for(var i=0;i<chary.length;i++){
+          if(Pinyin7kziUti.Latex_Will_Crushed.indexOf(chary[i])>=0) continue;//does not support latex   gkai.
+          if(Pinyin7kziUti.Latex_Will_Missing.indexOf(chary[i])>=0) continue;
+  
+          if(UniqArr.indexOf(chary[i])>=0) continue;
+  
+          UniqArr.push(chary[i]);
+      
+        };//for
+    });
+
+    var NotInSimplifiedStrn="Simplified_Traditionals not in Simplifiled 7k:<br><br>";
+    $.each(NotInSimplified,function(i,Cha){
+        NotInSimplifiedStrn+=""+Cha;
+        if((i+1)%10==0){
+            NotInSimplifiedStrn+="<br><br>";
+        }
+    });
+    NotInSimplifiedStrn+="<hr/>";
+
+    var bug="Copyto .tex to verify printable for CJK.<br><br>";
+    bug+="Total latex-imprintable num:"+Pinyin7kziUti.Latex_Will_Missing.length+":<br><br>";
+
+    for(var i=0; i<Pinyin7kziUti.Latex_Will_Missing.length; i++){
+        bug+= Pinyin7kziUti.Latex_Will_Missing[i]+" - ";
+        if((1+i)%10==0){
+            bug+="<br><br>";
+        };
+    };
+    bug+="<br><br>=========<br><br>";
+    bug+="Total Uniq Tradition Characters size:"+UniqArr.length+":<br><br>";
+    for(var i=0; i<UniqArr.length; i++){
+        bug+= "<a class='zi'>"+UniqArr[i]+"</a> - ";
+        if((1+i)%10==0){
+            bug+="<br><br>";
+        };
+    };
+
+
+    $("#out").html(NotInSimplifiedStrn+bug);    
+}
+function Simplifyer(){
+    function canTraditionalsMatchSimiplified(zitra){
+        var ret={mode:-1, out:"", inp:zitra};
+        var chcod = zitra.charCodeAt(0);//english ascii. not chinese.
+        if(chcod<255) {
+            ret.mode=1;
+            return ret;//ascii
+        }
+        $.each(Simplified_Traditionals,function(simp,TraditionalStr){
+            if(TraditionalStr.indexOf(zitra)>=0){
+                ret.mode=2;//tradi to simp match.
+                ret.out=simp;
+                return false;//break each
+            }
+        });
+        if(ret.mode===2) return ret;
+        $.each(Pinyin7kzi,function(py,zistrn){
+            if(zistrn.indexOf(zitra)>=0){
+                ret.mode=3;//same as input.
+                return false;//break each
+            }
+        });
+        if(ret.mode===3) return ret;
+        ret.mode=4;
+        return ret;
+    }
+    function getUnmatchedTraditioals(txt){
+        var arr=[];
+        for(var i=0; i<txt.length; i++){
+            var ret=canTraditionalsMatchSimiplified(txt[i]);
+            if(ret.mode>=2){
+                //if( arr.indexOf(txt[i])<0){
+                    arr.push(ret);
+                //}
+            }
+        }
+        return arr;
+    }
+    function getUniqRet(retArr, mode){
+        var uniqArr=[];
+        $.each(retArr,function(i,ret){
+            if(ret.mode===mode){
+                var comb=ret.inp+":"+ret.out+", ";
+                if( uniqArr.indexOf(comb)<0){
+                    uniqArr.push(comb);
+                }
+            }
+        });
+        return uniqArr;
+    }
+    function getShowUniqStr(uniqArr){
+        var outs="";
+        $.each(uniqArr,function(i,str){
+            outs+=str;
+            if((1+i)%10===0){
+                outs+="<br>";
+            }
+        });
+        return outs;
+    }
+    
+    var txt=$("#txtar").val();
+    var outs="";
+
+    var retArr=getUnmatchedTraditioals(txt);
+
+    outs+="<br><br>not matched at all:<br>";
+    outs+=getShowUniqStr(getUniqRet(retArr,4));
+
+    outs+="<br><br>traditionals converted to simplied:<br><br>";
+    outs+=getShowUniqStr(getUniqRet(retArr,2));
+
+    outs+="<br><br>input are simplied:<br>";
+    outs+=getShowUniqStr(getUniqRet(retArr,3));
+
+
+
+
+    $("#out").html(outs);
+
+
+    $("#txtar2").val(Traditional2Symplified_Strn(txt));
+
+
+}
+
+
+
+
+    </script>
+</HEAD>
+<BODY>
+
+<textarea id="txtar"></textarea>
+<div id="menu">
+  <button id="Simplifyer" onclick="Simplifyer()">Traditions To Simplified V</button>  
+  <a href="./ChineseSimplified7kInput.html" target="_blank">chinese input</a>
+</div>
+
+<textarea id="txtar2"></textarea>
+
+<div id="out">-</div>
+</BODY>
+</HTML>

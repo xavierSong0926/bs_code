@@ -1,0 +1,126 @@
+<HTML>
+
+<HEAD>
+    <TITLE>bPlace</TITLE>
+    <base target="_blank" />
+    <META http-equiv="Content-Type" content="text/html;" charset="UTF-8">
+    <META name="viewport" content="width=device-witdh, initial-scale=1, maximum-scale=1, user-scale=0">
+
+
+    <link rel="stylesheet" xhref="./BibleInputMethod.css">
+    </link>
+
+
+
+
+
+    <scriptxx language="javascript" src="../../htmjs/jq/jquery.js"></scriptxx>
+    <script src="https://wdingbox.github.io/ham12/jq/jquery-2_1_3.min.js"></script>
+    <script language="javascript" src="../../htmjs/jq/table_Indexer.js"></script>
+    <script language="javascript" src="../../htmjs/jq/jquery.tablesorter.js"></script>
+    <script src="../../../../bible_obj_lib/jsdb/cc/z2g/jianfan/Traditional2SimplifiedObj.json.js"></script>
+
+    <!--------->
+
+    <script src="../../../../bible_obj_lib/jsdb/jsBibleObj/CUVS.json.js"></script>
+    <script src="../../../../bible_obj_lib/jsdb/jsBibleObj/NIV.json.js"></script>
+    <script src="./ReplaceNamesWithEng_PeoplePlace.json.js"></script>
+
+
+    <style>
+        table {
+            border-collapse: collapse;
+        }
+
+        th,
+        .hili {
+            background-color: darkgray;
+        }
+    </style>
+
+
+
+    <script language="javascript">
+
+
+        $(function () {
+            replaceOrder(CUVS, NIV, ReplaceNamesWithEng_PeoplePlace);
+            gen_tab(CUVS, NIV);
+        });
+
+        function replaceText(engtxt, chntxt, replacerObj) {
+            replacerObj["耶和华"] = "HYWY";
+            var additionObj={
+                "耶和华":"HYWY",
+                "挪亚" : "Noah",
+                "希底结":"Tigris",
+            }
+            var chnKeyArr = Object.keys(replacerObj);
+            chnKeyArr.forEach(function (chkey) {
+                var engKey = replacerObj[chkey];
+                var engreg = new RegExp(engKey, "g");
+                var chnreg = new RegExp(chkey, "g");
+                var mat = engtxt.match(engreg);
+                if (!!mat && mat.length > 0) {
+                    chntxt = chntxt.replace(chnreg, ` ${engKey} `);
+                }
+            });
+            if (chntxt && chntxt.length > 1) {
+                chnKeyArr.forEach(function (chkey) {
+                    if (chkey.length > 1) {
+                        var engKey = replacerObj[chkey];
+                        var chnreg = new RegExp(chkey, "g");
+                        chntxt = chntxt.replace(chnreg, ` ${engKey} `);
+                    }
+                });
+            }
+            return chntxt;
+        }
+        function replaceOrder(cuv, niv, replcer) {
+            var out = {};
+            Object.keys(niv).forEach(function (book) {
+                console.log(book);
+                Object.keys(niv[book]).forEach(function (chpt) {
+                    Object.keys(niv[book][chpt]).forEach(function (vrs, i) {
+                        var engtxt = niv[book][chpt][vrs];
+                        var chntxt = cuv[book][chpt][vrs];
+                        //console.log(book,chpt,vrs)
+                        //console.log(engtxt);
+                        //console.log(chntxt);
+                        var txt = replaceText(engtxt, chntxt, replcer);
+                        cuv[book][chpt][vrs] = txt;
+                        //console.log(txt);
+                    });
+                });
+            });
+            //var sout = JSON.stringify(cuv, null, 4);
+            //$("#out").val(sout);
+        }
+        function gen_tab(cuv, niv) {
+            var st = "<table border='1'>";
+            var idx = 0;
+            Object.keys(niv).forEach(function (book) {
+                console.log(book);
+                Object.keys(niv[book]).forEach(function (chpt) {
+                    Object.keys(niv[book][chpt]).forEach(function (vrs, i) {
+                        var engtxt = niv[book][chpt][vrs];
+                        var chntxt = cuv[book][chpt][vrs];
+                        st += `<tr><td>${idx++}<td><td>${chntxt}<br>${engtxt}</td></tr>`;
+                    });
+                });
+            });
+            st += "</table>";
+            $("#tab").html(st);
+        }
+    </script>
+</HEAD>
+
+<body>
+    <button onclick="replaceOrder();">replaceOrder</button>
+    <button id="indxer">indxer</button>
+    <textarea id="out">...</textarea>
+    <hr />
+    <div id="tab">...</div>
+</body>
+
+</HTML>

@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<HTML manifest___xxx="BiblePad-2015.appcache">
+<HEAD>
+    <TITLE>cc</TITLE>
+    <META http-equiv="Content-Type" content="text/html;" charset="UTF-8">
+	<META name="viewport" content="width=device-witdh, initial-scale=1, maximum-scale=1, user-scale=0">
+
+    <script language="javascript" src="../../../_js/jquery.min.js""></script>
+    
+
+
+    <script  language="javascript" src="../Pinyin_7kSimplified.js">
+    </script>
+    
+        
+    <script language="javascript" src="../Simplified_Traditionals.js">
+    </script>
+
+
+
+<style type="text/css">
+
+    #txtar{
+        position:fixed;
+        top:0px;
+        left:300px;
+        height:200px;
+        width:300px;
+        background-color: #eeaaee;
+        font-size: 24px;
+
+    }
+</style>
+
+    <script language="javascript">
+
+$(document).ready(function(){
+latex_test();
+    $(".zi").click(function(){
+        var zi=$(this).text();
+        var va=$("#txtar").val();
+        $("#txtar").val(va+zi);
+        g_inpstr="";
+        //console.log($(this).text());
+    });
+    
+});
+
+function latex_test(){
+
+    var UniqArr=[];
+    $.each(Pinyin7kzi,function(k,chary){
+
+      for(var i=0;i<chary.length;i++){
+        if(Pinyin7kziUti.Latex_Will_Crushed.indexOf(chary[i])>=0) continue;//does not support latex gkai.
+        if(Pinyin7kziUti.Latex_Will_Missing.indexOf(chary[i])>=0) continue;
+
+        if(UniqArr.indexOf(chary[i])>=0) continue;
+
+        UniqArr.push(chary[i]);
+    
+      };//for
+
+
+    });
+
+
+    var bug="Copyto .tex to verify printable for CJK.<br><br>";
+    bug+="Total imprintable num:"+Pinyin7kziUti.Latex_Will_Missing.length+":<br><br>";
+
+    for(var i=0; i<Pinyin7kziUti.Latex_Will_Missing.length; i++){
+        bug+= Pinyin7kziUti.Latex_Will_Missing[i]+" - ";
+        if((1+i)%10==0){
+            bug+="<br><br>";
+        };
+    };
+    bug+="<br><br>=========<br><br>";
+    bug+="Total Uniq Simplified Characters printable size:"+UniqArr.length+":<br><br>";
+    for(var i=0; i<UniqArr.length; i++){
+        bug+= "<a class='zi'>"+UniqArr[i]+"</a> - ";
+        if((1+i)%10==0){
+            bug+="<br><br>";
+        };
+    };
+
+
+    $("#out").html(bug);    
+}
+
+    </script>
+</HEAD>
+<BODY>
+
+<textarea id="txtar"></textarea>
+
+<div id="out">-</div>
+</BODY>
+</HTML>

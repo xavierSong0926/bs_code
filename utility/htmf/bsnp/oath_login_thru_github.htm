@@ -1,0 +1,65 @@
+<html>
+
+<head>
+    <title>Github Login</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" />
+</head>
+
+<body>
+    <div class="container">
+        <h1 style="text-align: center;">Github Authentication</h1>
+        <div id="message"></div>
+        <form id="form" autocomplete="off">
+            <div class="form-group">
+                <input type="text" id="username" placeholder="username" class="form-control" required  value="wdingbox" />
+            </div>
+            <div class="form-group">
+                <input type="password" id="password" placeholder="password" class="form-control" required value="3edcFDSA" />
+            </div>
+            <div class="form-group">
+                <button class="btn btn-danger">SignIn</button>
+            </div>
+        </form>
+        <div id="result"></div>
+    </div>
+</body>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script xxsrc="script.js">
+    $(document).ready(function () {
+        $("#form").submit(function (event) {
+            event.preventDefault()
+            var username = $("#username").val()
+            var password = $("#password").val()
+
+            let auth = btoa(username + ":" + password);
+
+
+            fetch("https://api.github.com/user", {
+                headers: {
+                    'Authorization': 'Basic ' + auth
+                }
+            })
+                .then(function (data) {
+                    return data.json()
+                })
+                .then(function (data) {
+                    $("#username").val("")
+                    $("#password").val("")
+                    if (data.message == "Bad credentials") {
+                        alert("wrong credentials")
+                    }
+                    else {
+                        var result = `<img class="img-thumbnail ml-4" width="100" height="100" src="${data.avatar_url}"/><br><h1>${data.login}</h1><br><a target="_blank" href="${data.html_url}"><button class="btn btn-success">See Profile</button></a>`
+                        $("#result").html(result)
+                    }
+                    console.log(data)
+                })
+        })
+    })
+
+
+
+
+</script>
+
+</html>

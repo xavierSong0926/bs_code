@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<body>
+
+<h2>JavaScript Regular Expressions</h2>
+<p>Click the button to do a case-insensitive search for "w3schools" in a string.</p>
+
+<button onclick="myFunction()">Try it</button>
+
+<p id="demo"></p>
+
+<script>
+function myFunction() {
+  var str = "https://github.com/wdingbox/Bible_obj_weid.git";
+  
+  var reg = new RegExp(/^(https\:\/\/github\.com\/)(\w+)\/(\w+)(\.git)$/)
+  
+  var result = str.match(reg);
+  console.log(result)
+  document.getElementById("demo").innerHTML = result;
+}
+</script>
+
+</body>
+</html>

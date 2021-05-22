@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<HTML manifest___xxx="BiblePad-2015.appcache">
+<HEAD>
+    <TITLE>cuvs</TITLE>
+    <META http-equiv="Content-Type" content="text/html;" charset="UTF-8">
+	<META name="viewport" content="width=device-witdh, initial-scale=1, maximum-scale=1, user-scale=0">
+
+
+    <script>    
+    var gStartDate = new Date();
+    console.log(  gStartDate.toString() +" ------ start load");//
+    </script>   
+
+
+
+    <script language="javascript" src="../htmjs/jq/jquery.js">
+    	var I={};
+    </script>
+
+
+    <script language="javascript" src="../ndjs/out/tmp/merged.js"></script>
+    
+
+    
+
+  
+     
+    </script>
+    
+    
+
+
+
+
+
+    
+    <script>    
+    console.log(  (new Date()).toString() );//
+    </script>
+<style>
+body {
+    background-color: black;
+    color: white;
+    width:100%;
+	font-size: 100%;
+	
+    padding:0px 0px 0px 0px;
+    margin: 0px 0px 0px 0px;	
+
+    font-family: 'Times New Roman';
+}
+</style>
+
+
+
+    
+<script language="javascript">
+
+$(document).ready(function(){
+
+var a={};
+a._1Jn={_1qw:"1a",2:"2b"}
+console.log(a);
+
+
+var bjson={};
+
+var trs="", idx=0;
+$.each(P,function(key,str){
+	trs+="<tr><td>"+(++idx)+"</td>";
+	trs+="<td>"+key+"</td><td>"+str+"</td>";
+	trs+="</tr>";
+
+
+	var mat=key.match(/([_0-9a-zA-Z]{4})([0-9]{1,})[_]([0-9]{1,})/);
+	if(mat){
+		console.log(mat);
+		if(!bjson[mat[1]]) bjson[mat[1]]={};
+		if(!bjson[mat[1]][mat[2]])bjson[mat[1]][mat[2]]={};
+		bjson[mat[1]][mat[2]][mat[3]]=str;
+	}
+
+});
+$("#vbibtxt").html(trs);
+$("#out").val("var PINYIN=\n"+JSON.stringify(bjson,null,2));
+
+
+});/////////////
+
+</script>
+
+</HEAD>
+<BODY xxxonload="body_onload();">
+
+<textarea id="out"></textarea>
+
+<table  border="1">
+	<tbody id='vbibtxt'></tbody>
+        
+ </table>
+
+
+
+</BODY>
+</HTML>
+

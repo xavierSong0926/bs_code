@@ -1,0 +1,291 @@
+<html>
+
+<head>
+    <title>regexp</title>
+    <base target="_blank" />
+    <META http-equiv="Content-Type" content="text/html;" charset="UTF-8">
+    <META name="viewport" content="width=device-witdh, initial-scale=1, maximum-scale=1, user-scale=0">
+
+
+    <link rel="stylesheet" Xhref="./BibleStudyNotePad.css?v=2020dec21b">
+    </link>
+
+    <!-------------------------------------------->
+    <!---- Insert this before scripts import; then restor back later -->
+    <script>//if (typeof module === 'object') { window.module = module; module = undefined; }</script>
+
+    <!-------------- jq --------------------->
+    <script ____src="./doc_files/jquery-2_1_3.min.js"></script>
+    <script src="https://wdingbox.github.io/ham12/jq/jquery-2_1_3.min.js"></script>
+    <script xxxxxxxsrc="http://localhost:7878/assets/ckeditor/adapters/jq/jquery-2_1_3.min.js"
+        note="selfseversite"></script>
+    <!-------------- ckeditor only--------------------->
+    <script src="../../../assets/ckeditor/ckeditor.js"></script>
+    <script src="../../../assets/ckeditor/samples/old/sample.js"></script>
+    <link href="../../../assets/ckeditor/samples/old/sample.css" rel="stylesheet">
+
+
+    <script ___src="http://localhost:7878/assets/ckeditor/ckeditor.js" note="selfseversite"></script>
+    <script ___src="http://localhost:7878/assets/ckeditor/samples/old/sample.js"></script>
+    <!-------------------------------------------->
+    <!----- Insert this line after script imports -->
+    <script language="javascript"
+        src="https://wdingbox.github.io/bible_obj_lib/jsdb/jsBibleStruct/All_Max_struct_json.js"></script>
+
+    <script>//if (window.module) module = window.module;</script>
+    <script language="javascript" src="./BibleStudyNotePad.js?v=20.12.4"></script>
+    <!-------------------------------------------->
+    <style>
+        body {
+            background-color: aliceblue;
+        }
+
+        table {
+            padding: 10px 10px 10px 10px;
+            margin: 10px 10px 10px 10px;
+            /*font-size:xx-large;*/
+        }
+
+        textarea,
+        input {
+            width: 100%;
+            font-size: xx-large;
+        }
+
+        .hili {
+            background-color: red;
+        }
+    </style>
+</head>
+
+<body>
+
+
+
+    <form action="" method="post">
+
+        <label>String:</label>
+        <textarea id="destr" list="hist_data" value="" placeholder="test string">
+        </textarea>
+
+        <label>RegExp: </label>
+        <textarea id="regex" value="">([1-3A-Z][a-zA-Z][a-z][0-9]+[\:][0-9]+)</textarea>
+
+        <label>Replace: </label>
+        <textarea id="repls"><a href="#$1">$1</a></textarea>
+    </form>
+    <p>
+        <button onclick="test_Match();">Match</button>
+        <button onclick="localStorage.clear();">ClearStorage</button>
+
+    </p>
+
+
+
+
+    <div id="footer">
+        <hr>
+        <div id="otable_destr"></div>
+        <div id="otable_regex"></div>
+        <div id="otable_repls"></div>
+        <textarea id="txtarea" rows="25"></textarea>
+    </div>
+
+
+
+
+
+    <script>
+        function LocalStrorageHistory(iid) {
+            this.m_inputID = "#" + iid
+            this.m_outputTableID = "#otable_" + iid
+            this.m_obj = {}
+        }
+        LocalStrorageHistory.prototype.set_default = function (ar) {
+            if (!ar | ar.length === 0) return
+            for (var i = 0; i < ar.length; i++) {
+                this.m_obj[ar[i]] = 1
+            }
+        }
+        LocalStrorageHistory.prototype.set = function (val) {
+            if (val.trim().length === 0) return alert("empty input")
+            this.m_obj[val] = 1
+            localStorage.setItem(this.m_outputTableID, JSON.stringify(this.m_obj))
+            this.gen_table()
+        }
+        LocalStrorageHistory.prototype.gen_table = function () {
+            var str = localStorage.getItem(this.m_outputTableID)
+            if ("undefined" !== str && str) {
+                this.m_obj = JSON.parse(str)
+            }
+            if (!this.m_obj) {
+                return
+            }
+
+            var _THIS = this
+            var strs = ""
+            Object.keys(this.m_obj).forEach(function (str, i) {
+                if (!str || str.length === 0) {
+                    delete _THIS.m_obj[str]
+                    return;
+                }
+                var enc = Uti.htmlEncode(str)
+                strs += `<tr><th>${i}</th><td>${enc}</td></td>`
+            })
+
+            $(this.m_outputTableID).html(`<table border='1'>${strs}</table>`).find("td").bind("click", function () {
+                $(this).parentsUntil("table").find(".hili").removeClass("hili")
+                $(this).addClass("hili")
+                var tx = $(this).text()
+                $(_THIS.m_inputID).val(tx)
+            })
+            $(this.m_outputTableID).find("th").bind("click", function () {
+                var str = $(this).next().text()
+                delete _THIS.m_obj[str]
+                $(this).empty()
+                localStorage.setItem(_THIS.m_outputTableID, JSON.stringify(_THIS.m_obj))
+            })
+        }
+
+        var defaultOj_repl = { "$1": 1, '<a href=\"#$1\">$1</a>': 1 }
+        var localstrorageHistory_destr = new LocalStrorageHistory("destr")
+        var localstrorageHistory_regex = new LocalStrorageHistory("regex")
+        var localstrorageHistory_repls = new LocalStrorageHistory("repls")
+
+        localstrorageHistory_repls.set_default(["$1", '<a href=\"#$1\">$1</a>'])
+        localstrorageHistory_regex.set_default(["([1-3A-Z][a-zA-Z][a-z][0-9]+[\:][0-9]+)", "<a href=[\"\'][\#]([1-3A-Z][a-zA-Z][a-z][0-9]+[\:][0-9]+)[\"\']>\\1<[\/]a>"])
+        localstrorageHistory_destr.set_default(["Psm33:6, Psm104:30, Rev14:7, Psm90:2, Neh9:6, Jer32:17, Psm136:5, 1Jn1:1, ", '<a href="#1Jn1:1">1Jn1:1</a>, Act17:24, Rev3:14, Isa42:5, Job38:4, <a href="#2Pe3:5">2Pe3:5</a>, Mak13:19, Rev22:13, <a href="#1Ch16:26">1Ch16:26</a>, Rom1:19-Rom1:20, Isa44:24, Psm134:3, Psm124:8, Heb11:3, Rev10:6, Pro8:22-Pro8:30, <a href="#1Co8:6">1Co8:6</a>,'])
+
+
+
+
+
+        function test_Match() {
+            var str = $("#destr").val()
+            var reg = $("#regex").val()
+            var rpl = $("#repls").val()
+            console.log(str)
+
+            localstrorageHistory_destr.set(str)
+            localstrorageHistory_regex.set(reg)
+            localstrorageHistory_repls.set(rpl)
+
+            var ret = txt = str
+
+            var reg = new RegExp(reg, "g")
+            var srr = txt.search(reg)
+            if(srr){
+                console.log(srr);
+            }
+
+            var mat = txt.match(reg)
+            if (mat) {
+                ret += `\n\nMatch:\n${JSON.stringify(mat, null, 4)}`
+                console.log("mat:", mat)
+            }
+            txt = txt.replace(reg, rpl)
+            ret += "\n\nreplace:\n" + txt
+            console.log(ret)
+
+
+            ret += "\n\n convert_std_bcv_in_text_To_unlinked ApiResults:\n" + Uti.convert_std_bcv_in_text_To_unlinked(str)
+
+            ret += "\n\n convert_std_bcv_in_text_To_linked ApiResults:\n" + Uti.convert_std_bcv_in_text_To_linked(str)
+
+            ret += "\n\nhtmlDecode:\n" + Uti.htmlDecode(str)
+
+            ret += "\n\nhtmlEncode:\n" + Uti.htmlEncode(str)
+
+
+            $("#txtarea").val(ret)
+            return ret;
+        }
+
+
+        $(function () {
+            if (typeof (Storage) !== "undefined") {
+                // Code for localStorage/sessionStorage.
+                localStorage.setItem("test", [1, 2])
+                var ar = localStorage.getItem("test")
+                console.log("Storage test: ", ar)
+            } else {
+                // Sorry! No Web Storage support..
+                alert("Sorry, your browser does not support Web Storage...")
+            }
+
+
+            localstrorageHistory_destr.gen_table()
+            localstrorageHistory_regex.gen_table()
+            localstrorageHistory_repls.gen_table()
+
+        })
+
+    </script>
+</body>
+
+</html>
+<script>
+
+</script>
+<script>
+    $(function () {
+        var str = `, <a href="#Nah2:10">Nah2:10</a>, <a href="#Isa45:18">Isa45:18</a>, <a href="#Psm33:6">Psm33:6</a>, <a href="#Job26:14">Job26:14</a>, <a href="#Jer4:23">Jer4:23</a>, <a href="#Isa40:12">Isa40:12</a> - <a href="#Isa40:14">Isa40:14</a>, <a href="#Psm104:30">Psm104:30</a>`
+
+        function test(str) {
+            var bcv = "[1-3A-Z][1-z][0-9]+[\s]*\:[0-9]+"
+            var reg = new RegExp("[\<]a href=[\"\'][\#]([1-3A-Z][1-z][0-9]+[\s]*\:[0-9]+)[\"\'][\>]\1[\<][\/]a[\>]", "g")
+            var mat = str.match(reg)
+            if (mat) {
+                console.log("mat:", mat)
+            }
+            var ret = str.replace(reg, "$1")
+            console.log(ret)
+            return ret;
+        }
+        var ret = test(str)
+        console.log("ret", ret)
+
+
+        function test1() {
+            var str = "#1Jb26:7=1Jb26:744=1Jb:744";
+            var reg = new RegExp("([1-3A-Z][1-z][0-9]*[\:][0-9]*)", "g")
+            var mat = str.match(reg)
+            if (mat) {
+                console.log("test1 mat:", mat)
+            }
+        }
+        test1()
+        function test2() {
+            var str = "#1Jb26:7=1Jb2:744";
+            var reg = new RegExp("([1-3A-Z][1-z][0-9]{1,}[\:][0-9]{1,})", "g")
+            var mat = str.match(reg)
+            if (mat) {
+                console.log("test2 mat:", mat)
+            }
+        }
+        test2()
+        function test3() {
+            var str = "#1Jb26:7=1Jb26:7k44";
+            var reg = new RegExp("([1-3A-Z][1-z][0-9]{1,}[\:][0-9]{1,})\=\1", "g")
+            var mat = str.match(reg)
+            if (mat) {
+                console.log("test3 mat:", mat)
+            }
+        }
+        test3()
+        function test4() {
+            var str = " axaxa, bxbxb and cxcxc.";
+            var reg = new RegExp("([a-c])x\1x\1", "g")
+            var mat = str.match(reg)
+            if (mat) {
+                console.log("test4 mat:", mat)
+            }
+        }
+        test4()
+
+
+
+
+
+    })
+</script>

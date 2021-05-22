@@ -1,0 +1,693 @@
+body {
+    background-color: black;
+    color: white;
+    width: 100%;
+    font-size: 100%;
+
+    padding: 0px 0px 0px 0px;
+    margin: 0px 0px 0px 0px;
+
+    font-family: 'Times New Roman';
+}
+
+
+
+
+   
+
+    #menuContainer,
+    #MainMenuToggler {
+        position: fixed;
+        right: 5px;
+        opacity: 100;
+
+    }
+
+    #menuContainer {
+        top: 30px;
+
+        overflow: visible;
+        display: block;
+
+        height: 25px;
+        width:350px;
+    }
+    .menuContainer_red{
+        background-color: red;
+    }
+    .menuContainer_yellow{
+        background-color: yellow;
+    }
+    .menuContainer_green{
+        background-color: green;
+    }
+
+
+
+
+    #MainMenuToggler {
+        display: block;
+        white-space: nowrap;
+        
+        top: 1px;
+        height: 30px;
+        width: 350px;
+        background: #5F95FC;
+    }
+    #MainMenuToggler span{
+        display: inline-block; 
+       
+        text-align: center;
+        background-color: gray;
+        width: 30px;
+        height: 19px;
+
+        padding: 0px 0px 0px 0px;
+        margin: 0px 0px 0px 0px;
+        border: .1px solid black;
+        cursor: pointer;
+    }
+
+
+    #GroupsContainer{
+        background-color: darkcyan;
+        margin-top: 5px;
+    }
+    
+    .GrpMenuItemHili{
+        color:black;
+        background-color: gray;
+    }
+    
+   
+    .GrpMenu{
+        background-color: gray;
+        display:none;
+        width:350px;
+    }
+   
+
+    #repopath, #repodesc{
+        width:100%;
+    }
+    #repository_assitance, #repository_description, .StorageRepo_Signout{
+        float:right;
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+   
+
+    .hili {
+        background-color: red;
+    }
+   
+  
+
+    .hiliScroll2View {
+        border: 3px solid yellow;
+    }
+    .hiliVrsTxt {
+        background-color: #a00000;
+        padding-bottom:2px;
+        border: 1px solid gold;
+    }
+
+    .editing {
+        border: 3px solid gold;
+        color: black;
+        background-color: cornsilk;
+
+        width:100%;
+        height:330px;
+        display:block;
+        overflow: scroll;
+    }
+
+    .edit_keydown {
+        border: 3px solid red;
+    }
+
+    .matInSvr {
+        background-color: chartreuse;
+        color: black;
+    }
+    .matInPage{
+        background-color: rgb(199, 187, 7);
+    }
+    .SearchStrnInPage{
+        background-color: rgb(199, 187, 7);
+    }
+
+    .matNextIdx {
+        border: 5px solid red;
+    }
+
+   
+    .e_EditableDoc {
+        border : 1px solid lightcyan;
+    }
+
+    
+
+    sub {
+        font-size: 8px;
+    }
+
+    .grayout {
+        color: gray;
+    }
+
+    .jw {
+        background-color: brown;
+    }
+
+    .txe_Subtitle{
+        display: inline;
+        font-weight: bold;
+        font-size: xx-large;
+        background-color: rgb(243, 125, 217);
+        color:rgb(87, 84, 84)
+    }
+    
+
+    div.tx[contenteditable], a.tx[contenteditable] {
+        background-color:wheat;
+        border: 2px solid red;
+        color: black;
+    }
+
+    .txe_Note{
+        background-color:grey;
+    }
+    /*** For ***/
+    
+
+    #minus_ChpVal, #plus_ChpVal{
+   
+        color: black;
+        background-color: rgb(110, 165, 248);
+        cursor: pointer;
+        padding: 0px 5px 3px 5px;
+        margin: 0 0 0 0;
+        text-align: center;
+     
+    }
+
+
+    #Tab_BibleSingleInputKey{
+        background-color: rgb(31, 23, 80);
+    }
+    #DigitOfChapt, #chp_num {
+        background-color: rgb(149, 97, 29); 
+        padding: 0px 3px 3px 3px;
+        margin: 0 0 0 0;
+    }
+    #DigitOfVerse,  #vrs_num {
+        background-color:rgb(99, 120, 6);
+    }
+
+    #chp_num, #vrs_num{
+        display: inline-block; 
+       
+        text-align: center;
+       
+        width: 30px;
+        height: 19px;
+
+        padding: 0px 0px 0px 0px;
+        margin: 0px 0px 0px 0px;
+        
+        cursor: pointer;
+    }
+    .vin{
+        width:20px;
+    }
+    .vinNum{
+        background-color: rgb(163, 17, 207);
+    }
+    #bk_name{
+        background-color: rgb(29, 78, 212);
+        padding: 5px 5px 5px 5px;
+        width: 30px;
+    }
+    .vinCap{
+        
+    }
+   
+    
+    #HorizMenuBar{
+        display: inline;
+        white-space: nowrap;
+    }
+    a[sid]{
+        display: inline-block;
+        position: relative;
+        top:0px;
+        height: 22px;
+        font-size: small;
+        padding: 1px 0px 0px 0px;
+        margin: 0 0 0 0;
+    }
+    #SignOut_repopathname{
+        border-top-width: 2px;
+        border-top-style: solid;
+        border-top-color: rgb(103, 247, 67);
+    }
+
+    .ColorRecentMarks {
+        background-color:cyan;
+    }
+    .HiliSelctedDoc {
+        background-color: cyan;
+    }
+    .HiliSelctedDocFromTag{
+        background-color: orange;
+    }
+
+    button.digit{
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        appearance: none;
+       
+        outline: 0px solid transparent;
+        padding: 0px 0px 0px 0px;
+        margin: 0px 0px 0px 0px;
+        width: 100%;
+        padding: 0;
+        border: none;
+        background: none;
+        font-size: larger;
+        color:white;
+    
+    }
+    button.digit[disabled]{
+        color:rgb(150, 146, 146);
+    }
+
+    button.docSwitch{
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        appearance: none;
+       
+        outline: 0px solid transparent;
+        padding: 1px 3px 1px 3px;
+        margin: 1px 1px 1px 1px;
+       
+    
+        opacity: 1 !important;
+      
+      
+        color:black;
+        width: 22px;
+        height: 22px;
+    }
+
+    .hili_digi_key {
+        border: 1px solid red;
+    }
+    .hiliKbd{
+        border: 2px solid red;
+    }
+
+
+
+    #Tab_CatagryOfBooks tbody tr:nth-child(1),
+    #Tab_CatagryOfBooks tbody tr:nth-child(7),
+    #Tab_CatagryOfBooks tbody tr:nth-child(11) {
+        background-color: rgb(24, 117, 117);
+    }
+
+    #Tab_OutputBooksList{
+        position: fixed;
+        left: 2px;
+        background-color: #5F95FC;
+        z-index: 9999;
+        padding: 0px 10px 10px 1px;
+        margin: 0px 1px 1px 78px;
+    }
+    
+    #Tab_NamesOfBibleDocuments_caps, #Tab_MostRecent_BCV_caps{
+        font-size: small;
+    }
+    #Tab_OutputBooksList thead,
+    #Tab_CatagryOfBooks thead,
+    #Tab_NamesOfBibleDocuments thead {
+        display: block;
+    }
+
+    #Tab_NamesOfBibleDocuments{
+        min-width: 5px;
+    }
+    #Tab_NamesOfBibleDocuments tbody tr td{
+        width: 100px;
+    }
+    
+    #Tab_CatagryOfBooks tbody,{
+        height: 266px;
+        overflow-y: scroll;
+        display: block;
+    }
+    #Tab_NamesOfBibleDocuments tbody {
+        height: 240px;
+        overflow-y: scroll;
+        display: block;
+    }
+
+    #Tab_OutputBooksList tbody{
+        height: 340px;
+        overflow-y: scroll;
+        display: block;
+    }
+
+    #Tab_MostRecent_BCV {
+        background-color: rgb(29, 105, 149);
+    }
+    #Tab_MostRecent_BCV caption{
+        display: inline-block;
+        white-space: nowrap;
+    }
+
+
+    #Tab_selected_Doc_Search thead,
+    #Tab_regex_history_search thead,
+    #Tab_MostRecent_BCV thead {
+        display: block;
+    }
+
+    #Tab_selected_Doc_Search tbody,
+    #Tab_regex_history_search tbody,
+    #Tab_MostRecent_BCV tbody {
+        height: 225px;
+        overflow-y: scroll;
+        display: block;
+    }
+
+
+
+    #Tab_regex_history_search td {
+        
+        overflow: hidden;
+        display: inline-block;
+        white-space: nowrap;
+        width: 100%;
+    }
+   
+
+  
+    #tmpsel2ref thead,
+    #refslist thead {
+        display: block;
+    }
+
+    #tmpsel2ref tbody,
+    #refslist tbody {
+        height: 210px;
+        overflow-y: scroll;
+        display: block;
+    }
+
+    #loads_buttons {
+        white-space: nowrap;
+    }
+
+    *[title='clear'],
+    *[title='undo'] {
+        background-color: rgb(74, 155, 202);
+    }
+
+  
+
+    #sinput,#searchResult{
+        width:100%;
+        margin:0 0 0 1px;
+        padding:4px 4px 4px 4px;
+    }
+    #searchResult{
+        background-color:#f0f0f0;
+    }
+
+    #chp_cap, #vrs_cap{
+        width: 30px;
+        border:1px solid blue
+    }
+
+
+
+    #divPopupMenu{
+        position: absolute;
+        left: 10px;
+        background-color: rgb(246, 126, 7);
+        /*z-index: 9999;*/
+    }
+    #divPopupMenu table tbody a{
+        text-decoration: none;
+        display:block;
+        width:100%;
+        
+    }
+    #divPopupMenu table tbody a:visited{
+        color: rgb(241, 245, 247);
+    }
+    #divPopupMenu table{
+        caption-side: bottom;
+    }
+
+    .divPopupMenu_CaptionBCV_MemoVerse{
+        color: cyan;
+        text-decoration: overline;
+        margin:1px 0 0 0 0;
+        padding: 1px 0 0 0;
+    }
+
+
+
+    .hiliRevTag{
+        background-color: #a00000;
+        padding-bottom:2px;
+        border: 1px solid gold;
+    }
+    #divPopupMenu_RevTagx{
+        position: absolute;
+        left: 10px;
+        background-color: rgb(246, 126, 7);
+        z-index: 9999;
+        display:none;
+    }
+    #divPopupMenu_RevTagx table tbody a{
+        text-decoration: none;
+    }
+    #divPopupMenu_RevTagx table tbody a:visited{
+        color: rgb(241, 245, 247);
+    }
+    #divPopupMenu_RevTagx table{
+        caption-side: bottom;
+    }
+
+ 
+
+
+
+
+    .bcvMark{
+        background-color: rgb(246, 126, 8);
+        border: 1px solid red;
+    }
+
+    #oBible {
+        margin-top: 500px;
+        margin-bottom: 200px;
+        overflow: auto;
+    }
+
+    #oBiblexx table tbody {
+        height: 1500px;
+        overflow-y: scroll;
+        display: block;
+    }
+
+    #others {
+        display: inline-block;
+        /* stop float left */
+        width: 100%;
+    }
+    .ok{
+        color:red;
+    }
+
+/***** customed checkbox ****/
+input[type='checkbox'] {
+	margin-top: -30px;
+}
+
+
+input[type='checkbox'] {
+	-webkit-font-smoothing: antialiased;
+	text-rendering: optimizeSpeed;
+	width: 13px;
+	height: 13px;
+	margin: 0;
+	margin-right: 1px;
+	display: block;
+	float: left;
+	position: relative;
+	cursor: pointer;
+}
+
+input[type='checkbox']:after {
+	content: "";
+	vertical-align: middle;
+	text-align: center;
+	line-height: 13px;
+	position: absolute;
+	cursor: pointer;
+	height: 13px;
+	width: 13px;
+	left: 0;
+	top: 0;
+	font-size: 10px;
+	-webkit-box-shadow: inset 0 1px 1px #5F95FC, 0 1px 0 #5F95FC;
+	-moz-box-shadow: inset 0 1px 1px #5F95FC, 0 1px 0 #5F95FC;
+	box-shadow: inset 0 1px 1px #5F95FC, 0 1px 0 #5F95FC;
+	background: #5F95FC;
+}
+
+input[type='checkbox']:hover:after, input[type='checkbox']:checked:hover:after {
+	background: #5F95FC;
+	content: 'x';
+	color: #fff;
+}
+
+input[type='checkbox']:checked:after {
+	background: #5F95FC;
+	content: 'X';
+	color: #fff;
+}
+/*** overide checkbox color ***/
+input[title='_xrand']:after {
+    -webkit-box-shadow: inset 0 1px 1px rgb(252, 171, 95), 0 1px 0 rgb(252, 171, 95);
+	-moz-box-shadow: inset 0 1px 1px rgb(252, 171, 95), 0 1px 0 rgb(252, 171, 95);
+	box-shadow: inset 0 1px 1px rgb(252, 171, 95), 0 1px 0 rgb(252, 171, 95);
+	background: rgb(252, 171, 95);
+}
+input[title='_xrand']:checked:after {
+	background: rgb(252, 171, 95);
+}
+
+input[title='NIV']:after {
+    -webkit-box-shadow: inset 0 1px 1px rgb(195, 206, 100), 0 1px 0 rgb(195, 206, 100);
+	-moz-box-shadow: inset 0 1px 1px rgb(195, 206, 100), 0 1px 0 rgb(195, 206, 100);
+	box-shadow: inset 0 1px 1px rgb(195, 206, 100), 0 1px 0 rgb(195, 206, 100);
+	background: rgb(221, 245, 12);
+}
+input[title='NIV']:checked:after {
+	background: rgb(195, 206, 100);
+}
+.tx_OT{
+    direction: rtl;
+    right:0px;
+    float: right;
+}
+.txH_G{
+    color: rgb(241, 192, 136);
+    text-align: right;
+    width:100%;
+    right: 10px;
+}
+.txBBE{
+    color: rgb(203, 252, 221);
+}
+.txESV{
+    color: cyan;
+}
+.txKJV{
+    color: rgb(250, 199, 140);
+}
+.txCUVpy{
+    background-color: rgb(78, 30, 68);
+}
+.v3.t_NT{
+    color:rgb(29, 29, 87);
+    background-color:rgb(196, 196, 233);
+}
+.v3.t_OT{
+    background-color:rgb(29, 29, 87);
+}
+.Custom_Selected_Book_Category{
+    border: 3px solid red;
+}
+
+
+.hiliExt{
+    background-color: darkblue;
+}
+
+
+
+
+
+
+
+
+.bcvTag{
+    /*transform: rotateZ(-90deg);*/
+    font-size: small;
+ 
+    background-color: olive;
+
+    top: 0px;
+   
+    text-align: right;
+    /*border: 1px solid #73AD21;*/
+    padding: 0 5px 0 0;
+    margin: 0 5px 0 0;
+
+    
+    float:left;
+
+}
+.revTag{
+    font-size:xx-small;
+    width:5px;
+    height: 60px;
+    background-color: #2f74f5;
+    margin: 0px 5px 5px 5px;
+    padding: 0px 5px 5px 5px;
+}
+
+.txt_loaded{
+    border:1px solid yellow;
+}
+
+
+.RecentBCVsBtn{
+    background-color: gray;
+    padding: 1px 1px 1px 1px;
+    margin: 1px 1px 1px 1px;
+}
+
+input[readonly], textarea[readonly]{
+    background-color: lightgray;
+}
+
+

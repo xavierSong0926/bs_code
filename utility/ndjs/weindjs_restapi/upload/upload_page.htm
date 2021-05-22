@@ -1,0 +1,16 @@
+<html>
+<head>
+  <script src="https://wdingbox.github.io/ham12/jq/jquery-2_1_3.min.js"></script>
+</head>
+<body>
+<form ref='uploadForm' 
+  id='uploadForm' 
+  action='./upload_submit/' 
+  method='post' 
+  encType="multipart/form-data">
+    <input type="file" name="sampleFile" /><br>
+    <input type='submit' value='Upload To' />
+    <input name="destDir" value="/tmp" title="DestDir"></input><br>
+</form>     
+</body>
+</html>

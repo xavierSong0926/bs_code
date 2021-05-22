@@ -1,0 +1,423 @@
+<html>
+
+<head>
+    <title>sign-in</title>
+    <base target="xxx_blank" />
+    <META http-equiv="Content-Type" content="text/html;" charset="UTF-8">
+    <META name="viewport" content="width=device-witdh, initial-scale=1, maximum-scale=1, user-scale=0">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jsencrypt/2.3.1/jsencrypt.min.js"></script>
+
+    <script src="https://bsnp21.github.io/home/js/quotestr.js"></script>
+    <link rel="stylesheet" href="https://bsnp21.github.io/home/css/index.css">
+    </link>
+
+
+    <link rel="stylesheet" xxhref="./BibleStudyNotePad.css?v=2020dec21b">
+    </link>
+
+    <!-------------------------------------------->
+    <!---- Insert this before scripts import; then restor back later -->
+    <script>//if (typeof module === 'object') { window.module = module; module = undefined; }</script>
+
+    <!-------------- jq --------------------->
+    <script ____src="./doc_files/jquery-2_1_3.min.js"></script>
+    <script src="https://wdingbox.github.io/ham12/jq/jquery-2_1_3.min.js"></script>
+    <script language="javascript" src="./BibleStudyNotePad.js?v=20.12.4"></script>
+    <!-------------------------------------------->
+
+    <!-------------------------------------------->
+    <style>
+        body {
+            background-color: aliceblue;
+            margin: 0px 0px 0px 0px;
+            padding: 0px 0px 0px 0px;
+            width: 100%;
+        }
+
+        form {
+            background-color: rgb(204, 177, 161);
+
+
+            margin: 0px 10px 0px 10px;
+            padding: 1px 10px 0px 10px;
+        }
+
+        .centered_elem {
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+            background-color: rgb(204, 177, 161);
+
+            text-align: center;
+            margin: 0px 10px 0px 10px;
+            padding: 0px 10px 10px 10px;
+        }
+
+        .center {
+            margin-left: auto;
+            margin-right: auto;
+            width: 80%;
+        }
+
+
+        xtable {
+            padding: 10px 10px 10px 10px;
+            margin: 10px 10px 10px 10px;
+            /*font-size:xx-large;*/
+        }
+
+        .white_space_nowrap {
+            white-space: nowrap;
+        }
+
+        textarea,
+        .txarea {
+            width: 100%;
+        }
+
+        textarea,
+        input {
+            font-size: large;
+        }
+
+        .HiliFocused {
+            background-color: #e7f1ad;
+        }
+
+        .deleted_repo {
+            text-decoration: line-through;
+        }
+
+        .help_label {
+            float: right;
+        }
+
+        .helpinfo {
+            display: none;
+            margin-left: 1px;
+        }
+
+        .centeredtxt {
+            text-align: center;
+            margin-left: auto;
+            margin-right: auto;
+            width: 70%;
+        }
+    </style>
+</head>
+
+<body>
+
+    <h2 style="text-align: center;margin-top: 50px;"><a href="https://bsnp21.github.io/home/">Bible Study Note Pad</a>
+    </h2>
+    <p class='centeredtxt' onclick="$('#QuotesContainer').toggle('slow')">(make your study notes on any verse)</p>
+
+    <div id="QuotesContainer" style="display: none;"></div>
+
+
+
+
+
+
+
+
+
+    <form action="">
+        <h3 style="text-align: center;margin-top: 50px;">Sign-in Page</h3>
+        <div>
+            <a id="">Repository:</a> (<font color='red'>required</font>)
+            [ <a class="" id="Format_Check">Format-Check</a> ]
+            <a class="help_label" onclick="$('.helpinfo.Repository').toggle('slow');">help?</a>
+        </div>
+        <div class="helpinfo Repository" id="help_Repository">
+
+            <ol>
+                <a>To get your repository https-url for BSNP:</a>
+                <li>
+                    sign up/in a new account at <a href="https://github.com/">github.com</a>. (see <a
+                        href="https://www.youtube.com/embed/hMfi_ONvGEs?start=40&end=56&autoplay=1">how @0:40</a>)
+                </li>
+                <li>
+                    create a 'New repository' (see <a
+                        href="https://www.youtube.com/embed/hMfi_ONvGEs?start=103&end=180&autoplay=1">how
+                        @1:40</a>, 'public' is recommended for beginner.)
+                </li>
+                <li>
+                    click green button ["Clone or download"], then click <svg version="1.1" width="16" height="16"
+                        viewBox="0 0 16 16" class="octicon octicon-clippy" aria-label="The clipboard icon" role="img">
+                        <path fill-rule="evenodd"
+                            d="M5.75 1a.75.75 0 00-.75.75v3c0 .414.336.75.75.75h4.5a.75.75 0 00.75-.75v-3a.75.75 0 00-.75-.75h-4.5zm.75 3V2.5h3V4h-3zm-2.874-.467a.75.75 0 00-.752-1.298A1.75 1.75 0 002 3.75v9.5c0 .966.784 1.75 1.75 1.75h8.5A1.75 1.75 0 0014 13.25v-9.5a1.75 1.75 0 00-.874-1.515.75.75 0 10-.752 1.298.25.25 0 01.126.217v9.5a.25.25 0 01-.25.25h-8.5a.25.25 0 01-.25-.25v-9.5a.25.25 0 01.126-.217z">
+                        </path>
+                    </svg> (copy https url). (see <a
+                        href="https://www.youtube.com/embed/X5e3xQBeqf8?start=120&end=134&autoplay=1">how @2:05</a>)
+                </li>
+                <br>Now it's ready to paste it in our page.
+                <br><h5>Formats of Repository String</h5>
+            </ol>
+
+            
+            <table border='1'>
+                <caption>Formats of Repository String</caption>
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Name</th>
+                        <th>Format</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>1</td>
+                        <td>full https url</td>
+                        <td>https://github.com/usrname/repositoryname.git
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>2</td>
+                        <td>user-repos<br>compound IDs</td>
+                        <td>usrname/repositoryname</td>
+                    </tr>
+                    <tr>
+                        <td>3</td>
+                        <td>*(todo)</td>
+                        <td>
+                            <a href="https://git-scm.com/docs/git-clone">http[s]://host.xz[:port]/path/to/repo.git/</a>
+                        </td>
+                    </tr>
+                </tbody>
+
+            </table>
+
+        </div>
+
+
+        <div>
+            <textarea id="repopath" maxlength="120" class="inputxt" value="https://github.com/bsnp21/pub_test.git"
+                placeholder="https://github.com/username/reposname.git">https://github.com/bsnp21/pub_test.git</textarea>
+        </div>
+
+
+        <div style="display: none;">
+            <br>
+            <div>
+                <a id="respdesc_history">ShareID:</a>
+                <span class="help_label">
+                    <a onclick="$('#repodesc').val('');">private</a> |
+                    <a onclick="$('#repodesc').val('*');">public</a> |
+                    <a onclick="$('.helpinfo.Species').toggle('slow');">help?</a>
+                </span>
+
+                <div class="helpinfo Species">
+                    <ol>
+                        Equal Access Right (EAR) Principle.
+                        <li>
+                            Users with same ShareID can view/communicate each others equally.
+                        </li>
+                        <li>
+                            Star(*) is for public without proctection. You can veiew everyone, and everyone can view
+                            you.
+                        </li>
+                        <li>
+                            Blank is for private only. You cannot see others, and others cannot see you.
+                        </li>
+                    </ol>
+                </div>
+            </div>
+
+
+
+            <input id="repodesc" class="inputxt" style="width:100%;" maxlength="200" value="" placeholder=""></input>
+        </div>
+
+
+
+
+        <br>
+
+        <div>
+            <a for="editor1" id="label_password">Password </a> :
+            (<a style="color:red;" id="required_password_test">required</a>)
+            <a class="help_label" onclick="$('.helpinfo.Password').toggle('slow');">.</a>
+        </div>
+        <div class="helpinfo Password">
+            <ol>
+                <li>
+                    push data into repository (public or private), or
+                </li>
+                <li>
+                    pull data from private repository.
+                </li>
+            </ol>
+
+        </div>
+        <input id="passcode" type="password" maxlength="50" class="inputxt" value=""></input><a
+            onclick="$('#passcode').val('')">[X]</a>
+        <br>
+        <hr />
+        <br>
+    </form>
+    <div class="centered_elem">
+
+        <button id="signin" title="sign-n to endorse" disabled>Sign-in (endorse)</button>
+        <div style="float:right;">
+
+
+            <a id='Test' onclick="$('#testPanel').toggle();">.</a>
+        </div>
+    </div>
+
+    <div id="account_history" class="center" style="display: none;">.</div>
+
+
+    <div class="test" id='testPanel' style="display:none;">
+        <div class="center">
+            <button onclick="PageUti.repo_create();">Dock</button>
+            <button onclick="PageUti.repo_destroy(1);">Undock(force)</button>
+            <button onclick="PageUti.repo_destroy(0);">Undock(safe)</button>
+            <button onclick="PageUti.repo_pushback(1);">push(force)</button>
+            <button onclick="PageUti.repo_pushback(0);">push(safe)</button>
+            <button onclick="PageUti.repo_pulldown(1);">pull(force)</button>
+            <button onclick="PageUti.repo_pulldown(0);">pull(safe)</button>
+            <button onclick="PageUti.repo_status(1);">Status(force)</button>
+            <button onclick="PageUti.repo_status(0);">Status(safe)</button>
+            <br>
+            <a onclick="PageUti.gen_cmdline_table('#account_history');">CmdLines</a> |
+            <a onclick="Okey_use_this();">SetParent</a> |
+            <a onclick="PageUti.LoadStorageInRepos('#account_history');">LoadStorage</a>
+
+            <a class="help_label" onclick="$('#DocBtnExplaination').toggle()">help?</a>
+
+        </div>
+        <div id="DocBtnExplaination" class="helpinfo">
+            <ul>
+                Thinking of your repository as a ship, BSNP server as riverbank.
+                <li><b>Dock</b>: Your repository ties/clone at BSNP server. You can read/write.</li>
+                <li><b>Undock</b>: Your repository leaves BSNP server. Your data at BSNP server will be erased. No
+                    one can view your data anymore.</li>
+                <li><b>Push</b>: to push data to your repository during docked.</li>
+                <li><b>Pull</b>: to pull data from your repository during docked.</li>
+            </ul>
+        </div>
+    </div>
+
+    <p>
+        <a onclick="LoadStorageInRepos();"></a>
+        <a onclick="LoadStorage();"></a>
+    </p>
+    <p>
+
+    </p>
+
+
+
+    <div style="text-align: center;margin-top: 50px;" onclick="$('#txtarea').val('');" id="otb">...</div>
+    <hr id="toggle_txtarea">
+
+    <div id="footer" style="text-align: center;margin-top: 50px;">
+        <textarea id="txtarea" rows="25"></textarea>
+    </div>
+
+
+
+
+
+    <script>
+
+        function Okey_use_this() {
+
+            if (!Jsonpster.inp) return alert("empty inp")
+            if (!Jsonpster.inp.usr) return alert("empty usr")
+            Jsonpster.inp.usr = MyStorage.Repositories().repos_app_update()
+
+            Uti.Msg("powindow.opener.postMessage:", Jsonpster.inp.usr)
+            window.opener.postMessage(Jsonpster.inp.usr, '*');
+
+        }
+
+    </script>
+</body>
+
+</html>
+<script>
+    $(function () {
+        $("#QuotesContainer").html(quotestr)
+
+
+        $("#txtarea").hide()
+        $("#toggle_txtarea").on("click", function () {
+            $("#txtarea").toggle()
+        })
+
+        $("#label_password").on("click", function () {
+            var typns = $("#passcode").attr("type")
+            typns = ("password" === typns) ? "text" : "password"
+            $("#passcode").attr("type", typns)
+        })
+
+        $("#required_password_test").on("click", function () {
+            var repopath = $("#repopath").val()
+            var ret = Uti.validate_repository_url(repopath)
+            $("#passcode").val(ret.repo)
+        })
+
+
+
+        $(".inputxt").on("focus", function () {
+            $(".HiliFocused").removeClass('HiliFocused')
+            $(this).addClass("HiliFocused")
+        }).on("blur", function () {
+            //$(this).removeClass("HiliFocused")
+            $(".HiliFocused").removeClass('HiliFocused')
+        })
+
+        $("#repopath").on("focus", function () {
+            PageUti.Repositories_History("#account_history", 1)
+        })
+
+        $("#repodesc").on("focus", function () {
+            PageUti.Repositories_History("#account_history", 2)
+        })
+        $("#passcode").on("focus", function () {
+            PageUti.Repositories_History("#account_history", -1)
+        })
+
+
+
+        $("#respdesc_history").on("click", function () {
+            PageUti.Repositories_History("#account_history", 2)
+        })
+
+        Uti.visual_check_repository("#Format_Check")
+
+        $("#signin").on("click", function () {
+            $("#signin").attr("disabled", true)
+            PageUti.repo_Signin("#otb", function (ret) {
+                if (ret.out.state && ret.out.state.SSID && ret.out.state.SSID.length > 1) {
+                    var svrip = Uti.Jsonpster_crossloader_get_ip()
+                    window.open("BibleStudyNotePad.htm?ip=" + svrip, '_self');
+                } else {
+                    //$("#txtarea").show()
+                    $("#signin").attr("disabled", null)
+                }
+            })
+        })
+    })
+</script>
+<script>
+    $(function(){
+
+        Uti.Jsonpster_crossloader(0, function (ret) {
+            $("#signin").attr("disabled", null)
+    
+            $("title").text("signin")
+            Uti.Msg("Sign-In")
+            $("#txtarea").hide()
+            var ar = MyStorage.Repositories().repos_app_init()
+    
+            console.log(Jsonpster)
+            //$("#histroy").trigger("click")
+    
+        })
+    })
+
+</script>

@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<HTML manifest___xxx="BiblePad-2015.appcache">
+
+<HEAD>
+    <TITLE>Bii</TITLE>
+    <base target="_blank" />
+    <META http-equiv="Content-Type" content="text/html;" charset="UTF-8">
+    <META name="viewport" content="width=device-witdh, initial-scale=1, maximum-scale=1, user-scale=0">
+
+
+
+
+    <script src="https://wdingbox.github.io/ham12/jq/jquery-2_1_3.min.js"></script>
+    <script language="javascript" src="../../htmjs/jq/table_Indexer.js"></script>
+    <script language="javascript" src="../../htmjs/jq/jquery.tablesorter.js"></script>
+
+    <script language="javascript"
+        xxxsrc="../../../../../wdingbox/bible_obj_lib/jsdb/StatsData/BibleVolSize_CUVS.json.js"></script>
+
+    <script language="javascript"
+        src="../../../../../wdingbox/bible_obj_lib/jsdb/StatsData/SonFrq/SonFrq_BlueletterID.json.js"></script>
+
+    <script language="javascript"
+        src="../../../../../wdingbox/bible_obj_lib/jsdb/StatsData/ConstNameConvert.json.js"></script>
+
+    <script language="javascript" src="../../../../../wdingbox/bible_obj_lib/jsdb/jsBibleObj/CUVS.json.js"></script>
+    <script language="javascript" src="../../../../../wdingbox/bible_obj_lib/jsdb/jsBibleObj/STUS.json.js"></script>
+    <script language="javascript" src="../../../../../wdingbox/bible_obj_lib/jsdb/jsBibleObj/WLVS.json.js"></script>
+    <!--------->
+
+
+    <style>
+        tr xtd:nth-child(4),
+        tr xtd:nth-child(5),
+
+        tr xth:nth-child(4),
+        tr xth:nth-child(5) {
+            display: none;
+        }
+
+        th {
+            background-color: lightgray;
+        }
+
+        .ot {
+            background-color: wheat;
+        }
+
+        .nt {
+            background-color: mistyrose;
+        }
+    </style>
+
+
+
+    <script language="javascript">
+        $(document).ready(function () {
+            ///gen_table_nt(GreekSonship);
+            $("a").each(function () {
+                var hrf = $(this).attr("href");
+                $(this).text(hrf);
+            });
+
+
+            calc_frqRate_SonFrq();
+            calc_volSice(CUVS);
+            calc_volSice(STUS); //STUS  WLVS
+            calc_volSice(WLVS);
+            console.log("garObj", garObj);
+            var genfile = "file:///Users/weiding/Sites/weidroot/weidroot_2017-01-06/app/github/wdingbox/ham12/utility/htmf/sonship/SonFreq.htm";
+            var colname = ["HG<br>frq", "blueletter<br>tot", "blueletter<br>pm", "CUVS<br>frq", "CUVS<br>tot", "CUVS<br>pm", "STUS<br>frq", "STUS<br>tot", "STUS<br>pm", "WLVS<br>frq", "WLVS<br>tot", "WLVS<br>pm"];
+            var obj = { frfile: genfile, "colname": colname, StdVolmFrqAry: garObj };
+            $("#out").val("var SonFrqNum_StdID=\n" + JSON.stringify(obj, null, 4));
+
+            gen_tab(obj)
+        });/////////////
+
+    </script>
+
+</HEAD>
+
+<BODY onbeforeunload="return 'leave?';">
+    <a href="kjv_sonship/analysis/sonship_nt.htm"></a><br />
+    <a href="kjv_sonship/analysis/sonship_ot.htm"></a><br />
+    <a href="kjv_sonship/analysis/blueletter2json.htm"></a><br />
+    <a href="kjv_sonship/analysis/sonship_nt.htm"></a><br />
+    <a href="kjv_sonship/analysis/sonship_nt.htm"></a><br />
+    <a href="kjv_sonship/analysis/sonship_nt.htm"></a><br />
+    <textarea id="out"></textarea>
+</BODY>
+
+</HTML>
+<script type="text/javascript">
+    function create_frqar_ob() {
+        var BibleVolSize_CUVS = Object.keys(CUVS);
+        var garObj = {};
+        BibleVolSize_CUVS.push("OT");
+        BibleVolSize_CUVS.push("NT");
+        BibleVolSize_CUVS.push("Tot");
+        BibleVolSize_CUVS.forEach(function (volid) {
+            garObj[volid] = new Array(3);
+            garObj[volid].fill(0);
+        });
+        return garObj;
+    }
+    var garObj = create_frqar_ob();
+    console.log(garObj)
+
+    function calc_volSice(CUVS) {
+        var lenObj = {}, ziObj = {};
+        Object.keys(CUVS).forEach(function (vid) {
+            var vo = CUVS[vid];
+            lenObj[vid] = 0;
+            ziObj[vid] = 0;
+            Object.keys(vo).forEach(function (chpId) {
+                var cho = vo[chpId];
+                Object.keys(cho).forEach(function (versId) {
+                    var tx = cho[versId];
+                    if (!tx) tx = " ";
+                    var mat = tx.match(/(子)/g);
+                    if (mat) {
+                        //console.log(mat);
+                        ziObj[vid] += mat.length;
+                    }
+                    lenObj[vid] += tx.length;
+                });
+            })
+        });
+
+        var totzi = 0, totlen = 0;
+        var ntzi = 0, ntlen = 0;
+        var otzi = 0, otlen = 0;
+        Object.keys(CUVS).forEach(function (vid, i) {
+            garObj[vid].push(ziObj[vid]);
+            garObj[vid].push(lenObj[vid]);
+            var rat = 10000 * parseInt(ziObj[vid]) / parseInt(lenObj[vid]);//myria = 10,000
+            rat = rat.toFixed(2);
+            garObj[vid].push(rat);
+            totzi += parseInt(ziObj[vid]);
+            totlen += parseInt(lenObj[vid]);
+            if (i < 39) {
+                otzi += parseInt(ziObj[vid]);
+                otlen += parseInt(lenObj[vid]);
+            } else {
+                ntzi += parseInt(ziObj[vid]);
+                ntlen += parseInt(lenObj[vid]);
+            }
+        });
+        function cal_total(skey, garObj, totzi, totlen) {
+            garObj[skey].push(totzi)
+            garObj[skey].push(totlen);
+            var rat = 10000 * parseInt(totzi) / parseInt(totlen);
+            rat = rat.toFixed(2);
+            garObj[skey].push(rat);
+        }
+        cal_total("OT", garObj, otzi, otlen);
+        cal_total("NT", garObj, ntzi, ntlen);
+        cal_total("Tot", garObj, totzi, totlen);
+
+        //console.log(ziObj);
+    }
+
+    function calc_frqRate_SonFrq() {
+
+        var tot = 0, ot = nt = 0, iflag = 0;
+        Object.keys(SonFrq_BlueletterID).forEach(function (bluieID) {
+            var len = parseInt(SonFrq_BlueletterID[bluieID]);
+            var stdvID = ConstNameConvert.BlueLetterBibleCode[bluieID];
+            garObj[stdvID][0] = len;
+            tot += (len);
+            if ("Mat" === bluieID) iflag = 1;
+            if (0 === iflag) {
+                ot += len;
+            } else {
+                nt += len;
+            }
+
+            //var tot = BibleVolSize_CUVS[stdvID];
+            //frqRateObj[stdvID] = (10000 * len / tot).toFixed(4);
+        });
+        garObj["OT"][0] = ot;
+        garObj["NT"][0] = nt;
+        garObj["Tot"][0] = tot;
+
+        //console.log("frqRateObj", frqRateObj)
+    }
+
+    function gen_tab(obj) {
+        var str = "", ths = "", tfs = "";
+        var ignore = [1, 2];
+        Object.keys(obj.StdVolmFrqAry).forEach(function (volid, i) {
+            var ar = obj.StdVolmFrqAry[volid];
+            i++;
+            var cls = "ot";
+            if (i > 39) cls = "nt";
+            if (i >= 67) {
+                tfs += `<tr><th></th><th>${volid}</th>`;
+                ar.forEach(function (frq, k) {
+                    if (ignore.indexOf(k) >= 0) return;
+                    tfs += `<th>${frq}</th>`;
+                });
+                tfs += "</tr>";
+                return;
+            }
+
+            ths = `<tr><th>#</th><th>name</th>`;
+            str += `<tr class='${cls}'><td>${i}</td><td>${volid}</td>`;
+
+
+            ar.forEach(function (frq, k) {
+                if (ignore.indexOf(k) >= 0) return;
+                str += `<td>${frq}</td>`;
+                ths += `<th>${obj.colname[k]}</th>`;
+            });
+            str += "</tr>";
+            ths += "</tr>";
+        });
+
+        var stb = `<table border='1' title="frq of son in bible."><thead>${ths}</thead><tbody>${str}</tbody><tfoot title='ot'>${tfs}</tfoot></table>`;
+        $("body").append(stb);
+        table_sort();
+        $("body").append(stb);
+
+    }
+</script>

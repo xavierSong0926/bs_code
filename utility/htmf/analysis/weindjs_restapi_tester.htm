@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<HTML manifest___xxx="BiblePad-2015.appcache">
+<HEAD>
+    <TITLE>cuvs</TITLE>
+    <META http-equiv="Content-Type" content="text/html;" charset="UTF-8">
+	<META name="viewport" content="width=device-witdh, initial-scale=1, maximum-scale=1, user-scale=0">
+
+
+
+
+    <script>
+    var gStartDate = new Date();
+    console.log(  gStartDate.toString() +" ------ start load");//
+    </script>
+
+
+
+    <script language="javascript" src="../../htmjs/jq/jquery.js">
+    </script>
+    <script language="javascript" src="../../htmjs/jq/table_Indexer.js">
+    </script>
+    <script language="javascript" src="../../htmjs/jq/jquery.tablesorter.js"></script>
+
+
+
+    <script language="javascript" src="../../../jsdb/jsBibleSurvey/Hebrew_grp2_frq.json.js"></script>
+    <script language="javascript" src="../../../jsdb/jsBibleSurvey/Hebrew_words_ciu.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+    <script>
+    console.log(  (new Date()).toString() );//
+    </script>
+<style>
+body {
+    background-color: black;
+    color: white;
+    width:100%;
+	font-size: 100%;
+
+    padding:0px 0px 0px 0px;
+    margin: 0px 0px 0px 0px;
+
+    font-family: 'Times New Roman';
+}
+td:nth-child(2){
+    text-align: right;
+}
+.ciumatch0{
+    background-color:green ;
+}
+.ciumatch1{
+    background-color: blue;
+}
+.ciumatch2{
+    background-color: gray;
+}
+#out{
+    position: absolute;
+    right: 20px;
+}
+.hili{
+    background-color: #aaaa00;
+}
+.hili2{
+    background-color: red;
+}
+.empty{
+    background-color:gray;
+}
+</style>
+
+
+
+
+<script language="javascript">
+var obj=
+{
+    "name": "weindjs_restapi",
+    "version": "1.0.0",
+    "description": "",
+    "main": "a.node.js",
+    "scripts": {
+        "test": "echo \"Error:&x=no test specified\" && exit 1"
+    },
+    "author": "",
+    "license": "ISC",
+    "dependencies": {
+        "express": "^4.16.4",
+        "jsonfile": "^5.0.0"
+    }
+}
+$(document).ready(function(){
+  $("#indxer").click(function(){
+    //var obj={fname:"xyz",dat:"ffff"};
+    var s=JSON.stringify(obj,null,4);
+    s=encodeURI(s);
+    console.log(s);
+    s=encodeURIComponent(s);
+    console.log(s);
+    var fname="../out/tmp/xyz.js";
+    var url="localhost:7778/save2afile?";
+    url+="fname="+fname+"&dat=var xyz="+s;
+    //url="http://google.com"
+    var spec="location=yes,height=570,width=520,scrollbars=no,top=11,toolbar=yes,menubar=yes,titlebar=yes'";
+    window.open(url);//,"_blank",spec);
+  });
+
+  $("#search").click(function(){
+    var dat={a:"aa",b:"bb"};
+    jqsave2afile("test.json",dat);
+  });
+
+});/////////////
+////////////////
+function jqsave2afile(fname,jsonDat){
+  var url="localhost:7778/save2afile";
+  //var url="weindjs_restapi_tester.htm";
+	$.ajax({
+    url:url,
+    type:"post",
+    data:{
+						 filename: fname,
+						 txt:JSON.stringify(jsonDat)
+           },
+    crossDomain:true,
+    cache:false,
+    async:false,
+    success:function(data, status){
+               alert(data);
+
+		}
+  });/////ajax
+};
+function restapi_upHebewVocab(fname,jsonDat){
+  var url="localhost:7778/upHebewVocab";
+  //var url="weindjs_restapi_tester.htm";
+	$.ajax({
+    url:url,
+    type:"post",
+    data:{
+						 filename: fname,
+						 txt:JSON.stringify(jsonDat)
+           },
+    crossDomain:true,
+    cache:false,
+    async:false,
+    success:function(data, status){
+               alert(data);
+
+		}
+  });/////ajax
+};
+function jqsave2afilebbbbbbb(fname,jsonDat){
+  var url="localhost:7778/save2afile";
+  //var url="weindjs_restapi_tester.htm";
+	$.post(url, {
+						 filename: fname,
+						 txt:JSON.stringify(jsonDat)
+						 },
+			function(data, status){
+               alert(data);
+
+			},
+			"html"
+			);/////post
+};
+
+</script>
+
+</HEAD>
+<BODY xxxonload="body_onload();">
+
+<textarea id="out"></textarea>
+
+<a id="tst">test</a>
+    <button id="indxer">indxer</button>
+    <button id="search">search</button>
+
+
+
+    <hr/>
+
+
+<table border="1" id="alphTb", align="left"><caption>Two Syllable Freq</caption>
+    <thead id="AlphaHdr"><tr>
+        <th>#</th>
+        <th>A</th>
+        <th>end</th>
+        <th>2nd</th>
+        <th>1st</th>
+    </tr></thead>
+    <tbody id="AlphaBdy">
+    </tbody>
+</table>
+<table id="ciu" border="1"><caption>Left in CIU</caption>
+    <thead><tr><th>#</th><th title="ciu learned but not in OT word list">ciu</th><th>frq</th></tr></thead>
+    <tbody id="left2ciu"></tbody>
+</table>
+
+
+<table  border="1" align="left"><caption title="from usage_tool english">OT Hebrew Statistics</caption>
+    <thead id="OTHdr"></thead>
+	<tbody id='OTBdy'></tbody>
+ </table>
+
+
+
+
+</BODY>
+</HTML>
+<script type="text/javascript">
+
+</script>

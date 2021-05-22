@@ -1,0 +1,371 @@
+<html>
+
+<head>
+    <base target="_blank" />
+    <META http-equiv="Content-Type" content="text/html;" charset="UTF-8">
+    <META name="viewport" content="width=device-witdh, initial-scale=1, maximum-scale=1, user-scale=0">
+
+
+    <link rel="stylesheet" href="./BibleStudyNotePad.css?v=2020dec21b">
+    </link>
+
+    <!-------------------------------------------->
+    <!---- Insert this before scripts import; then restor back later -->
+    <script>//if (typeof module === 'object') { window.module = module; module = undefined; }</script>
+
+    <!-------------- jq --------------------->
+    <script ____src="./doc_files/jquery-2_1_3.min.js"></script>
+    <script src="https://wdingbox.github.io/ham12/jq/jquery-2_1_3.min.js"></script>
+    <script xxxxxxxsrc="http://localhost:7878/assets/ckeditor/adapters/jq/jquery-2_1_3.min.js"
+        note="selfseversite"></script>
+    <!-------------- ckeditor only--------------------->
+    <script src="../../../assets/ckeditor/ckeditor.js"></script>
+    <script src="../../../assets/ckeditor/samples/old/sample.js"></script>
+    <link href="../../../assets/ckeditor/samples/old/sample.css" rel="stylesheet">
+
+
+    <script ___src="http://localhost:7878/assets/ckeditor/ckeditor.js" note="selfseversite"></script>
+    <script ___src="http://localhost:7878/assets/ckeditor/samples/old/sample.js"></script>
+    <!-------------------------------------------->
+    <!----- Insert this line after script imports -->
+    <script>//if (window.module) module = window.module;</script>
+    <script language="javascript" src="./BibleStudyNotePad.js?v=20.12.4"></script>
+    <!-------------------------------------------->
+    <style>
+        body {
+            background-color: aliceblue;
+        }
+
+        table {
+            padding: 10px 10px 10px 10px;
+            margin: 10px 10px 10px 10px;
+            /*font-size:xx-large;*/
+        }
+
+        form {
+            background-color: rgb(204, 177, 161);
+            width: 260px;
+        }
+
+
+        .white_space_nowrap {
+            white-space: nowrap;
+        }
+
+        textarea {
+            width: 100%;
+        }
+
+        .hili {
+            background-color: red;
+        }
+
+        .help_label {
+            float: right;
+        }
+
+        .helpinfo {
+            display: none;
+            margin-left: 50px;
+        }
+    </style>
+</head>
+
+<body>
+
+
+
+    <form action="" method="post">
+        <div>
+            Repository: (<font color='red'>required</font>) <a class="help_label"
+                onclick="$('.helpinfo.Repository').toggle('slow');">help?</a>
+        </div>
+        <div class="helpinfo Repository" id="help_Repository">
+            <p>
+                To get your repository (clone HTTPS url):
+            </p>
+            <ol>
+                <li>
+                    register an account in <a href="https://github.com/">github.com</a>. (see <a
+                        href="https://www.youtube.com/watch?v=hMfi_ONvGEs&t=0m40s">how @0:40</a>)
+                </li>
+                <li>
+                    create a New repository (see <a href="https://www.youtube.com/watch?v=hMfi_ONvGEs&t=1m40s">how
+                        @1:40</a>, "public" is recommended for beginner.)
+                </li>
+                <li>
+                    click green button ["Clone or download"],(see <a
+                        href="https://www.youtube.com/watch?v=hMfi_ONvGEs&t=3m05s">how @3:05</a>) then click <svg
+                        version="1.1" width="16" height="16" viewBox="0 0 16 16" class="octicon octicon-clippy"
+                        aria-label="The clipboard icon" role="img">
+                        <path fill-rule="evenodd"
+                            d="M5.75 1a.75.75 0 00-.75.75v3c0 .414.336.75.75.75h4.5a.75.75 0 00.75-.75v-3a.75.75 0 00-.75-.75h-4.5zm.75 3V2.5h3V4h-3zm-2.874-.467a.75.75 0 00-.752-1.298A1.75 1.75 0 002 3.75v9.5c0 .966.784 1.75 1.75 1.75h8.5A1.75 1.75 0 0014 13.25v-9.5a1.75 1.75 0 00-.874-1.515.75.75 0 10-.752 1.298.25.25 0 01.126.217v9.5a.25.25 0 01-.25.25h-8.5a.25.25 0 01-.25-.25v-9.5a.25.25 0 01.126-.217z">
+                        </path>
+                    </svg> ["copy" HTTPS url]. Paste it into this input box.
+                </li>
+            </ol>
+        </div>
+        <textarea id="repopath" value="https://github.com/wdingbox/bible_user_williamd.git"
+            placeholder="https://github.com/username/reposname.git"></textarea>
+
+
+        <div>
+            Description: (optional)
+        </div>
+        <textarea id="repodesc" value="" placeholder="date, place"></textarea>
+
+
+
+
+
+        <label for="editor1">
+            Password: (optional) <a class="help_label" onclick="$('.helpinfo.Password').toggle('slow');">help?</a>
+        </label>
+        <div class="helpinfo Password">
+            <a>
+                The passwod is required for
+            </a>
+            <ol>
+                <li>
+                    push data into repository (public or private), or
+                </li>
+                <li>
+                    pull data from private repository.
+                </li>
+            </ol>
+            <a>
+                For security, the password can be used right before you manually push data into the repository before
+                you left.
+            </a>
+        </div>
+        <input id="passcode" value=""></input>
+    </form>
+    <p>
+        <button onclick="repo_create();">Create</button>
+        <button onclick="repo_destroy();">Destroy</button>
+        <button onclick="repo_pushback();">Push</button>
+        <button onclick="repo_status();">Status</button>
+        <button onclick="Okey_use_this();">Send to Parent Window</button>
+    </p>
+    <p>
+        <button onclick="LoadStorageInRepos();">LoadStorageInRepos</button>
+        <xbutton onclick="LoadStorage();"></xbutton>
+    </p>
+    <p>
+        <button id="histroy" onclick="repo_histroy();">histroy</button>
+        <button onclick="RemoveInHistory();">RemoveInHistory</button>
+    </p>
+
+
+
+    <div id="footer">
+        <hr>
+        <div id="otb"></div>
+        <textarea id="txtarea" rows="25"></textarea>
+    </div>
+
+
+
+
+
+    <script>
+        function LoadStorageInRepos() {
+            Jsonpster.inp.usr = MyStorage.Repositories().repos_app_update()
+            MyStorage.Repo_load(function (ret) {
+                console.log("data", ret)
+                Uti.Msg("LoadStorage", ret)
+                if (!ret.out || !ret.out.data) return alert("repository data not available.")
+                var stb = "<table border='1'><thead><tr><th></th><th>Keys</th><th>Repo</th><th>localStorage</th></tr></thead><tbody>"
+                Object.keys(ret.out.data).forEach(function (key, i) {
+                    key = key.trim()
+                    var locVal = localStorage.getItem(key)
+                    stb += `<tr><td>${i}</td><td>${key}</td><td>${ret.out.data[key]}</td><td>${locVal}</td></tr>`
+                })
+                Object.keys(localStorage).forEach(function (key, i) {
+                    key = key.trim()
+                    if (undefined === ret.out.data[key]) {
+                        var locVal = localStorage.getItem(key)
+                        stb += `<tr><td>${i}</td><td>${key}</td><td></td><td>${locVal}</td></tr>`
+                    }
+                })
+                stb += "</tbody></table>"
+                $("#otb").html(stb)
+            })
+        }
+        function Okey_use_this() {
+            if (!Jsonpster.inp) return alert("empty inp")
+            if (!Jsonpster.inp.usr) return alert("empty usr")
+            Jsonpster.inp.usr = MyStorage.Repositories().repos_app_update()
+            Uti.Msg("powindow.opener.postMessage:", Jsonpster.inp.usr)
+            window.opener.postMessage(Jsonpster.inp.usr, '*');
+        }
+        function repo_create() {
+            Jsonpster.inp.usr = MyStorage.Repositories().repos_app_update()
+            Jsonpster.api = RestApi.ApiUsrReposData_create.str
+            dbg_pster()
+            Jsonpster.Run(function (ret) {
+
+                dbg_pster(ret)
+            })
+        }
+        function repo_destroy() {
+            if (!confirm("The Bible Study Note you wrote will be destroyed permanently.")) return
+            Jsonpster.inp.usr = MyStorage.Repositories().repos_app_update()
+            Jsonpster.api = RestApi.ApiUsrReposData_destroy.str
+            dbg_pster()
+            Jsonpster.Run(function (ret) {
+
+                dbg_pster(ret)
+            })
+        }
+        function repo_status() {
+            Jsonpster.inp.usr = MyStorage.Repositories().repos_app_update()
+            Jsonpster.api = RestApi.ApiUsrReposData_status.str
+            dbg_pster()
+            Jsonpster.Run(function (ret) {
+
+                dbg_pster(ret)
+                Uti.Msg("Status inp.ret.out=", ret.out)
+            })
+        }
+        function repo_pushback() {
+            var passcode = $("#passcode").val()
+            if (passcode.trim().length === 0) return alert("passcode is required to push data into your repository.")
+            if (!confirm("push data into repository")) return
+            Jsonpster.inp.usr = MyStorage.Repositories().repos_app_update()
+            Jsonpster.api = RestApi.ApiUsrReposData_git_push.str
+            dbg_pster()
+            Jsonpster.Run(function (ret) {
+
+                dbg_pster(ret)
+                Uti.Msg("output status:", ret.out)
+
+                Uti.Msg("ret.out.git_push_res.success.stderr=", ret.out.git_push_res.success.stderr)
+                var errmsg = "Invalid username or password."
+                if (ret.out.git_push_res.success.stderr.indexOf(errmsg) >= 0) {
+                    alert(errmsg)
+                }
+            })
+        }
+        function repo_histroy() {
+            var ar = MyStorage.Repositories().repos_app_init()
+            var stb = "<table id='account_history_table' border='1'><caption>Most Recently Used Repository</caption>"
+            for (var i = 0; i < ar.length; i++) {
+                stb += `<tr><td>${i}</td>`
+                Object.keys(ar[i]).forEach(function (key) {
+                    stb += `<td>${ar[i][key]}</td>`
+                })
+                stb += "</tr>"
+            }
+            stb += "</table>"
+            $("#footer").find("#account_history_table").remove()
+            $("#footer").prepend(stb).find("tr").bind("click", function () {
+                var rep = $(this).find("td:eq(1)").text()
+                var pws = $(this).find("td:eq(2)").text()
+                var pname = $("#repopath").val(rep)
+                var pcode = $("#passcode").val(pws)
+                $("tr.hili").removeClass("hili")
+                $(this).addClass("hili")
+
+            })
+        }
+        function RemoveInHistory() {
+            var rep = $(".hili").find("td:eq(1)").text()
+            var pws = $(".hili").find("td:eq(2)").text()
+
+            var ret = confirm("remove in history?\n" + rep + "\n" + pws, "reposit")
+            if (ret) {
+                MyStorage.Repositories().repos_store_del({ repopath: rep, passcode: pws })
+                $(".hili").remove()
+            }
+        }
+    </script>
+</body>
+
+</html>
+<script>
+    Uti.Jsonpster_crossloader()
+    function dbg_pster(dat) {
+        var ss = dat
+        if ("object" === typeof dat) {
+            var ss = "ret=" + JSON.stringify(dat, null, 4)
+        }
+        ss += "\n\n\nJsonpster = " + JSON.stringify(Jsonpster, null, 4)
+        ss += "\n\n\nRestApi=" + JSON.stringify(RestApi, null, 4)
+        $("#txtarea").val(ss)
+    }
+    setTimeout(() => {
+        if (undefined === Jsonpster) {
+            alert("Jsonpster not exist.")
+        }
+        else {
+            $("title").text("acct")
+            dbg_pster()
+
+            $("#histroy").trigger("click")
+        }
+        //g_msg.pop(`initial load file: ${ret.name}, size:${data.length}(B)`).m_len = data.length
+    }, 2000)
+</script>
+<script>
+    $(function () {
+        var str = `, <a href="#Nah2:10">Nah2:10</a>, <a href="#Isa45:18">Isa45:18</a>, <a href="#Psm33:6">Psm33:6</a>, <a href="#Job26:14">Job26:14</a>, <a href="#Jer4:23">Jer4:23</a>, <a href="#Isa40:12">Isa40:12</a>-<a href="#Isa40:14">Isa40:14</a>, <a href="#Psm104:30">Psm104:30</a>`
+
+        function test(str) {
+            var bcv = "[1-3A-Z][1-z][0-9]+[\s]*\:[0-9]+"
+            var reg = new RegExp("[\<]a href=[\"\'][\#]([1-3A-Z][1-z][0-9]+[\s]*\:[0-9]+)[\"\'][\>]\1[\<][\/]a[\>]", "g")
+            var mat = str.match(reg)
+            if (mat) {
+                console.log("mat:", mat)
+            }
+            var ret = str.replace(reg, "$1")
+            console.log(ret)
+            return ret;
+        }
+        var ret = test(str)
+        console.log("ret", ret)
+
+
+        function test1() {
+            var str = "#1Jb26:7=1Jb26:744=1Jb:744";
+            var reg = new RegExp("([1-3A-Z][1-z][0-9]*[\:][0-9]*)", "g")
+            var mat = str.match(reg)
+            if (mat) {
+                console.log("test1 mat:", mat)
+            }
+        }
+        test1()
+        function test2() {
+            var str = "#1Jb26:7=1Jb2:744";
+            var reg = new RegExp("([1-3A-Z][1-z][0-9]{1,}[\:][0-9]{1,})", "g")
+            var mat = str.match(reg)
+            if (mat) {
+                console.log("test2 mat:", mat)
+            }
+        }
+        test2()
+        function test3() {
+            var str = "#1Jb26:7=1Jb26:7k44";
+            var reg = new RegExp("([1-3A-Z][1-z][0-9]{1,}[\:][0-9]{1,})\=\1", "g")
+            var mat = str.match(reg)
+            if (mat) {
+                console.log("test3 mat:", mat)
+            }
+        }
+        test3()
+        function test4() {
+            var str = " axaxa, bxbxb and cxcxc.";
+            var reg = new RegExp("([a-c])x\1x\1", "g")
+            var mat = str.match(reg)
+            if (mat) {
+                console.log("test4 mat:", mat)
+            }
+        }
+        test4()
+
+
+
+
+
+    })
+</script>

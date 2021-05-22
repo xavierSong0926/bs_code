@@ -1,0 +1,196 @@
+<html>
+
+<head>
+    <title></title>
+    <base target="_blank" />
+    <META http-equiv="Content-Type" content="text/html;" charset="UTF-8">
+    <META name="viewport" content="width=device-witdh, initial-scale=1, maximum-scale=1, user-scale=0">
+
+
+    <link rel="stylesheet" hrefxxxxxxxxx="./BibleStudyNotePad.css?v=2020dec21b">
+    </link>
+
+    <!-------------------------------------------->
+    <!---- Insert this before scripts import; then restor back later -->
+    <script>//if (typeof module === 'object') { window.module = module; module = undefined; }</script>
+
+    <!-------------- jq --------------------->
+    <script ____src="./doc_files/jquery-2_1_3.min.js"></script>
+    <script src="https://wdingbox.github.io/ham12/jq/jquery-2_1_3.min.js"></script>
+    <script xxxxxxxsrc="http://localhost:7878/assets/ckeditor/adapters/jq/jquery-2_1_3.min.js"
+        note="selfseversite"></script>
+    <!-------------- ckeditor only--------------------->
+    <script src="../../../assets/ckeditor/ckeditor.js"></script>
+    <script src="../../../assets/ckeditor/samples/old/sample.js"></script>
+    <link href="../../../assets/ckeditor/samples/old/sample.css" rel="stylesheet">
+
+
+    <script ___src="http://localhost:7878/assets/ckeditor/ckeditor.js" note="selfseversite"></script>
+    <script ___src="http://localhost:7878/assets/ckeditor/samples/old/sample.js"></script>
+    <!-------------------------------------------->
+    <!----- Insert this line after script imports -->
+    <script>//if (window.module) module = window.module;</script>
+    <script language="javascript" src="./BibleStudyNotePad.js?v=20.12.31"></script>
+    <!-------------------------------------------->
+    <style>
+        body,
+        table {
+            padding: 10px 10px 10px 10px;
+            margin: 10px 10px 10px 10px;
+            /*font-size:xx-large;*/
+        }
+
+
+        .white_space_nowrap {
+            white-space: nowrap;
+        }
+
+        textarea {
+            width: 100%;
+        }
+
+        .hili {
+            background-color: red;
+        }
+
+        .help_label {
+            float: right;
+        }
+
+        .helpinfo {
+            display: none;
+            margin-left: 50px;
+        }
+    </style>
+</head>
+
+<body>
+
+
+
+    <form action="" method="post">
+        <div>
+            Repository <a class="help_label" onclick="$('.helpinfo.Repository').toggle('slow');">help?</a>
+        </div>
+        <div class="helpinfo Repository" id="help_Repository">
+            <p>
+                To get a repository (clone HTTPS url):
+            </p>
+            <ol>
+                <li>
+                    register an account in <a href="https://github.com/">github.com</a>
+                </li>
+                <li>
+                    create a New repository (public is recommended)
+                </li>
+                <li>
+                    copy reposistory HTTPS url to paste into following input box.
+                </li>
+            </ol>
+        </div>
+        <textarea id="repository" value="https://github.com/wdingbox/bible_user_williamd.git"
+            placeholder="https://github.com/username/reposname.git"></textarea>
+        <label for="editor1">
+            Password (optional: for data saving in your repository only) <a class="help_label"
+                onclick="$('.helpinfo.Password').toggle('slow');">help?</a>
+        </label>
+        <div class="helpinfo Password">
+            <a>
+                The passwod is required for
+            </a>
+            <ol>
+                <li>
+                    push data into repository, or
+                </li>
+                <li>
+                    pull data from private repository.
+                </li>
+            </ol>
+            <a>
+                The password can be used right before you manually push data into the repository.
+            </a>
+        </div>
+        <input id="passcode" value=""></input>
+    </form>
+    <p>
+        <button onclick="LoadStorageInRepos();">LoadStorageInRepos</button>
+        <button onclick="repo_destroy();">Destroy</button>
+        <button onclick="repo_pushback();">Push</button>
+        <button onclick="repo_status();">Status</button>
+        <button onclick="Okey_use_this();">OK,use this</button>
+        <br>
+        <button onclick="repo_histroy();">histroy</button>
+        <button onclick="RemoveInHistory();">RemoveInHistory</button>
+    </p>
+
+
+
+    <div id="footer">
+        <hr>
+        <textarea id="txtarea" rows="25"></textarea>
+    </div>
+
+
+
+
+
+    <script>
+        function Okey_use_this() {
+            
+        }
+        function LoadStorageInRepos() {
+            MyStorage.Repo_load(function(data){
+                console.log("data")
+                Uti.Msg("Load", data)
+            })
+        }
+        function repo_destroy() {
+            
+        }
+        function repo_status() {
+            
+        }
+        function repo_pushback() {
+           
+        }
+        function repo_histroy() {
+            
+        }
+        function RemoveInHistory() {
+            
+        }
+    </script>
+</body>
+
+</html>
+<script>
+    Uti.Jsonpster_crossloader()
+    function dbg_pster(dat) {
+        var ss = dat
+        if ("object" === typeof dat) {
+            var ss = "ret=" + JSON.stringify(dat, null, 4)
+        }
+        ss += "\n\n\nJsonpster = " + JSON.stringify(Jsonpster, null, 4)
+        ss += "\n\n\nRestApi=" + JSON.stringify(RestApi, null, 4)
+        $("#txtarea").val(ss)
+    }
+    setTimeout(() => {
+        if (undefined === Jsonpster) {
+            alert("Jsonpster not exist.")
+        }
+        else {
+            $("title").text("acct")
+            dbg_pster()
+        }
+        //g_msg.pop(`initial load file: ${ret.name}, size:${data.length}(B)`).m_len = data.length
+    }, 1000)
+</script>
+<script>
+    $(function () {
+        //init_CKEditor()
+        //init_ui_cmd()
+        //load_page_by_parent_storage()
+
+
+    })
+</script>

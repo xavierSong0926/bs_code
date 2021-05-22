@@ -1,0 +1,82 @@
+<HTML>
+
+<HEAD>
+    <TITLE>bsnp</TITLE>
+    <base target="_blank" />
+    <META http-equiv="Content-Type" content="text/html;" charset="UTF-8">
+    <META name="viewport" content="width=device-witdh, initial-scale=1, maximum-scale=1, user-scale=0">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <meta name="description"
+        content="Camel case app change any text to be camel cased. Just paste your text and hit the convert button!">
+    <link rel="icon" href="">
+
+
+
+
+    <script>
+        console.log("startime:", (new Date()).toISOString())
+    </script>
+
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jsencrypt/2.3.1/jsencrypt.min.js"></script>
+    <script xxxxxxxxsrc="https://wdingbox.github.io/ham12/jq/jquery-2_1_3.min.js"></script>
+    <script xxxxxxxxsrc="https://wdingbox.github.io/ham12/jq/jsencrypt.min.js"></script>
+    <script language="javascript" src="../../htmjs/jq/jquery.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <!---------->
+    <script language="javascript" src="../../htmjs/jq/table_Indexer.js"></script>
+    <script language="javascript" src="../../htmjs/jq/jquery.tablesorter.js"></script>
+    <!--------->
+
+
+
+
+
+
+    <style>
+    </style>
+
+
+
+</HEAD>
+
+<BODY onbeforeunload="return 'leave?';">
+    <textarea id="origtxt">test here</textarea><br />
+    <button id="camelizer">camelize</button><br />
+    <textarea id="cametxt"></textarea>
+
+
+</BODY>
+
+</HTML>
+
+<script language="javascript">
+    console.log(window.location);
+
+    $(document).ready(function () {
+
+
+        $("#camelizer").on("click", function () {
+            camelize_text()
+        })
+        //table_sort();
+        //table_col_index();
+
+    });/////////////
+    function camelize_word(word) {
+        var str = word.trim().toLowerCase()
+        var str2 = str.toUpperCase()
+        return str2[0] + str.substr(1)
+    }
+    function camelize_text() {
+        var src = $("#origtxt").val()
+        var arr = src.split(" ")
+        var ar2 = []
+        for (var i = 0; i < arr.length; i++) {
+            var str = camelize_word(arr[i])
+            ar2.push(str)
+        }
+
+        $("#cametxt").val(ar2.join(" "))
+    }
+</script>

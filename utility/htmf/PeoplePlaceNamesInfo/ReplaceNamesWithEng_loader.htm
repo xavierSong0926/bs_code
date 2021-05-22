@@ -1,0 +1,83 @@
+<HTML>
+
+<HEAD>
+    <TITLE>bPlace</TITLE>
+    <base target="_blank" />
+    <META http-equiv="Content-Type" content="text/html;" charset="UTF-8">
+    <META name="viewport" content="width=device-witdh, initial-scale=1, maximum-scale=1, user-scale=0">
+
+
+    <link rel="stylesheet" xhref="./BibleInputMethod.css">
+    </link>
+
+
+
+
+
+    <scriptxx language="javascript" src="../../htmjs/jq/jquery.js"></scriptxx>
+    <script src="https://wdingbox.github.io/ham12/jq/jquery-2_1_3.min.js"></script>
+    <script language="javascript" src="../../htmjs/jq/table_Indexer.js"></script>
+    <script language="javascript" src="../../htmjs/jq/jquery.tablesorter.js"></script>
+    <script src="../../../../bible_obj_lib/jsdb/cc/z2g/jianfan/Traditional2SimplifiedObj.json.js"></script>
+
+    <!--------->
+    <script src="../../../../bible_obj_lib/jsdb/jsBibleObj/CUVsen.json.js"></script>
+    <script src="../../../../bible_obj_lib/jsdb/jsBibleObj/CUVS.json.js"></script>
+    <script src="../../../../bible_obj_lib/jsdb/jsBibleObj/NIV.json.js"></script>
+    <script src="./ReplaceNamesWithEng_PeoplePlace.json.js"></script>
+    
+    
+
+
+    <style>
+        table {
+            border-collapse: collapse;
+        }
+
+        th,
+        .hili {
+            background-color: darkgray;
+        }
+    </style>
+
+
+
+    <script language="javascript">
+
+
+        $(function () {
+            gen_tab(CUVsen,null,null);//, CUVS, NIV);
+            ////  gen_tab(CUVS, NIV);
+        });
+
+        function gen_tab(cuv, cuvs, niv) {
+            var st = "<table border='1'>";
+            var idx = 0;
+            Object.keys(cuv).forEach(function (book) {
+                console.log(book);
+                Object.keys(cuv[book]).forEach(function (chpt) {
+                    Object.keys(cuv[book][chpt]).forEach(function (vrs, i) {
+                        var chntxt = cuv[book][chpt][vrs];
+                        var engtxt = niv?niv[book][chpt][vrs]:"";
+                        var chncus = cuvs?cuvs[book][chpt][vrs]:"";
+                        var bcv = idx+++"<br/>"+book+chpt+":"+vrs;
+                        
+                        st += `<tr><td>${bcv}<td><td>${chncus}<br>${chntxt}<br>${engtxt}</td></tr>`;
+                    });
+                });
+            });
+            st += "</table>";
+            $("#tab").html(st);
+        }
+    </script>
+</HEAD>
+
+<body>
+    <button onclick="replaceOrder();">replaceOrder</button>
+    <button id="indxer">indxer</button>
+    <textarea id="out">...</textarea>
+    <hr />
+    <div id="tab">...</div>
+</body>
+
+</HTML>

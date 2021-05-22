@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<HTML manifest___xxx="BiblePad-2015.appcache">
+<HEAD>
+    <TITLE>cuvs</TITLE>
+    <META http-equiv="Content-Type" content="text/html;" charset="UTF-8">
+	<META name="viewport" content="width=device-witdh, initial-scale=1, maximum-scale=1, user-scale=0">
+
+   
+
+
+    <script>    
+    var gStartDate = new Date();
+    console.log(  gStartDate.toString() +" ------ start load");//
+    </script>   
+
+
+
+    <script language="javascript" src="../../htmjs/jq/jquery.js">
+    </script>
+    <script language="javascript" src="../../htmjs/jq/table_Indexer.js">
+    </script>
+    <script language="javascript" src="../../htmjs/jq/jquery.tablesorter.js"></script>
+
+
+  
+    <script language="javascript" src="../../../jsdb/jsBibleSurvey/Hebrew_frq_NoMarker.js"></script>
+    <script language="javascript" src="../../../jsdb/jsBibleSurvey/Hebrew_words_ciu.js"></script>
+ 
+   
+
+    
+    
+
+
+
+
+
+    
+    <script>    
+    console.log(  (new Date()).toString() );//
+    </script>
+<style>
+body {
+    background-color: black;
+    color: white;
+    width:100%;
+	font-size: 100%;
+	
+    padding:0px 0px 0px 0px;
+    margin: 0px 0px 0px 0px;	
+
+    font-family: 'Times New Roman';
+}
+td:nth-child(2){
+    text-align: right;
+}
+.ciumatch0{
+    background-color:green ;
+}
+.ciumatch1{
+    background-color: blue;
+}
+.ciumatch2{
+    background-color: gray;
+}
+#out{
+    position: absolute;
+    right: 20px;
+}
+.hili{
+    background-color: #aaaa00;
+}
+</style>
+
+
+
+    
+<script language="javascript">
+ 
+$(document).ready(function(){
+
+
+gen_ths("#OTHdr");
+var ciuMat=gen_trs("#OTBdy",Hebrew_frq_NoMarker, Hebrew_words_ciu);
+
+gen_tr_ciuLeft("#left2ciu",ciuMat,Hebrew_words_ciu);
+gen_trs_pos_alphabet_frq("#AlphaBdy",Hebrew_frq_NoMarker);
+
+$("#alphTb tbody tr td").click(function(){
+    $(this).toggleClass("hili");
+    var ch=$(this).text();
+    var ss=$("#out").val();
+    $("#out").val(ss+ch);
+});
+$("#search").click(function(){
+    var ss=$("#out").val();
+    var hbAr=Object.keys(Hebrew_frq_NoMarker);
+    var startList=[],anyList=[], endList=[];
+    $.each(hbAr,function(i,hbrWord){
+        var ifnd=hbrWord.indexOf(ss);
+        if(ifnd<0) return true;
+        var ilas=hbrWord.lastIndexOf(ss), iend=-1;
+        if(ilas+ss.length===hbrWord.length){
+            iend=ilas;
+        }
+        if( 0===ifnd ){
+            startList.push(hbrWord);
+        }
+        if(iend>0){
+            endList.push(hbrWord);
+        }else{
+            if(ilas>0){
+                anyList.push(hbrWord);
+            }
+        }
+    });
+    ss+="\n-startList tot="+startList.length;
+    ss+="\n-endList tot="+endList.length;
+    ss+="\n-anyList tot="+anyList.length;
+    ss+="\n-startList\n"+JSON.stringify(startList,null,4);
+    ss+="\n-endList\n"+JSON.stringify(endList,null,4);
+    ss+="\n-anyList\n"+JSON.stringify(anyList,null,4);
+    $("#out").val(ss);
+});
+
+table_sort();
+
+});/////////////
+////////////////
+
+
+
+function gen_ths(id){
+    var ths="<tr><th>#</th><th>Hebrew</th><th>frq</th><th>Hebrew Words with Accent Markers</th></tr>";
+    $(id).html(ths);
+}
+function gen_trs(id,frqObj, ciuLearnedList){
+    function sortByFrq(obj2){
+        var arr=[];
+        $.each(obj2,function(kw,frq){
+            var sn=frq.toString(10).padStart(4, "0");
+            var ss=sn+"@&lrm;"+kw+"&lrm;";
+            arr.push(ss);
+        });
+        arr.sort().reverse();
+        var neoObj={};
+        $.each(arr,function(i,strn){
+            var frq=strn.substring(0,4);
+            var hbr=strn.substring(5);
+            neoObj[hbr]=parseInt(frq);
+        })
+        return neoObj;
+    }
+    function sumup(obj2){
+        var neobj=sortByFrq(obj2);
+        var ret={frq:0,str:""}
+        $.each(neobj,function(kw,frq){
+            ret.frq+=frq;
+            ret.str+="&lrm;"+kw+"&lrm;("+frq+") ";
+        });
+        return ret;
+    }
+    var ciuMatchedObj={};
+    function get_cls_ciuMatchedObj(sHbrw, ciuList){
+        var cls="",ciuMaxHbr="";
+        var ifind=ciuList.indexOf(sHbrw);
+        if( ifind>=0){
+            ciuMaxHbr=ciuList[ifind];
+            cls=" class='ciumatch0' title='ciu=ot:"+ciuMaxHbr+"'";
+            ciuMatchedObj[ciuMaxHbr]=0;
+            return cls;
+        }
+        return cls;
+
+
+        for(var i=0;i<ciuList.length;i++){
+            var ciu=ciuList[i];
+            if(sHbrw.indexOf(ciu)>=0){
+                if(ciu.length>ciuMaxHbr.length){
+                    ciuMaxHbr=ciu;
+                    cls=" class='ciumatch1' title='ciu{ot:";
+                }
+            }
+            if(ciu.indexOf(sHbrw)>=0){
+                if(ciu.length>ciuMaxHbr.length){
+                    ciuMaxHbr=ciu;
+                    cls=" class='ciumatch2' title='ciu}ot:";
+                }
+            }
+        };
+        if(ciuMaxHbr.length>2){
+            ciuMatchedObj[ciuMaxHbr]=2;
+            return cls+"&lrm;"+ciuMaxHbr+"&lrm;' ";
+        }
+        return cls;
+    };//////
+    var trs="";
+    $.each(frqObj,function(hebrw,obj2){
+        var sum=sumup(obj2);
+        var clsHbr=get_cls_ciuMatchedObj(hebrw, ciuLearnedList);
+        trs+="<tr><td></td><td"+clsHbr+">"+hebrw+"</td><td>"+sum.frq+"</td><td>"+sum.str+"</tr>";
+    });
+    $(id).html(trs);
+    return ciuMatchedObj;
+}
+function gen_tr_ciuLeft(id,matObj,ciuLearnedList){
+
+    ////////////////
+    //ciu left table
+    var trs="";
+    $.each(ciuLearnedList,function(i,word){
+        if(0==matObj[word]) return;
+        if(2==matObj[word]){
+            trs+="<tr><td class='ciumatch1'>"+i+"</td><td>"+word+"</td></tr>";
+        }else {
+            trs+="<tr><td>"+i+"</td><td>"+word+"</td></tr>";
+        }
+    })
+    $(id).html(trs);
+}
+function gen_trs_pos_alphabet_frq(bdyid,frqObj){
+    function initObj(obj){
+       var Alphabets="אבּבגדהוזחטיכּכךלמםנןסעפּפףצץקרשׁשׂשתּת";
+       for(var i=0;i<Alphabets.length;i++){
+          var cha=Alphabets[i];
+          obj[cha]=[0,0,0,0,0];
+       } 
+    }
+    
+
+    var stats={};
+    initObj(stats);
+    $.each(frqObj,function(hebrw,arr){
+        hebrw=$.trim(hebrw);
+        if(hebrw.length<3)return;
+        var len=hebrw.length;
+        var first=hebrw.charAt(0);
+        var secnd=hebrw.charAt(1);
+        var last=hebrw.charAt(hebrw.length-1);
+        stats[first][0]++;
+        stats[secnd][1]++;
+        stats[last][4]++;
+    });
+    console.log(stats);
+
+    var trs="";
+    $.each(stats,function(ke,arr){
+        trs+="<tr><td></td><td>"+ke+"</td><td>"+arr[4]+"</td><td>"+arr[1]+"</td><td>"+arr[0]+"</td></tr>";
+    });
+    $(bdyid).html(trs);
+
+}
+</script>
+
+</HEAD>
+<BODY xxxonload="body_onload();">
+
+<textarea id="out"></textarea>
+
+
+    <button id="indxer">indxer</button>
+    <button id="search">search</button>
+
+
+
+    <hr/>
+
+
+<table border="1" id="alphTb", align="left"><caption>First/Last Alphabet Frq</caption>
+    <thead><tr>
+        <th>#</th>
+        <th>A</th>
+        <th>end</th>
+        <th>2nd</th>
+        <th>1st</th>
+    </tr></thead>
+    <tbody id="AlphaBdy">
+    </tbody>
+</table>
+<table border="1"><caption>Left in CIU</caption>
+    <thead><tr><th>#</th><th title="ciu learned but not in OT word list">ciu</th></tr></thead>
+    <tbody id="left2ciu"></tbody>
+</table>
+
+
+<table  border="1" align="left"><caption title="from usage_tool english">OT Hebrew Statistics</caption>
+    <thead id="OTHdr"></thead>
+	<tbody id='OTBdy'></tbody>
+ </table>
+
+
+
+
+</BODY>
+</HTML>
+<script type="text/javascript">
+
+</script>
